@@ -19,7 +19,7 @@
 
 @layer utilities {
   body {
-    @apply bg-dark text-white
+    @apply bg-black text-white
   }
   .css-invert {
     @apply invert-[50%] brightness-200;

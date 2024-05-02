@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "../globals.css";
 import BiMainNav from "../assets/big-sc/Nav/bi-nav";
+import SmMainHeader from "../assets/small-sc/header/sm-header";
 import SmMainNav from "../assets/small-sc/Nav/sm-nav";
-import SmMainWrapper from "../assets/wrappers/sm-wrapper";
-import BiMainWrapper from "../assets/wrappers/bi-wrapper";
+
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,13 +20,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
-          <BiMainWrapper>
-            <SmMainWrapper>
-              <main>
-                {children}
-              </main>
-            </SmMainWrapper>
-          </BiMainWrapper>
+          <BiMainNav />
+          <SmMainHeader />
+            <main>
+              {children}
+            </main>
+          <SmMainNav />
+        
       </body>
     </html>
   );

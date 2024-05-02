@@ -10,7 +10,7 @@ export default function SmMainLinks() {
     return (
         <Media query={"(max-width:767px)"} render={() => {
             return (
-                <nav className="fixed bottom-0 left-0 right-0 bg-darker z-50">
+                <nav className="fixed bottom-0 left-0 right-0 bg-darker z-40 md:hidden">
                     <div className="p-3 flex justify-center items-center gap-10 sm:gap-14">
                         {icons.map(icon => {
                             return (
