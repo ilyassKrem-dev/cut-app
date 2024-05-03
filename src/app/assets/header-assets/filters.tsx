@@ -5,7 +5,7 @@ import { SetStateAction, useState } from "react"
 import { Button } from "@/components/ui/button"
 import PriceFilter from "./filters/price"
 import StarsFilter from "./filters/stars"
-import { useRouter } from "next/navigation"
+import { useRouter,useSearchParams } from "next/navigation"
 export default function Filters({setShow,setNumFilters}:{
     setShow:React.Dispatch<SetStateAction<boolean>>
     setNumFilters:React.Dispatch<SetStateAction<number>>
@@ -18,6 +18,7 @@ export default function Filters({setShow,setNumFilters}:{
         min:"0",max:"200"
     })
     const router = useRouter()
+    const searchParams = useSearchParams()
     const handleSave = () => {
         let num = 0
         if(rating!==0) {
@@ -34,9 +35,33 @@ export default function Filters({setShow,setNumFilters}:{
         }
         
         setNumFilters(num)
-        
-        router.push(`/?rating=${rating !== 0 ? rating : "null"}&equ=${version?version : 'null'}&min=${priceFilter.min ? parseFloat(priceFilter.min):"null"}&max=${priceFilter.max ? parseFloat(priceFilter.max):"null"}`)
+        const current = new URLSearchParams(Array.from(searchParams.entries()))
+        if(searchParams.get('rating')) {
+            current.set('rating',`${rating?rating : "null"}`)
+            const search = current.toString()
+            router.push(`/?${search}`)
+        }
+        if(searchParams.get("equ")) {
+            current.set('equ',`${version?version : 'null'}`)
+            const search = current.toString()
+            router.push(`/?${search}`)
+        }
+        if(searchParams.get("min")) {
+            current.set('min',`${priceFilter.min ? parseFloat(priceFilter.min):"null"}`)
+            const search = current.toString()
+            router.push(`/?${search}`)
+        }
+        if(searchParams.get("max")) {
+            current.set('max',`${priceFilter.max ? parseFloat(priceFilter.max):"null"}`)
+            const search = current.toString()
+            router.push(`/?${search}`)
+        }
         setShow(false)
+        const search = current.toString()
+        if(searchParams.get("rating") && searchParams.get("equ") && searchParams.get("min") && searchParams.get("max")) return
+
+        router.push(`/?${search}&rating=${rating !== 0 ? rating : "null"}&equ=${version?version : 'null'}&min=${priceFilter.min ? parseFloat(priceFilter.min):"null"}&max=${priceFilter.max ? parseFloat(priceFilter.max):"null"}`)
+        
     }
     const handleReset = () => {
         setPriceFilter({
@@ -46,7 +71,13 @@ export default function Filters({setShow,setNumFilters}:{
         setHover(-1)
         setVersion("")
         setNumFilters(0)
-        router.push('/')
+        const current = new URLSearchParams(Array.from(searchParams.entries()))
+        current.delete("min")
+        current.delete("max")
+        current.delete("equ")
+        current.delete('rating')
+        const search = current.toString()
+        router.push(`/?${search}`)
     }
     return(
         <motion.div

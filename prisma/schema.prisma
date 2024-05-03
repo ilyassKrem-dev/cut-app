@@ -34,11 +34,11 @@ model Barber {
   latitude  String
   longitude String
   defaultPrice Float
-  rating Float @default(0.0)
   phoneNumber String?
   comments Comment[]
   images String[]
   haircuts HaircutPrice[]
+  ratings Star[]
 }
 
 model HaircutPrice {
@@ -82,4 +82,14 @@ model Comment {
   userId String @db.ObjectId
   barberId String @db.ObjectId
   barber Barber @relation(fields: [barberId],references: [id])
+  stars Star?
+}
+
+model Star {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  commentId String? @db.ObjectId @unique
+  comment Comment? @relation(fields: [commentId], references: [id])
+  star Float
+  barber Barber @relation(fields: [barberId], references: [id])
+  barberId String @db.ObjectId
 }
