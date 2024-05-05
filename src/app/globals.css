@@ -16,10 +16,12 @@
   }
 }
 
-
+:root:has(.no-doc-scroll) {
+  overflow:hidden;
+}
 @layer utilities {
   body {
-    @apply bg-darker text-white pb-[3000px]
+    @apply bg-black text-white pb-[3000px]
   }
   .css-invert {
     @apply invert-[50%] brightness-200;
@@ -82,6 +84,14 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+    background-color: transparent !important;
 }
 
 
