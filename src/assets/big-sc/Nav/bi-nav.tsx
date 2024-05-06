@@ -4,6 +4,7 @@ import ProfileIcon from "./misc/profile-icon"
 import { useEffect, useState } from "react"
 import SearchBar from "./misc/SearchBar"
 import { motion } from "framer-motion"
+import AuthProvider from "@/assets/wrappers/AuthWrapper"
 export default function BiMainNav() {
     const [scrolling, setScrolling] = useState(false)
     useEffect(() => {
@@ -28,9 +29,9 @@ export default function BiMainNav() {
             <div className="flex justify-between items-center w-full">
                 <Logo />
                 <SearchBar scrolling={scrolling}/>
-                <div>
+                <AuthProvider>
                     <ProfileIcon />
-                </div>
+                </AuthProvider>
             </div>
            
         </motion.header>
