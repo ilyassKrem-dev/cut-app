@@ -49,7 +49,7 @@ export default function PasswordForm(
                 }
             } catch (error:any) {
                 setLoading(false)
-                console.error(error.message)
+                setPasswordError("Error,try again later")
             }
         }
         useEffect(() => {

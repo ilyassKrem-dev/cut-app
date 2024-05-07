@@ -197,14 +197,14 @@ export default function FirstForm({
             <div className="flex flex-col gap-5">
                 <p className="font-bold">Account Type:</p>
                 <div className="flex  gap-10 items-center">
-                    <div className="flex gap-2 items-center">
-                        <input type="radio" name="barber" id="user" className=" accent-black bg-light/30" checked={!isBarber}  onChange={handleChangeRadio}/>
-                        <label htmlFor="user" className="">User</label>
+                    <div className="flex gap-2 items-center ">
+                        <input type="radio" name="barber" id="user" className=" accent-black bg-light/30 cursor-pointer" checked={!isBarber}  onChange={handleChangeRadio}/>
+                        <label htmlFor="user" className="cursor-pointer">User</label>
                     </div>
                     <div className="flex gap-2 items-center">
                         
-                        <input type="radio" name="barber" id="barber" className=" accent-black" onChange={handleChangeRadio}/>
-                        <label htmlFor="barber">Barber</label>
+                        <input type="radio" name="barber" id="barber" className=" accent-black cursor-pointer" onChange={handleChangeRadio}/>
+                        <label htmlFor="barber" className="cursor-pointer">Barber</label>
                     </div>
 
                 </div>

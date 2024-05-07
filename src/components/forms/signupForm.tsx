@@ -5,12 +5,15 @@ import SocialsLogin from "@/assets/socials/socialsLogin"
 
 import { IoMdArrowRoundBack } from "react-icons/io";
 import FirstForm from "@/assets/signup/firstForm"
+import SecondForm from "@/assets/signup/secondForm";
+import VerifyEmail from "@/assets/signup/verifyEmail";
 export default function SignUpForm() {
     const [email,setEmail] = useState<string>("")
     const [name,setName] = useState<string>("")
     const [password,setPassword] = useState<string>("")
     const [isBarber,setIsBarber] = useState<boolean>(false)
     const [next,setNext] = useState<boolean>(false)
+    const [verifyStep,setVerifyStep] = useState<boolean>(false)
     return (
         <div className="md:py-36 md:flex md:justify-center  pb-24 custom-scrollbar">
            <div className="flex flex-col  md:bg-black md:w-[70%] md:h-[80%] lg:max-w-[700px] md:rounded-xl gap-5 md:shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
@@ -41,16 +44,20 @@ export default function SignUpForm() {
                     <SocialsLogin text="Sign"/>
                 </div>
                 :
-                <>
-                    {/*<PasswordForm 
-                    password={password} 
+                next && !verifyStep 
+                ?
+                <SecondForm
+                    password={password}
                     setPassword={setPassword}
-                    email={email}
-                    setShow={setShow}
-                    />*/
-                    }
-                </>
-                }
+                    setVerifyStep={setVerifyStep}
+                    />       
+                :
+                <VerifyEmail 
+                password={password} 
+                email={email}
+                name={name}
+                isBarber={isBarber}
+                />}
             </div>
             </div>
         </div>

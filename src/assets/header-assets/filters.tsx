@@ -59,7 +59,9 @@ export default function Filters({setShow,setNumFilters}:{
         setShow(false)
         const search = current.toString()
         if(searchParams.get("rating") && searchParams.get("equ") && searchParams.get("min") && searchParams.get("max")) return
-
+        if(Array.from(current).length ===0) {
+            return router.push(`/?rating=${rating !== 0 ? rating : "null"}&equ=${version?version : 'null'}&min=${priceFilter.min ? parseFloat(priceFilter.min):"null"}&max=${priceFilter.max ? parseFloat(priceFilter.max):"null"}`)
+        }
         router.push(`/?${search}&rating=${rating !== 0 ? rating : "null"}&equ=${version?version : 'null'}&min=${priceFilter.min ? parseFloat(priceFilter.min):"null"}&max=${priceFilter.max ? parseFloat(priceFilter.max):"null"}`)
         
     }
