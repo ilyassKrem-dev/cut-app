@@ -1,24 +1,24 @@
-
-
-
-interface tempalteProps {
-    email:string,
-    codeVerify:number
+interface TemplateProps {
+    email: string;
+    codeVerify: string;
 }
 
-export const  EmailTemplate:React.FC<Readonly<tempalteProps>> = ({email,codeVerify}) => {
-
-    return (
-        <div style={{display:"flex",flexDirection:"column",gap:"20px"}}>
-            <h1 style={{fontWeight:"bold"}}>Your login code for BarberCut</h1>
-            <h2>Verify email for <b>{email}</b></h2>
-            <div style={{display:"flex",flexDirection:"column",gap:"1px"}}>
-                <p style={{fontWeight:'bold',fontSize:"20px"}}>Your code:</p>
-                <div style={{backgroundColor:"white",border:"1px solid white",borderRadius:"20px",color:"black"}}>
-                    {codeVerify}
+export default function EmailTemplate({ email, codeVerify }: TemplateProps): string {
+    return `
+        <div>
+            <h1 style="font-weight: bold;">Your login code for BarberCut</h1>
+            <br/><br/>
+            <h2>Verify email for <b>${email}</b></h2>
+            <br/><br/>
+            <div>
+                <p style="font-weight: bold;font-size: 20px;">Your code:</p>
+                <br/><br/>
+                <div style="background-color: white; border: 1px solid white; border-radius: 20px; color: black;">
+                    ${codeVerify}
                 </div>
-                <p>This Code well be valid only for 5 minutes</p>
+                <br/><br/>
+                <p>This Code will be valid only for 5 minutes</p>
             </div>
         </div>
-    )
+    `;
 }

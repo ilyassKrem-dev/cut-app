@@ -20,36 +20,29 @@ export default function VerifyEmail(
         name:string;
         isBarber:boolean
     }) {
-        const [code,setCode] = useState<string>()
+        const [code,setCode] = useState<string>(() =>
+        (Math.random() * (995489 - 100000) + 100000).toFixed().toString())
         const [verificationCode, setVerificationCode] = useState<string>('');
         const [verifyError,setVerifyError] = useState<string>("")
         const [loading,setLoading] = useState<boolean>(false)
         useEffect(() => {
-            async function SendCode() {
-                if(email.length ===0) return
-                try {
-                    
-                    const res = await axios.post("/api/send",{
-                        email:email,
-                        code:code
-                    })
-                    
-                } catch (error) {
-                    setVerifyError("Error,try again later")
-                }
-                
-            }
-            if(!code) {
-                setCode((Math.random()*(995489-100000)+10000).toFixed().toString())
-                SendCode()
-            }
+            sendCode();
             const id = setInterval(() => {
-                setCode((Math.random()*(995489-100000)+10000).toFixed().toString())
+                setCode((Math.random()*(995489-100000)+100000).toFixed().toString())
             },300000)
             return () => clearInterval(id)
 
         },[code])
-
+        const sendCode = async () => {
+            try {
+                await axios.post("/api/send", {
+                    email: email,
+                    code: code
+                });
+            } catch (error) {
+                setVerifyError("Error, try again later");
+            }
+        };
         const handleLogin = async() => {
             
             setLoading(true)
@@ -80,16 +73,8 @@ export default function VerifyEmail(
             }
         }
         const handeResend = async() => {
-            setCode((Math.random()*(995489-100000)+10000).toFixed().toString())
-            try {
-                const res = await axios.post("/api/send",{
-                    email:email,
-                    code:code
-                })
-                
-            } catch (error) {
-                setVerifyError("Error,try again later")
-            }
+            setCode((Math.random()*(995489-100000)+100000).toFixed().toString())
+            sendCode()
         }
         console.log(code)
 

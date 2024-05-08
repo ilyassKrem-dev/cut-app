@@ -35,7 +35,8 @@ export const POST = async(req:NextRequest) => {
                 email:email,
                 name:name,
                 password:hashedPassword,
-                isBarber:isBarber
+                isBarber:isBarber,
+                emailVerified:true
             }
         })
         if(!addUser) {
