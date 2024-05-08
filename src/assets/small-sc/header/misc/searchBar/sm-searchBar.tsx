@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IoSearchOutline } from "react-icons/io5";
 import SearchOverlay from "./search-overlay";
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 export default function SmSearchBar() {
     const [show,setShow] = useState<boolean>(false)
@@ -17,7 +18,10 @@ export default function SmSearchBar() {
                 </div>
             </div>
             {show&&
-            <SearchOverlay setShow={setShow} show={show}/>}
+            <Suspense>
+                 <SearchOverlay setShow={setShow} show={show}/>
+            </Suspense>
+           }
         </>
     )
 }

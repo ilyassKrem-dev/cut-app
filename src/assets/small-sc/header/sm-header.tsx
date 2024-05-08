@@ -2,6 +2,7 @@
 
 import { FaFilter } from "react-icons/fa";
 import { useState } from "react";
+import { Suspense } from "react";
 import Filters from "../../header-assets/filters";
 import SmSearchBar from "./misc/searchBar/sm-searchBar";
 export default function SmMainHeader() {
@@ -13,9 +14,13 @@ export default function SmMainHeader() {
             <div className="p-4  bg-black border-b border-white/20 md:hidden">
                 <div className="flex flex-col gap-5" >
                     <div className="flex gap-2 items-center" id="searchBar">
-                        <SmSearchBar />
+                        <Suspense>
+                            <SmSearchBar />
+                        </Suspense>
                         <div className="border-2 rounded-full p-2 border-white/50 relative cursor-pointer hover:opacity-60 transition-all duration-300 " onClick={() => setShow(true)}>
-                            <FaFilter className="text-xl text-white/80"/>
+                            <Suspense>
+                                <FaFilter className="text-xl text-white/80"/>
+                            </Suspense>
                             {numFilters!==0&&<div className="absolute -top-2 -right-1 text-black rounded-full text-xs px-1 border  bg-white">
                                 {numFilters} 
                             </div>}

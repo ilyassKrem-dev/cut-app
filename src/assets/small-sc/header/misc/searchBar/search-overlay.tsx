@@ -40,6 +40,7 @@ export default function SearchOverlay({setShow,show}:{
         router.push(`/?${search}&city=${city.toLowerCase()}`) 
     }
     const handleReset = () => {
+        setUserInput("")
         setCity('')
         const current = new URLSearchParams(Array.from(searchParams.entries()))
         current.delete("city")
