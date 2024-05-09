@@ -153,6 +153,7 @@ export default function FirstForm({
                         <motion.input
                         initial={{paddingTop:0}}
                         animate={{paddingTop:clickedName|| name.length !==0?"0.75rem":"0"}}
+                        autoComplete="on"
                         name="name" 
                         value={name} 
                         onChange={handleChangeName} 
@@ -179,7 +180,7 @@ export default function FirstForm({
                         name="email" 
                         value={email} 
                         onChange={handleChangeEmail} 
-                        
+                        autoComplete="on"
                         type="email"  
                         className={`w-full h-14 text-white rounded-lg focus:outline-none px-3 bg-darker focus:border-2 focus:bg-darker  ${emailErrorCss ?"border-accent":""}`} 
                         placeholder="E-mail" onClick={() => setClickedEmail(true)}/>

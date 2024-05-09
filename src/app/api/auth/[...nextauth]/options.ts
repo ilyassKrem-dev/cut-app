@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client/edge"
 import bcrypt from "bcryptjs"
 const prisma = new PrismaClient()
 export const options = NextAuth({
-
+   
     providers: [
       Google,
       Credentials({
@@ -68,6 +68,10 @@ export const options = NextAuth({
                   
               })
               session.user.id = user?.id as string
+              //@ts-ignore
+              session.user.isBarber = user?.isBarber;
+              //@ts-ignore
+              session.user.completed = user?.completed;
           }
           
           return session

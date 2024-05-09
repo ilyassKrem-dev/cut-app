@@ -1,11 +1,11 @@
-import { ChangeEvent, SetStateAction, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingAnimation from "@/assets/other/spinner";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import VerificationInput from "../other/verify-Input";
-
+import { useRouter } from "next/navigation";
 export default function VerifyEmail(
     {
     password, 
@@ -23,16 +23,22 @@ export default function VerifyEmail(
         const [code,setCode] = useState<string>(() =>
         (Math.random() * (995489 - 100000) + 100000).toFixed().toString())
         const [verificationCode, setVerificationCode] = useState<string>('');
+        const [sent,setSent] = useState<boolean>(false)
+        const [resent,setResent] = useState<boolean>(false)
         const [verifyError,setVerifyError] = useState<string>("")
+        const [time,setTime] = useState<string>("")
         const [loading,setLoading] = useState<boolean>(false)
+        const router = useRouter()
         useEffect(() => {
-            sendCode();
             const id = setInterval(() => {
                 setCode((Math.random()*(995489-100000)+100000).toFixed().toString())
             },300000)
+            if(sent) return
+            sendCode();
+            setSent(true)
             return () => clearInterval(id)
 
-        },[code])
+        },[code,sent])
         const sendCode = async () => {
             try {
                 await axios.post("/api/send", {
@@ -62,9 +68,13 @@ export default function VerifyEmail(
                     return setVerifyError(res.data.message)
                 }
                 if(res.data.success) {
-                    await signIn("credentials",{
+                    const login=await signIn("credentials",{
+                        redirect:false,
                         email
-                    },{redirectTo:"/"})
+                    })
+                    if(login) {
+                        router.push('/complete')
+                    }
                 }
                 setLoading(false)
             } catch (error:any) {
@@ -73,11 +83,41 @@ export default function VerifyEmail(
             }
         }
         const handeResend = async() => {
-            setCode((Math.random()*(995489-100000)+100000).toFixed().toString())
-            sendCode()
+            if(resent) return
+            const newCode = (Math.random() * (995489 - 100000) + 100000).toFixed().toString();
+            setCode(newCode);
+            setSent(false);
+            setResent(true)
         }
-        console.log(code)
+        useEffect(() => {
+            
+            
 
+            
+            if(!resent) return
+            const id = setTimeout(() => {
+                setResent(false)
+            },300000) 
+
+            return () => {
+                clearTimeout(id)
+                }
+        },[resent])
+       useEffect(() => {
+        if(!resent) return
+        let s = 0
+        let m = 5
+        const id = setInterval(() => {
+            if(s==0) {
+                m--;
+                s=59  
+            } else {
+                s--
+            }
+            setTime(`${m}:${s>9?s:"0"+s}`) 
+        },1000)
+        return () => clearInterval(id)
+       },[resent])
     return (
         <div className="flex flex-col gap-8">
             <div className="flex items-center justify-center flex-col gap-4">
@@ -88,7 +128,8 @@ export default function VerifyEmail(
                 verificationCode={verificationCode}
                 setVerificationCode={setVerificationCode}/>
                 
-                <p className="underline  mt-4 cursor-pointer hover:opacity-60 transition-all duration-300 active:opacity-50" onClick={handeResend}>Resend</p>
+                <p className={`underline  mt-4 cursor-pointer hover:opacity-60 transition-all duration-300 active:opacity-50 ${resent ?"text-gray-400" :""}`} onClick={handeResend}>Resend</p>
+                {time&&<p>{time}</p>}
             </div>
             <Button className=" bg-green-1 text-black hover:bg-green-1 hover:opacity-60 transition-all duration-300" onClick={handleLogin} disabled={loading || verificationCode.length !== 6}>
                 {loading?<LoadingAnimation />:"Verify"}

@@ -21,6 +21,7 @@ model User {
   updatedAt DateTime @updatedAt
   isBarber Boolean @default(false)
   provider String?
+  completed Boolean @default(false)
   barber Barber? 
   participants Participant[]
   comments Comment[]

@@ -1,4 +1,4 @@
-import React, { useState, useRef, ChangeEvent, KeyboardEvent, SetStateAction } from 'react';
+import React, { useState, useRef, ChangeEvent, KeyboardEvent, SetStateAction, useEffect } from 'react';
 
 interface VerfiyProps {
   verificationCode:string;
@@ -31,7 +31,13 @@ const VerificationInput:React.FC<Readonly<VerfiyProps>> = ({verificationCode,set
       }
     }
   };
-
+  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasteData = e.clipboardData.getData('text');
+    if (pasteData.length === 6 && /^[0-9]+$/.test(pasteData)) {
+      setVerificationCode(pasteData);
+    }
+  };
 
   return (
       <div className="flex gap-2 mt-4">
@@ -39,10 +45,12 @@ const VerificationInput:React.FC<Readonly<VerfiyProps>> = ({verificationCode,set
           <input
             key={index}
             type="text"
+            id={`input-${index}`}
             maxLength={1}
             value={verificationCode[index] || ''}
             onChange={(e) => handleChange(index, e)}
             onKeyDown={(e) => handleKeyDown(index, e)}
+            onPaste={(e) => handlePaste(e)}
             className='max-[360px]:w-[40px] max-[430px]:w-[50px] w-[60px] text-black h-[60px] rounded-xl focus-within:outline-none focus-within:border-2 focus-within:border-black text-center font-bold text-2xl'
             ref={(el) => (inputRefs.current[index] = el as any)}
           />

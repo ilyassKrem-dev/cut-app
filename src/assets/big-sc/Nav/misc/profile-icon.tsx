@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation"
 export default function ProfileIcon() {
     const [show,setShow] = useState<boolean>(false)
     const session = useSession()
+
     const pathname = usePathname()
     useEffect(() => {
         function handleOutsideClick(event: any) {
