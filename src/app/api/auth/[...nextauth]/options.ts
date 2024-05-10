@@ -60,6 +60,7 @@ export const options = NextAuth({
         return true
       },
       async session({session}) {
+       
           if(session && session.user) {
               let user = await prisma.user.findUnique({
                   where:{

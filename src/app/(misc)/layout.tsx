@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "../globals.css";
-import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
+
 
 
 const sora = Sora({ subsets: ["latin"] });
@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
-            <main>
+            <main className="min-h-screen">
               {children}
             </main>
    

@@ -15,8 +15,8 @@ export default function SignUpForm() {
     const [next,setNext] = useState<boolean>(false)
     const [verifyStep,setVerifyStep] = useState<boolean>(false)
     return (
-        <div className="md:py-36 md:flex md:justify-center  pb-24 custom-scrollbar">
-           <div className="flex flex-col  md:bg-black md:w-[70%] md:h-[80%] lg:max-w-[700px] md:rounded-xl gap-5 md:shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
+        <div className="md:py-36 md:flex md:justify-center  pb-24 custom-scrollbar ">
+           <div className="flex flex-col  md:bg-black md:w-[70%] md:h-[80%] lg:max-w-[700px]  md:rounded-xl gap-5 md:shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
             <div className=" w-full text-center p-3 flex justify-center border-b border-white/20 items-center bg-black rounded-t-3xl md:rounded-t-xl">
                 {next&&!verifyStep&&<IoMdArrowRoundBack className=" text-3xl font-semibold text-light hover:bg-gray-300/40 rounded-full px-2 cursor-pointer transition-all duration- hover:opacity-60 active:opacity-50 active:bg-gray-300/80" onClick={() => {
                     setPassword("")

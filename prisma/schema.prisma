@@ -43,6 +43,7 @@ model Barber {
   haircuts HaircutPrice[]
   ratings Star[]
   favorites   Favorite[]
+  salonName String
 }
 model Favorite {
   id          String        @id @default(auto()) @map("_id") @db.ObjectId
