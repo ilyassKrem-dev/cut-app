@@ -73,7 +73,7 @@ export default function VerifyEmail(
                         email
                     })
                     if(login) {
-                        router.push('/complete')
+                        router.push('/')
                     }
                 }
                 setLoading(false)

@@ -71,11 +71,11 @@ export default function SearchBar({scrolling}:{
             </div>
             <div className="text-xl pr-1 pl-2">
                 {!cityString?
-                <div className="rounded-full bg-green-1 p-3 text-black cursor-pointer hover:opacity-50 transition-all duration-300" onClick={handleClick}>
+                <div className={`rounded-full bg-green-1 text-black cursor-pointer hover:opacity-50 transition-all duration-300 ${scrolling?"p-3":"p-4"}`} onClick={handleClick}>
                     <IoSearchOutline />
                 </div>
                 :
-                <div className="rounded-full bg-accent p-3 text-white cursor-pointer hover:opacity-50 transition-all duration-300" onClick={handleRemove}>
+                <div className={`rounded-full bg-accent  text-white cursor-pointer hover:opacity-50 transition-all duration-300 ${scrolling?"p-3":"p-4"}`} onClick={handleRemove}>
                 <RxCross2 />
             </div>}
             </div>

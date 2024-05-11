@@ -48,7 +48,7 @@ export default function PhoneAdd({setPhoneNumber,phoneNumber}:{
         };
     }, []);
     return (
-        <div className="pt-24 flex flex-col items-center gap-10 md:pt-36">
+        <div className="pt-24 flex flex-col items-center gap-10 md:pt-0">
             <h2 className="md:text-xl md:font-semibold">
                 Add Phone number
             </h2>
@@ -74,7 +74,7 @@ export default function PhoneAdd({setPhoneNumber,phoneNumber}:{
                             className={`absolute  ${clicked || phoneNumber.length !==0?` ${numberErrorCss ?"text-accent":"text-gray-400"}  left-[0.9rem]`:"left-3"} pl-[4.21rem]`} onClick={() => setClicked(true)}>Phone</motion.p>
                             <div className="absolute left-0  top-0 bottom-0 flex items-center justify-center m-2 rounded-lg p-1 text-sm gap-1 text-white">
                                 <div className="w-[25px] h-[25px] flex items-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"><path fill="#c1272d" d="M900 0H0v600h900z"/><path d="M450 224.315l-44.467 136.87 116.401-84.559h-143.87l116.403 84.559z" fill="none" stroke="#006233" stroke-width="14.63"/></svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600"><path fill="#c1272d" d="M900 0H0v600h900z"/><path d="M450 224.315l-44.467 136.87 116.401-84.559h-143.87l116.403 84.559z" fill="none" stroke="#006233" strokeWidth="14.63"/></svg>
 
                                 </div>
                                 <p>+212</p>

@@ -1,7 +1,7 @@
-
+"use client"
 import Logo from "@/assets/Logo/logo"
 import ProfileIcon from "@/assets/big-sc/Nav/misc/profile-icon"
-
+import LoggedInIcons from "../AuthFeatures/loggedInIcons"
 import AuthProvider from "@/assets/wrappers/AuthWrapper"
 export default function NavBar() {
     
@@ -13,7 +13,11 @@ export default function NavBar() {
             <nav className="flex justify-between items-center w-full">
                 <Logo />
                 <AuthProvider>
-                    <ProfileIcon />
+                    <div className="flex justify-between items-center gap-5">
+                        <LoggedInIcons />
+                        <ProfileIcon />
+
+                    </div>
                 </AuthProvider>
             </nav>
         </header>

@@ -1,7 +1,7 @@
 import { VscAccount } from "react-icons/vsc";
 import { LuMessagesSquare } from "react-icons/lu";
 import { IoSearchOutline } from "react-icons/io5";
-
+import { RiHomeLine } from "react-icons/ri";
 
 export const icons = [
     {
@@ -12,7 +12,13 @@ export const icons = [
     {
         icon:<LuMessagesSquare />,
         name:"Messages",
-        path:"/messages"
+        path:"/messages",
+    },
+    {
+        icon:<RiHomeLine />,
+        name:"Salon",
+        path:"/salon",
+        for:"barber"
     },
     {
         icon:<VscAccount />,

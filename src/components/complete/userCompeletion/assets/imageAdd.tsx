@@ -38,7 +38,7 @@ export default function ImageAdd({
         }
     }
     return (
-        <div className="pt-24 flex flex-col items-center gap-10">
+        <div className="pt-24 md:pt-0 flex flex-col items-center gap-10">
             <h2 className="md:text-xl md:font-semibold">Add profile image</h2>
             <div className="flex flex-col gap-10">
                 <div className="relative rounded-full group cursor-pointer  transition-all duration-300">

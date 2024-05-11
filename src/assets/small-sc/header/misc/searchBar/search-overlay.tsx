@@ -51,9 +51,9 @@ export default function SearchOverlay({setShow,show}:{
         <motion.div
             initial={{y:'-100%'}}
             animate={{y:"0"}}
-           
+            
             transition={{duration:0.3,ease:"easeInOut"}}
-            className="fixed top-0 left-0 bottom-0 right-0 bg-[rgb(20,20,20)] z-50 flex flex-col items-center py-6 px-4 gap-10">
+            className="fixed top-0 left-0 bottom-0 right-0 bg-[rgb(20,20,20)] z-50 flex flex-col items-center py-6 px-4 gap-10" >
                 <div className="flex items-center w-full justify-center">
                     <div className="text-base font-semibold border-white/20 rounded-full p-[0.2rem] 
                     px-[0.65rem] border-2 bg-black cursor-pointer hover:scale-105 hover:border-black hover:shadow-[0px_0px_6px_2px_rgb(255,255,255)] transition-all duration-300" onClick={() => setShow(false)}>
@@ -77,15 +77,13 @@ export default function SearchOverlay({setShow,show}:{
                     </div>
 
                 </div>
-                <div className="bg-black fixed bottom-0 left-0 right-0 p-3 px-4">
-                <div className="border-t border-dark/30   w-full text-center p-3 flex justify-between items-center fixed bottom-0 left-0 right-0 z-50 bg-black px-4 md:static rounded-b-xl">
+                <div className="border-t border-dark/30   w-full text-center p-3 flex justify-between items-center fixed bottom-0 left-0 right-0 z-50 bg-black px-4 md:static rounded-b-xl ">
                         <p className="font-semibold cursor-pointer hover:opacity-60 transition-all duration-300 active:opacity-40 underline" onClick={handleReset}>Remove all</p>
                         <Button className="flex-1 max-w-[200px] hover:opacity-60 hover:bg-green-1/50 transition-all duration-300 active:opacity-40 bg-green-1 flex gap-3 text-base" onClick={handleSearch}>
                         <IoSearchOutline className="text-xl"/>
                         Search
                         </Button>  
-                    </div>
                 </div>
-            </motion.div>
+        </motion.div>
     )
 }

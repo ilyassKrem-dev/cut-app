@@ -6,6 +6,7 @@ import SearchBar from "./misc/SearchBar"
 import { motion } from "framer-motion"
 import { Suspense } from "react"
 import AuthProvider from "@/assets/wrappers/AuthWrapper"
+import LoggedInIcons from "@/components/AuthFeatures/loggedInIcons"
 export default function BiMainNav() {
     const [scrolling, setScrolling] = useState(false)
     useEffect(() => {
@@ -33,7 +34,11 @@ export default function BiMainNav() {
                     <SearchBar scrolling={scrolling}/>
                 </Suspense>
                 <AuthProvider>
-                    <ProfileIcon />
+                    <div className="flex justify-between items-center gap-5">
+                        {!scrolling&&<LoggedInIcons />}
+                        <ProfileIcon />
+
+                    </div>
                 </AuthProvider>
             </div>
            

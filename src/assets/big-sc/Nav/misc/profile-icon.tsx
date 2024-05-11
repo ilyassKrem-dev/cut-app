@@ -30,7 +30,7 @@ export default function ProfileIcon() {
     if(session.status === 'loading') {
         return (
         <div className="relative">
-            <div className="bg-black rounded-full p-[0.4rem] px-3 flex gap-4 items-center cursor-pointer hover:opacity-80 transition-all duration-300 border border-dark shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)]" onClick={() => setShow(!show)}>
+            <div className="bg-black rounded-full py-2 px-3 flex gap-4 items-center cursor-pointer  hover:opacity-80 transition-all duration-300 border border-dark shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)]" onClick={() => setShow(!show)}>
                 <div className="flex flex-col gap-[0.1rem]">
                     <div className="h-[0.2rem] w-5 bg-white/70 rounded-full" />
                     <div className="h-[0.2rem] w-5  rounded-full bg-white/70" />
@@ -45,7 +45,7 @@ export default function ProfileIcon() {
     }
     return (
         <div className="relative profile-tabs">
-            <div className="bg-black rounded-full p-[0.4rem] px-3 flex gap-4 items-center cursor-pointer hover:opacity-80 transition-all duration-300 border border-dark shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)]" onClick={() => setShow(!show)}>
+            <div className="bg-black rounded-full  px-3 flex gap-4 items-center cursor-pointer py-2 hover:opacity-80 transition-all duration-300 border border-dark shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)]" onClick={() => setShow(!show)}>
                 <div className="flex flex-col gap-[0.1rem]">
                     <div className="h-[0.2rem] w-5 bg-white/70 rounded-full" />
                     <div className="h-[0.2rem] w-5  rounded-full bg-white/70" />

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "../globals.css";
-
-
-
+import NavBar from "@/components/connection/navBar";
+import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
+import AuthProvider from "@/assets/wrappers/AuthWrapper";
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,10 +19,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
-            <main className="min-h-screen">
-              {children}
-            </main>
-   
+          <NavBar />
+          
+            <AuthProvider>
+              <main>
+                {children}
+              </main>
+            </AuthProvider>
+          <SmMainNav />
+        
       </body>
     </html>
   );

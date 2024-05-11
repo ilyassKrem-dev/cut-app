@@ -11,7 +11,7 @@ export default function SmMainHeader() {
 
     return (
         <>
-            <div className="p-4  bg-black border-b border-white/20 md:hidden">
+            <div className="p-4  bg-black border-b border-white/20 md:hidden fixed top-0 right-0 left-0 z-50">
                 <div className="flex flex-col gap-5" >
                     <div className="flex gap-2 items-center" id="searchBar">
                         <Suspense>
