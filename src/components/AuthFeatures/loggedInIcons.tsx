@@ -6,7 +6,7 @@ import BarberIcons from "./barber/berberIcons";
 export default function LoggedInIcons() {
     const session = useSession() as any
     if(!session?.data?.user) return null
-    console.log(session)
+   
     return (
         <div>
             <div className="flex gap-4 text-xl">

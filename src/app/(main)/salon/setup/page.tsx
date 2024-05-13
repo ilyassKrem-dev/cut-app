@@ -9,15 +9,18 @@ export default  function Page() {
     const {data:session,status} = useSession() as any
     const router = useRouter()
     const searchParams = useSearchParams()
+    
     useEffect(() => {
-        
+        if(session === null) {
+            router.push('/login')
+        }
         if (status === "unauthenticated") {
-            router.push("/")
+            router.push("/login")
         }
         if(!searchParams.get('fiId') || session&& searchParams.get('fiId') !==session.user.id) {
             router.push("/")
         }
-    }, [status, router,searchParams])
+    }, [status, router,searchParams,session])
     if(status === "loading") {
         return (
         <div className="pt-36 md:pt-0 h-screen">
@@ -26,9 +29,11 @@ export default  function Page() {
         )
     }
     
-    if(!session.user.isBarber) {
+    if(session && !session.user.isBarber) {
         return <NoPermission />
     }
     
-    return <Setup userId={session.user?.id}/>
+    return  ( 
+    <>{session.user&&<Setup userId={session.user?.id}/>}</>
+    )
 }

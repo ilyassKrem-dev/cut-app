@@ -4,6 +4,9 @@ import "../globals.css";
 import NavBar from "@/components/connection/navBar";
 import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
 import AuthProvider from "@/assets/wrappers/AuthWrapper";
+import { Suspense } from "react";
+import LoadingAnimation from "@/assets/other/spinner";
+
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,10 +25,13 @@ export default function RootLayout({
           <NavBar />
           
             <AuthProvider>
-              <main>
-                {children}
-              </main>
+              <Suspense fallback={<LoadingAnimation />}>
+                <main className="min-h-screen">
+                  {children}
+                </main>
+              </Suspense>
             </AuthProvider>
+           
           <SmMainNav />
         
       </body>

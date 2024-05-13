@@ -4,19 +4,21 @@ import { ProgressBar, Step } from "react-step-progress-bar";
 
 const MultiStepProgressBar = (
     { nowStep,
-      setNowStep
+      setNowStep,
+      handleClickStep
      }:{
       nowStep:number;
       setNowStep:React.Dispatch<SetStateAction<number>>
+      handleClickStep:(arg:number) => void
     
 }) => {
   var stepPercentage = 0;
   if (nowStep === 1) {
-    stepPercentage = 16;
+    stepPercentage = 5;
   } else if (nowStep === 2) {
-    stepPercentage = 49.5;
+    stepPercentage = 38.5;
   } else if (nowStep === 3) {
-    stepPercentage = 82.5;
+    stepPercentage = 70.5;
   } else if (nowStep === 4) {
     stepPercentage = 100;
   } else {
@@ -27,7 +29,7 @@ const MultiStepProgressBar = (
     <ProgressBar percent={stepPercentage}>
       <Step>
         {({ accomplished, index }) => (
-            <div className="relative group hover:opacity-90 transition-all duration-300" onClick={() => setNowStep(1)}>
+            <div className="relative group hover:opacity-90 transition-all duration-300" onClick={() => handleClickStep(1)}>
               <div
                   className={`indexedStep ${accomplished ? "accomplished" : null}`}
                   
@@ -40,7 +42,7 @@ const MultiStepProgressBar = (
       </Step>
       <Step>
         {({ accomplished, index }) => (
-          <div className="relative group hover:opacity-90 transition-all duration-300" onClick={() => setNowStep(2)}>
+          <div className="relative group hover:opacity-90 transition-all duration-300" onClick={() => handleClickStep(2)}>
           <div
               className={`indexedStep ${accomplished ? "accomplished" : null}`}
               
@@ -53,7 +55,7 @@ const MultiStepProgressBar = (
       </Step>
       <Step>
         {({ accomplished, index }) => (
-          <div className="relative group hover:opacity-90 transition-all duration-300" onClick={() => setNowStep(3)}>
+          <div className="relative group hover:opacity-90 transition-all duration-300" onClick={() => handleClickStep(3)}>
           <div
               className={`indexedStep ${accomplished ? "accomplished" : null}`}
               
@@ -66,7 +68,7 @@ const MultiStepProgressBar = (
       </Step>
       <Step>
         {({ accomplished, index }) => (
-          <div className="relative group hover:opacity-90 transition-all duration-300" onClick={() => setNowStep(4)}>
+          <div className="relative group hover:opacity-90 transition-all duration-300" onClick={() => handleClickStep(4)}>
           <div
               className={`indexedStep ${accomplished ? "accomplished" : null}`}
               

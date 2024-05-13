@@ -7,7 +7,6 @@ export default function SocialsLogin({text}:{
 }) {
     
     const pathname = usePathname()
-    console.log(pathname)
     const handleSocialsLogin = async() => {
         await signIn("google",{ callbackUrl: pathname === "/signup"?"/":pathname })
     }

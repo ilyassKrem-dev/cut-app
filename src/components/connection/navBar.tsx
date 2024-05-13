@@ -9,7 +9,7 @@ export default function NavBar() {
     
     return (
         <header
-        className={`hidden md:flex  bg-black   p-5 flex-col  items-center  fixed left-0 right-0   shadow-[0px_0px_2px_1px_rgba(255,255,255,0.3)]`}>
+        className={`hidden md:flex  bg-black   p-5 flex-col  items-center  fixed left-0 right-0   shadow-[0px_0px_2px_1px_rgba(255,255,255,0.3)] z-40`}>
             <nav className="flex justify-between items-center w-full">
                 <Logo />
                 <AuthProvider>

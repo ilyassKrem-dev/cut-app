@@ -63,7 +63,7 @@ export default function FirstForm({
         validateEmail(e.target.value);
     }
     const handleChangeName = (e:ChangeEvent<HTMLInputElement>) => {
-        if(nameErrorCss) setEmailError("")
+        if(nameErrorCss) setNameErrorCss(false)
         setName(e.target.value)
         valdiateName(e.target.value)
 

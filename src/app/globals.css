@@ -98,3 +98,65 @@ input[data-autocompleted] {
 
 
 
+.MuiPaper-root {
+  background-color: rgb(6, 6, 6) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+}
+.MuiClockNumber-root {
+  color: white !important;
+}
+.MuiClockNumber-root:hover {
+  background-color: black !important;
+  color: white !important;
+}
+.MuiClock-clock  {
+  background-color: rgba(255,255,255,0.1) !important;
+  
+}
+.MuiClock-pin {
+  background-color: white !important;
+}
+.Mui-selected {
+  color: rgba(0,0,0,0.8) !important;
+}
+.MuiClockPointer-root {
+  background-color: white !important;
+}
+.MuiClockPointer-thumb {
+  border-color: white !important;
+  background-color: white !important;
+}
+.MuiButtonBase-root {
+  color: white !important;
+
+}
+.MuiButtonBase-root:hover {
+  background-color: rgb(255,255,255,0.4) !important;
+  color: black !important;
+}
+
+.css-1bedvil-MuiButtonBase-root-MuiIconButton-root-MuiClock-amButton,.css-1bbq4cy-MuiButtonBase-root-MuiIconButton-root-MuiClock-pmButton {
+  background-color: rgb(255,255,255,0.6)  !important;
+  color: black !important;
+}
+.css-1bedvil-MuiButtonBase-root-MuiIconButton-root-MuiClock-amButton:hover {
+  opacity: 0.5 !important;
+}
+.MuiTypography-root {
+  color: white !important;
+}
+@media screen and (max-width:500px) {
+  .MuiBox-root {
+    max-width: 250px !important;
+  }
+}
+@media screen and (max-width:407px) {
+  .MuiBox-root {
+    max-width: 200px !important;
+  }
+}
+@media screen and (max-width:350px) {
+  .MuiBox-root {
+    max-width: 160px !important;
+  }
+}

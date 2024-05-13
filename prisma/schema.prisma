@@ -36,11 +36,13 @@ model Barber {
   city String
   latitude  String
   longitude String
-  defaultPrice Float
+  time String[]
+  openDays String[]
+  holidays Boolean?
+  Prices Int[]
   phoneNumber String?
   comments Comment[]
   images String[]
-  haircuts HaircutPrice[]
   ratings Star[]
   favorites   Favorite[]
   salonName String
@@ -52,15 +54,7 @@ model Favorite {
   userId      String        @db.ObjectId
   barberId    String        @db.ObjectId
 }
-model HaircutPrice {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  name        String   
-  price       Float
-  description String?
-  image String?   
-  barber Barber @relation(fields: [barberId], references: [id])
-  barberId String @db.ObjectId
-}
+
 
 
 model Message {
