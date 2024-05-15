@@ -3,11 +3,12 @@ import { useState } from "react"
 import MultiStepProgressBar from "../other/progressBar"
 import Preferences from "./tabs/preferences"
 import InfoS from "./tabs/infoS"
-import { checkPrefernces,checkInfo } from "../other/checkInfo"
+import { checkPrefernces,checkInfo, checkLocation } from "../other/checkInfo"
+import LocationS from "./tabs/locationS"
 export default function Setup({userId}:{
     userId:string
 }) {  
-    const [nowStep,setNowStep] = useState<number>(2)
+    const [nowStep,setNowStep] = useState<number>(4)
     const [prefernces,setPrefences] = useState({
         value:[20,300],
         time:{open:"",close:""},
@@ -20,9 +21,18 @@ export default function Setup({userId}:{
         name:"",number:"",images:[] as File[]
     })
     const [images,setImages] = useState<string[]>([])
+    const [locationInfo,setLocationInfo] = useState({
+        city:"",address:"",mapLocation:{
+            longitude:-7.5898,
+            latitude:33.5731
+        }
+    })
+    const [mapChanged, setMapChanged] = useState<boolean>(false);
+    
     const handleClickStep = (number:number) => {
         const isNextInfo = checkPrefernces(prefernces)
         const isNextLocation = checkInfo(info)
+        const toComplete = checkLocation(locationInfo,mapChanged)
         if(number === 1) {
             return setNowStep(number)
         }
@@ -34,6 +44,10 @@ export default function Setup({userId}:{
         if(number ===3 ) {
             if(!isNextLocation || !isNextInfo) return
             return setNowStep(3)
+        }
+        if(number ===4 ) {
+            if(!isNextLocation || !isNextInfo || !toComplete) return
+            return setNowStep(4)
         }
         
         
@@ -58,13 +72,25 @@ export default function Setup({userId}:{
                 prefernces={prefernces}
                 setNowStep={setNowStep}/>
                 :
+                nowStep == 2 ?
                 <InfoS 
                 setInfo={setInfo} 
                 info={info}
                 setNowStep={setNowStep}
                 images={images}
                 setImages={setImages}
-                />}
+                />
+                :
+                nowStep == 3 ?
+                <LocationS 
+                setLocationInfo={setLocationInfo} 
+                locationInfo={locationInfo}
+                setNowStep={setNowStep}
+                setMapChanged={setMapChanged}
+                mapChanged={mapChanged}
+                 />
+                :
+                ""}
             </div>
         </div>
     )

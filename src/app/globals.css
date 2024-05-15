@@ -160,3 +160,7 @@ input[data-autocompleted] {
     max-width: 160px !important;
   }
 }
+
+.leaflet-marker-icon {
+  position: relative !important;
+}

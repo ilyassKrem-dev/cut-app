@@ -30,3 +30,18 @@ export const checkInfo = (info:Info) => {
     const checkImages = info.images.length == 3
     return checkImages && checkName && checkphone
 }
+
+interface locationInfo {
+    city:string;
+    address:string;
+    mapLocation:{
+        longitude:number,
+        latitude:number
+    }
+}
+
+export const checkLocation = (locationInfo:locationInfo,changed:boolean) => {
+    const checkCity = locationInfo.city.length !== 0
+    const checkAddress = locationInfo.address.length>=10 && locationInfo.address.length <= 60
+    return checkCity && checkAddress && changed
+}
