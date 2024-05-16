@@ -5,10 +5,18 @@ import Preferences from "./tabs/preferences"
 import InfoS from "./tabs/infoS"
 import { checkPrefernces,checkInfo, checkLocation } from "../other/checkInfo"
 import LocationS from "./tabs/locationS"
-export default function Setup({userId}:{
-    userId:string
+import Completion from "./tabs/completion"
+export default function Setup({userId,userName,userImage}:{
+    userId:string;
+    userName:string;
+    userImage:string;
 }) {  
-    const [nowStep,setNowStep] = useState<number>(4)
+    const userInfo = {
+        id:userId,
+        name:userName,
+        image:userImage
+    }
+    const [nowStep,setNowStep] = useState<number>(1)
     const [prefernces,setPrefences] = useState({
         value:[20,300],
         time:{open:"",close:""},
@@ -54,44 +62,52 @@ export default function Setup({userId}:{
     }
     
     return (
-        <div className="pt-[5rem] md:pt-[11rem] pb-36 md:pb-0">
-            <div className="fixed top-0 left-0  right-0  bg-black border-b border-b-white/10 md:top-[5.532rem] z-50  ">
+        <>
+            <div className="fixed top-0 left-0  right-0  bg-black border-b md:border-y border-b-white/10 md:border-y-white/10 md:top-[5.52rem] z-40  ">
                 <div className="flex pt-2 px-16 items-center pb-7 md:px-36 ">
                     <MultiStepProgressBar 
                     nowStep={nowStep}
                     setNowStep={setNowStep}
                     handleClickStep={handleClickStep}
-                      />
+                    />
                 </div>
-                
             </div>
-            <div>
-                {nowStep===1?
-                <Preferences 
-                setPrefences={setPrefences} 
-                prefernces={prefernces}
-                setNowStep={setNowStep}/>
-                :
-                nowStep == 2 ?
-                <InfoS 
-                setInfo={setInfo} 
-                info={info}
-                setNowStep={setNowStep}
-                images={images}
-                setImages={setImages}
-                />
-                :
-                nowStep == 3 ?
-                <LocationS 
-                setLocationInfo={setLocationInfo} 
-                locationInfo={locationInfo}
-                setNowStep={setNowStep}
-                setMapChanged={setMapChanged}
-                mapChanged={mapChanged}
-                 />
-                :
-                ""}
+            <div className="pt-[5rem] md:pt-[11rem] pb-36 md:pb-0 re">
+                <div>
+                    {nowStep===1?
+                    <Preferences 
+                    setPrefences={setPrefences} 
+                    prefernces={prefernces}
+                    setNowStep={setNowStep}/>
+                    :
+                    nowStep == 2 ?
+                    <InfoS 
+                    setInfo={setInfo} 
+                    info={info}
+                    setNowStep={setNowStep}
+                    images={images}
+                    setImages={setImages}
+                    />
+                    :
+                    nowStep == 3 ?
+                    <LocationS 
+                    setLocationInfo={setLocationInfo} 
+                    locationInfo={locationInfo}
+                    setNowStep={setNowStep}
+                    setMapChanged={setMapChanged}
+                    mapChanged={mapChanged}
+                    />
+                    :
+                    <Completion 
+                    prefernces={prefernces}
+                    info={info}
+                    locationInfo={locationInfo}
+                    images={images}
+                    userInfo={userInfo}
+                    userId={userId}
+                    />}
+                </div>
             </div>
-        </div>
+        </>
     )
 }

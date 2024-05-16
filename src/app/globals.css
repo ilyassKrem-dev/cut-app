@@ -160,7 +160,29 @@ input[data-autocompleted] {
     max-width: 160px !important;
   }
 }
-
+.leaflet-popup-content-wrapper {
+  padding: 0 !important;
+}
 .leaflet-marker-icon {
   position: relative !important;
+}
+.leaflet-popup-close-button{
+  display: none;
+}
+.leaflet-popup-content{
+  max-width: 200px;
+}
+.leaflet-popup-content,.leaflet-popup-content p {
+  margin: 0 !important;
+
+}
+.leaflet-popup {
+  bottom: 14px !important;
+  left: -6rem !important;
+}
+.leaflet-popup-tip-container {
+  display: none;
+}
+.leaflet-container {
+  z-index: 30 !important;
 }

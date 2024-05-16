@@ -34,6 +34,9 @@ export default  function Page() {
     }
     
     return  ( 
-    <>{session.user&&<Setup userId={session.user?.id}/>}</>
+    <>{session&&session.user&&<Setup 
+        userId={session.user?.id} 
+        userName={session.user?.name} 
+        userImage={session.user?.image}/>}</>
     )
 }

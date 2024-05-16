@@ -39,3 +39,15 @@ export const completeProfileInfo = async(
     if(!user) return {success:false}
     return {success:true}
 }
+
+export const fetchUserNumber = async(userId:string) => {
+    const user = await prisma.user.findUnique({
+        where:{
+            id:userId
+        },
+        select:{
+            phoneNumber:true
+        }
+    })
+    return user
+}
