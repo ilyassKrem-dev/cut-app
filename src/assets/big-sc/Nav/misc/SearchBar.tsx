@@ -8,20 +8,24 @@ import { RxCross2 } from "react-icons/rx";
 export default function SearchBar({scrolling}:{
     scrolling:boolean
 }) {
+    const searchParams = useSearchParams()
     
     const [enter,setEnter] = useState(false)
-    const [city,setCity] = useState<string>("")
+    const [city,setCity] = useState<string>(searchParams ?searchParams.get("city") as string :"")
     const [showLocation,setShowLocation] = useState<boolean>(false)
-    const searchParams = useSearchParams()
     const cityString = searchParams.get("city")
     const router = useRouter()
     
     const handleClick = () => {
-        if(!city) return
-        const current = new URLSearchParams(Array.from(searchParams.entries()))
         
+        const current = new URLSearchParams(Array.from(searchParams.entries()))
+        if(city.length == 0) {
+            
+            current.delete("city")
+            return router.push(`/?${current.toString()}`)
+        }
         if(searchParams.get("city")) {
-            current.set('city',city.toLowerCase())
+            current.set('city',city)
             const search = current.toString();
             return router.push(`/?${search}`)
         }
@@ -29,15 +33,17 @@ export default function SearchBar({scrolling}:{
         const search = current.toString();
         if(Array.from(current).length === 0) {
             
-            return router.push(`/?city=${city.toLowerCase()}`)
+            return router.push(`/?city=${city}`)
         }
-        router.push(`/?${search}&city=${city.toLowerCase()}`) 
+        router.push(`/?${search}&city=${city}`) 
     }
     const handleRemove = () => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
         current.delete('city')
         router.push(`/?${current.toString()}`)
     }
+
+
     return (
         <motion.div
         initial={{position:"relative",bottom:"-4rem",width:'70%'}} 
@@ -70,7 +76,7 @@ export default function SearchBar({scrolling}:{
                 {!scrolling&&<p className="text-gray-400 text-xs cursor-pointer">Min price</p>}
             </div>
             <div className="text-xl pr-1 pl-2">
-                {!cityString?
+                {city !== searchParams.get("city") || !city?
                 <div className={`rounded-full bg-green-1 text-black cursor-pointer hover:opacity-50 transition-all duration-300 ${scrolling?"p-3":"p-4"}`} onClick={handleClick}>
                     <IoSearchOutline />
                 </div>

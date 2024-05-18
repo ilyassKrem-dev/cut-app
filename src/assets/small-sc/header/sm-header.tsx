@@ -1,14 +1,18 @@
 "use client"
 
 import { FaFilter } from "react-icons/fa";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Suspense } from "react";
-import Filters from "../../header-assets/filters";
+import Filters from "@/assets/header-assets/filters";
 import SmSearchBar from "./misc/searchBar/sm-searchBar";
+import { useSearchParams } from "next/navigation";
 export default function SmMainHeader() {
     const [show,setShow] = useState<boolean>(false)
     const [numFilters,setNumFilters] = useState(0)
-
+    const searchParams = useSearchParams()
+    useEffect(() => {
+        setNumFilters(getFiltersNums(searchParams))
+    },[])
     return (
         <>
             <div className="p-4  bg-black border-b border-white/20 md:hidden fixed top-0 right-0 left-0 z-50">
@@ -35,4 +39,22 @@ export default function SmMainHeader() {
             setNumFilters={setNumFilters}/>}
         </>
     )
+}
+
+function getFiltersNums(searchParams:any) {
+    
+    let num = 0
+    if(searchParams.get("rating")!=="null") {
+        num++
+    }
+    if(searchParams.get("equ") !== "null") {
+        num++
+    }
+    if(searchParams.get("min") !== "0") {
+        num++
+    }
+    if(searchParams.get("max") !== "0") {
+        num++
+    }
+    return num
 }

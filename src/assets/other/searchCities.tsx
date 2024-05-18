@@ -11,7 +11,7 @@ export default function SearchCities({setUserInput,handleClick,userInput,classNa
     name:string
 }) {
 
-    let maCities = userInput.length !==0 ? cities.filter(city => city.city.toLowerCase().includes(userInput)) : []
+    let maCities = userInput.length !==0 ? cities.filter(city => city.city.toLowerCase().startsWith(userInput)) : []
 
     return (
         <div className="flex-wrap  gap-2 flex  items-center">

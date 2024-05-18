@@ -4,7 +4,6 @@ import { FaMapMarkerAlt,FaPhoneAlt,FaCalendar,FaCheck   } from "react-icons/fa";
 import MapPreview from "./mapPreview";
 import { useEffect, useState } from "react";
 import { fetchUserNumber } from "@/lib/actions/user.action";
-import { RxCross2 } from "react-icons/rx";
 
 interface Prefernces {
     value:number[];

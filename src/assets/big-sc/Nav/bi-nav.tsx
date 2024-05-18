@@ -27,7 +27,7 @@ export default function BiMainNav() {
         initial={{height:'11rem'}}
         animate={{height:scrolling?"6.313rem":"11rem"}}
         transition={{ease:"linear"}}
-        className={`hidden md:flex  bg-black   p-5 flex-col  items-center  fixed left-0 right-0  shadow-[0px_0px_2px_1px_rgba(255,255,255,0.3)]`}>
+        className={`hidden md:flex  bg-black   p-5 flex-col  items-center  fixed left-0 right-0  shadow-[0px_0px_1px_1px_rgba(255,255,255,0.1)] z-40`}>
             <div className="flex justify-between items-center w-full">
                 <Logo />
                 <Suspense>

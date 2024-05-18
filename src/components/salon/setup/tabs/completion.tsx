@@ -54,12 +54,13 @@ export default function Completion({prefernces,info,locationInfo,images,userInfo
         const imagesUploaded:string[] = []
         const check = images.map((img) => isBase64Image(img))
         if(check[0] && check[1] && check[2]) {
-           await Promise.all(images.map(async(img,index) => {
-            const uploadedFile = await startUpload([info.images[index]])
-            if(uploadedFile && uploadedFile[0].url) {
-                imagesUploaded.push(uploadedFile[0].url)
-            }
-           }))
+            await Promise.all(info.images.map(async (img, index) => {
+                const uploadedFile = await startUpload([img]);
+                if (uploadedFile && uploadedFile[0]?.url) {
+                    
+                    imagesUploaded[index] = uploadedFile[0].url;
+                }
+            }));
         }
         
         if(imagesUploaded.length == 3) {

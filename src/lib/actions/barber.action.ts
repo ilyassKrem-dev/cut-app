@@ -56,7 +56,8 @@ export const addBarber = async({userId,info,locationInfo,prefernces}:paramsB) =>
                 Prices:prefernces.value,
                 phoneNumber:"+212"+info.phone,
                 images:info.images,
-                salonName:info.name
+                salonName:info.name,
+                
 
             }
         })
@@ -73,4 +74,93 @@ export const addBarber = async({userId,info,locationInfo,prefernces}:paramsB) =>
     } catch (error:any) {
         throw new Error(`Error set up the salon ${error.message}`)
     }
+}
+
+interface FiltersProps {
+    filters:{
+        city:string | undefined;
+        rating:string | undefined;
+        operat:string | undefined;
+        min:string|undefined;
+        max:string|undefined
+
+    }
+}
+export const allBarbers = async({filters}:FiltersProps) => {
+    const { city, rating, operat, min, max } = filters;
+    const normalizedCity = city ? city : undefined;
+
+    
+    const whereClause: any = {
+        city: normalizedCity,
+    };
+    
+    let barbers = await prisma.barber.findMany(
+        {
+            where:whereClause,
+            select:{
+               
+                id:true,
+                city:true,
+                salonName:true,
+                images:true,
+                latitude:true,
+                longitude:true,
+                time:true,
+                Prices:true,
+                address:true,
+                ratings:true
+            }
+           
+            
+        }
+        
+    )
+    let barbersR = barbers.map(barber => {
+        const barberRa = barber.ratings.length > 0  ? barber.ratings.reduce((sum,rate)=> sum + rate.star,0)/barber.ratings.length : 0
+        return {...barber,ratings:barberRa}
+    })
+    
+    if(min && max) {
+        barbersR = barbersR.filter(barber => {
+            if(min !== "0" && max !== "0") {
+                return barber.Prices[0] >= parseFloat(min) && barber.Prices[1] <= parseFloat(max)
+            }
+            if(min == "0" && max !== "0") {
+                return  barber.Prices[1] <= parseFloat(max)
+            }
+            if(min != "0" && max == "0") {
+                return  barber.Prices[0] >= parseFloat(max)
+            }
+            return barber
+        })
+    }
+    if(rating && operat) {
+        if(rating !== "null") {
+            
+            const filtersD = barbersR.filter(barber => {
+                
+                
+                
+                switch (operat) {
+                    case "same":
+                        
+                        return barber.ratings == Number(rating)
+                        
+                    case "null":
+                        return barber.ratings >= Number(rating)
+                        
+                    case "below":
+                        return barber.ratings < Number(rating)
+                        
+                    case "above":
+                        return barber.ratings > Number(rating)
+                    default:
+                        return false;
+                }
+            })
+            barbersR = filtersD
+        }
+    }
+    return barbersR
 }

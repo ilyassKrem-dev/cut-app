@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion"
-import { SetStateAction, useState } from "react"
+import { SetStateAction, useEffect, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import PriceFilter from "./filters/price"
@@ -10,15 +10,16 @@ export default function Filters({setShow,setNumFilters}:{
     setShow:React.Dispatch<SetStateAction<boolean>>
     setNumFilters:React.Dispatch<SetStateAction<number>>
 }) {
-    const [rating ,setRating] = useState<number | null>(0)
-    const [hover, setHover] = useState<number>(-1);
-    const [version,setVersion] = useState<string>("")
-    
-    const [priceFilter,setPriceFilter] = useState({
-        min:"0",max:"200"
-    })
     const router = useRouter()
     const searchParams = useSearchParams()
+    const [rating ,setRating] = useState<number | null>(searchParams? Number(searchParams.get('rating') === "null" ? 0 : searchParams.get('rating')) : 0)
+    const [hover, setHover] = useState<number>(-1);
+    const [version,setVersion] = useState<string>(searchParams? searchParams.get('equ') == "null"?"":searchParams.get('equ') as string : "")
+    
+    const [priceFilter,setPriceFilter] = useState<{min:string | null;max:string | null}>({
+        min:searchParams? searchParams.get('min') !== null? searchParams.get('min'):"0" : "0" ,max:searchParams? searchParams.get('max') !== null? searchParams.get('max'):"0" : "0"
+    })
+    
     const handleSave = () => {
         let num = 0
         if(rating!==0) {
@@ -27,10 +28,10 @@ export default function Filters({setShow,setNumFilters}:{
         if(version) {
             num++
         }
-        if(parseFloat(priceFilter.min) !== 0) {
+        if(parseFloat(priceFilter.min as string) !== 0) {
             num++
         }
-        if(parseFloat(priceFilter.max) !== 0) {
+        if(parseFloat(priceFilter.max as string) !== 0) {
             num++
         }
         
@@ -67,7 +68,7 @@ export default function Filters({setShow,setNumFilters}:{
     }
     const handleReset = () => {
         setPriceFilter({
-            min:'0',max:'200'
+            min:'0',max:'0'
         })
         setRating(0)
         setHover(-1)
@@ -81,6 +82,7 @@ export default function Filters({setShow,setNumFilters}:{
         const search = current.toString()
         router.push(`/?${search}`)
     }
+    
     return(
         <motion.div
         initial={{y:"100%"}}
@@ -94,7 +96,8 @@ export default function Filters({setShow,setNumFilters}:{
                         
                     </div>
                     <div className="flex flex-col flex-1 overflow-auto gap-6">
-                        <PriceFilter priceFilter={priceFilter} setPriceFilter={setPriceFilter}/>
+                        <PriceFilter 
+                        priceFilter={priceFilter} setPriceFilter={setPriceFilter}/>
                         <StarsFilter 
                         rating={rating} 
                         hover={hover} 

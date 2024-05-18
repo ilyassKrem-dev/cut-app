@@ -4,7 +4,8 @@ import "../globals.css";
 import BiMainNav from "@/assets/big-sc/Nav/bi-nav";
 import SmMainHeader from "@/assets/small-sc/header/sm-header";
 import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
-
+import { Suspense } from "react";
+import Loading from "./loading";
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,12 +22,19 @@ export default function RootLayout({
     <html lang="en">
       <body className={sora.className}>
           <BiMainNav />
-          <SmMainHeader />
+          <Suspense>
+            <SmMainHeader />
+          </Suspense>
+         
             <main>
-              {children}
+              <Suspense fallback={<Loading/>}>
+                {children}
+              </Suspense>
             </main>
-          <SmMainNav />
-        
+          
+          <Suspense>
+            <SmMainNav />
+          </Suspense>
       </body>
     </html>
   );
