@@ -10,14 +10,12 @@ export default function PasswordForm(
     password, 
     setPassword,
     email,
-    setShow
     }
     :
     {
         password:string;
         setPassword:React.Dispatch<SetStateAction<string>>
         email:string;
-        setShow:React.Dispatch<SetStateAction<boolean>>
     }) {
         const [passwordError , setPasswordError] = useState<string>("")
         const [clickedPassword,setClickedpassword] = useState<boolean>(false)
@@ -44,8 +42,8 @@ export default function PasswordForm(
                     await signIn('credentials',{
                         email
                     })
-                    setLoading(false)
-                    return setShow(false)
+                    return setLoading(false)
+                    
                 }
             } catch (error:any) {
                 setLoading(false)

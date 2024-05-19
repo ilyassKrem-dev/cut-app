@@ -51,3 +51,69 @@ export const fetchUserNumber = async(userId:string) => {
     })
     return user
 }
+
+
+export const addFavorite = async(userId:string | null | undefined,barberId:string) => {
+    try {
+        const findFavotire = await prisma.favorite.findFirst({
+            where:{
+                userId:userId as string
+            }
+        })
+        if(findFavotire) {
+           await prisma.favorite.delete({
+                where:{
+                    id:findFavotire.id
+                }
+            })
+            return true
+        }
+        await prisma.user.update(
+            {
+                where:{
+                    id:userId  as string
+                },
+                data:{
+                    favorites:{
+                        create:{
+                            barber:{
+                                connect:{
+                                    id:barberId
+                                }
+                            },
+                        }
+                    }
+                },
+                select:{
+                    favorites:true
+                }
+            }
+        )
+        return true
+    } catch (error:any) {
+        throw new Error(`Failed to add to favorites ${error.message}`)
+    }
+}
+
+export const getUserFavorites = async(userId:string | null | undefined) => {
+    try {
+        const user = await prisma.user.findUnique(
+            {
+                where:{
+                    id:userId as string
+                },
+                select:{
+                    favorites:true
+                }
+            }
+        )
+        if(!user) {
+            throw new Error(`Failed to get  User`)
+        }
+        const UserFav = user.favorites.some(fav=>fav.userId == userId)
+
+        return UserFav
+    } catch (error:any) {
+        throw new Error(`Failed to get  favorites ${error.message}`)
+    }
+}

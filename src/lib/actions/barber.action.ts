@@ -164,3 +164,48 @@ export const allBarbers = async({filters}:FiltersProps) => {
     }
     return barbersR
 }
+
+export const fetchbarberExistence = async(userId:string) => {
+    const babrer = await prisma.barber.findUnique({
+        where:{
+            userId:userId
+        }
+    })
+    if(!babrer) return {success:false}
+    return {success:true}
+}
+
+
+export const getBaberById = async(barberId:string) => {
+    try {
+        const barber = await prisma.barber.findUnique({
+            where:{
+                id:barberId
+            },
+            include:{
+                ratings:true,
+                user:{
+                    select:{
+                        name:true,
+                        image:true,
+                        phoneNumber:true
+                    }
+                },
+                comments:true
+            }
+        })
+        if(!barber) {
+            throw new Error(`No barber found`)
+        }
+        const barberRa = barber.ratings.length > 0  ? barber.ratings.reduce((sum,rate)=> sum + rate.star,0)/barber.ratings.length : 0
+        const newBarber = {...barber,ratings:{
+            people:barber?.ratings.length,
+            rating: barberRa
+
+        }}
+
+        return newBarber
+    } catch (error:any) {
+        throw new Error(`Failed to get the barber ${error.message}`)
+    }
+}

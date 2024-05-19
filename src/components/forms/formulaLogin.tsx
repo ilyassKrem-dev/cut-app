@@ -1,12 +1,13 @@
 "use client"
 import EmailForm from "@/components/forms/emailForm"
-import { SetStateAction, useState } from "react"
+import {  useState } from "react"
 import SocialsLogin from "@/assets/socials/socialsLogin"
 import PasswordForm from "@/components/forms/passwordForm"
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-export default function FormulaLogin({setShow}:{
-    setShow:React.Dispatch<SetStateAction<boolean>>
+export default function FormulaLogin({setShowLogin}:{
+
+    setShowLogin:(prevState: boolean) => void
 }) {
     const [email,setEmail] = useState<string>("")
     const [password,setPassword] = useState<string>("")
@@ -15,10 +16,12 @@ export default function FormulaLogin({setShow}:{
 
     return (
         
-        <div className="flex flex-col  md:bg-black md:w-[50%] md:h-[80%] md:rounded-xl gap-5 md:shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
+        <div className="flex flex-col  md:bg-black md:w-[50%] md:h-[80%] md:rounded-xl gap-5 md:shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)] overflow-auto login-form bg-black rounded-t-xl border-t border-white/20 h-full">
             <div className=" w-full text-center p-3 flex justify-center border-b border-white/20 items-center bg-black rounded-t-3xl md:rounded-t-xl">
                 {!next?
-                <p className="self- text-2xl font-semibold text-light hover:bg-gray-300/40 rounded-full px-2 cursor-pointer transition-all duration- hover:opacity-60 active:opacity-50 active:bg-gray-300/80" onClick={() => setShow(false)}>x</p>
+                <p className="self- text-2xl font-semibold text-light hover:bg-gray-300/40 rounded-full px-2 cursor-pointer transition-all duration- hover:opacity-60 active:opacity-50 active:bg-gray-300/80" onClick={() => {
+                    
+                    setShowLogin(false)}}>x</p>
                 :
                 <IoMdArrowRoundBack className="self- text-3xl font-semibold text-light hover:bg-gray-300/40 rounded-full px-2 cursor-pointer transition-all duration- hover:opacity-60 active:opacity-50 active:bg-gray-300/80" onClick={() => {
                     setPassword("")
@@ -43,7 +46,7 @@ export default function FormulaLogin({setShow}:{
                 password={password} 
                 setPassword={setPassword}
                 email={email}
-                setShow={setShow}
+                
                 />
                 }
             </div>

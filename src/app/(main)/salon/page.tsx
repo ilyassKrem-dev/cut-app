@@ -29,5 +29,8 @@ export default  function Page() {
         return <NoPermission />
     }
     
-    return <Salon userId={session.user?.id}/>
+    return (
+    <>
+        {session&&session.user&&<Salon userId={session.user?.id}/>}
+    </>)
 }

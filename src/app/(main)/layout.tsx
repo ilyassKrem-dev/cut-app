@@ -7,7 +7,7 @@ import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
 import AuthProvider from "@/assets/wrappers/AuthWrapper";
 import { Suspense } from "react";
 import LoadingAnimation from "@/assets/other/spinner";
-
+import { LoginProvider } from "@/assets/wrappers/loginWrapper";
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,14 +23,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
-          <NavBar />
+          
           
             <AuthProvider>
-              <Suspense fallback={<LoadingAnimation />}>
-                <main className="min-h-screen">
-                  {children}
-                </main>
-              </Suspense>
+              <LoginProvider>
+                <NavBar />
+                <Suspense fallback={<LoadingAnimation />}>
+                  <main className="min-h-screen">
+                    {children}
+                  </main>
+                </Suspense>
+              </LoginProvider>
             </AuthProvider>
            
           <SmMainNav />

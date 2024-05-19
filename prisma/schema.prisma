@@ -45,6 +45,7 @@ model Barber {
   comments Comment[]
   images String[]
   ratings Star[]
+  participants Participant[]
   favorites   Favorite[]
   salonName String
 }
@@ -67,21 +68,23 @@ model Message {
   sentAt     DateTime @default(now())
   convoId String @db.ObjectId @unique
   convo Convo @relation(fields: [convoId],references: [id])
-
+  isSeen     Boolean    @default(false)
 }
 
 model Convo {
   id  String   @id @default(auto()) @map("_id") @db.ObjectId
-  participants Participant[]
+  participants Participant?
   messages Message[]
   createdAt DateTime @default(now())
 }
 model Participant {
   id         String     @id @default(auto()) @map("_id") @db.ObjectId
   user       User       @relation(fields: [userId], references: [id])
+  barber       Barber       @relation(fields: [barberId], references: [id])
   convo      Convo      @relation(fields: [convoId], references: [id])
   userId     String     @db.ObjectId
-  convoId    String     @db.ObjectId
+  barberId     String     @db.ObjectId
+  convoId    String     @unique @db.ObjectId
 }
 model Comment {
   id String     @id @default(auto()) @map("_id") @db.ObjectId

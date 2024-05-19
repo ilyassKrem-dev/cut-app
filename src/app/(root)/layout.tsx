@@ -6,6 +6,7 @@ import SmMainHeader from "@/assets/small-sc/header/sm-header";
 import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
 import { Suspense } from "react";
 import Loading from "./loading";
+import { LoginProvider } from "@/assets/wrappers/loginWrapper";
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
+        <LoginProvider>
           <BiMainNav />
           <Suspense>
             <SmMainHeader />
@@ -35,6 +37,7 @@ export default function RootLayout({
           <Suspense>
             <SmMainNav />
           </Suspense>
+        </LoginProvider>
       </body>
     </html>
   );

@@ -15,7 +15,12 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+html {
+  scrollbar-gutter: stable;
+}
+.bg-transparent {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)), linear-gradient(0deg, rgba(255, 255, 255, 0.54) 0%, rgba(255, 255, 255, 0.48) 60%, rgba(255, 255, 255, 0.76) 100%)
+}
 :root:has(.no-doc-scroll) {
   overflow:hidden;
 }
@@ -39,7 +44,7 @@
     border-radius: 50px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
-    background: #ffffff;
+    background: #17171789;
     border-radius: 50px;
   }
   .dark .custom-scrollbar::-webkit-scrollbar-thumb {
@@ -47,7 +52,7 @@
     border-radius: 50px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #a2a2b8;
+    background: #ffffff66;
     border-radius: 50px;
   }
 

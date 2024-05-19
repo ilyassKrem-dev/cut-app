@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { shimmer, toBase64 } from "@/assets/other/shimmer";
 export default function ImageChange({images,barberId}:{
     images:string[];
     barberId:string
@@ -46,6 +47,8 @@ export default function ImageChange({images,barberId}:{
                         alt={`${"salon image"}`}
                         width={600}
                         priority={true}
+                        placeholder="blur"
+                        blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(1280, 1280))}`}
                         height={600}
                         className="h-[310px] sm:h-[200px] rounded-lg opacity-80" 
                         />

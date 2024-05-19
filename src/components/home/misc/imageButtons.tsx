@@ -10,11 +10,11 @@ export default function ImageButtons({userId}:{
 
     return (
         <>
-            {userId?<div className="absolute top-3 right-3 bg-white/90 rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer">
+            {userId?<div className="absolute top-3 right-3 bg-transparent rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer">
                 <CiHeart className="text-xl text-black"/>
             </div>
             :
-            <div className="absolute top-3 right-3 bg-white/90 rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer">
+            <div className="absolute top-3 right-3 bg-transparent rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer">
             <LuShare className="text-xl text-black"/>
         </div>}
         </>
