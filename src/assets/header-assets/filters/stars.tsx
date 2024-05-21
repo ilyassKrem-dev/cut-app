@@ -27,7 +27,7 @@ export default function StarsFilter({
     }
     
     return (
-        <div className="p-4 flex flex-col gap-5 bg-black/50 mx-3 rounded-xl">
+        <div className="p-4 flex flex-col gap-5 bg-black/50 mx-3 rounded-xl border border-white/10">
             <div className="flex flex-col px-2">
                 <h1 className="font-bold text-lg">Stars</h1>
                 <p className="text-sm text-gray-500">Filter by stars</p>

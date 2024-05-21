@@ -3,7 +3,7 @@ import { addFavorite } from "@/lib/actions/user.action"
 import { useState } from "react"
 import { FaRegHeart,FaHeart } from "react-icons/fa"
 import { motion } from "framer-motion"
-
+import { usePathname } from "next/navigation"
 
 
 
@@ -15,6 +15,7 @@ export default function FavoritesIcon({userId,barberId,favState}:{
     const [favoriteState,setFavoriteState] = useState<boolean>(favState)
     const [loading,setLoading] = useState<boolean>(false)
     const {setShowLogin} = useLoginContext()
+    const pathname = usePathname()
     const handleCheck = () => {
         if(!userId) {
             setShowLogin(true)
@@ -38,7 +39,7 @@ export default function FavoritesIcon({userId,barberId,favState}:{
             animate={{scale:loading?"1.2":"1"}}
             transition={{duration:0.2,ease:"easeInOut"}}
             >
-                <FaHeart className="text-2xl "/>
+                <FaHeart className={`${pathname!=="/"?"text-2xl":"text-lg text-black"}`}/>
 
             </motion.div>
             :
@@ -46,12 +47,12 @@ export default function FavoritesIcon({userId,barberId,favState}:{
             animate={{scale:loading?"1.2":"1"}}
             transition={{duration:0.2,ease:"easeInOut"}}
             >
-                <FaRegHeart className="text-2xl "/>
+                <FaRegHeart className={`${pathname!=="/"?"text-2xl":"text-lg text-black"}`}/>
 
             </motion.div>
             }
             
-            <p className="text-xs underline hidden md:block cursor-pointer">Favorite</p>
+            {pathname!=="/"&&<p className="text-xs underline hidden md:block cursor-pointer">Favorite</p>}
         </div>
     )
 }

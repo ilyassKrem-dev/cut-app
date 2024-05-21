@@ -1,6 +1,6 @@
 
 import { motion } from "framer-motion"
-import { SetStateAction, useEffect, useState } from "react"
+import { SetStateAction, useState } from "react"
 
 import { Button } from "@/components/ui/button"
 import PriceFilter from "./filters/price"
@@ -88,8 +88,8 @@ export default function Filters({setShow,setNumFilters}:{
         initial={{y:"100%"}}
         animate={{y:"0"}} 
         transition={{duration:0.5,ease:"easeInOut"}}
-        className="fixed bottom-0 right-0 left-0 bg-[rgb(23,23,23)] h-[98.5%] rounded-t-3xl z-50 text-light md:top-0 md:h-full md:flex md:flex-col md:justify-center md:items-center md:bg-transparent shadow-[0px_0px_6px_2px_rgba(255,255,255,0.2)]">
-                <div className="flex flex-col  md:bg-[rgb(20,20,23)] md:w-[60%] md:h-[80%] md:rounded-xl gap-5 md:shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
+        className="fixed bottom-0 right-0 left-0 bg-black h-[98.5%] rounded-t-3xl z-50 text-light md:top-0 md:h-full md:flex md:flex-col md:justify-center md:items-center md:bg-transparent shadow-[0px_0px_6px_2px_rgba(255,255,255,0.2)]">
+                <div className="flex flex-col  md:bg-black md:w-[60%] md:h-[80%] md:rounded-xl gap-5 md:shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
                     <div className=" w-full text-center p-3 flex justify-center border-b border-white/20 items-center bg-black rounded-t-3xl md:rounded-xl">
                         <p className="self- text-xl font-semibold text-light hover:bg-gray-300/40 rounded-full px-2 cursor-pointer transition-all duration- hover:opacity-60 active:opacity-50 active:bg-gray-300/80" onClick={() => setShow(false)}>x</p>
                         <h2 className="flex-1 font-bold  mr-14">Filters</h2>
@@ -106,7 +106,7 @@ export default function Filters({setShow,setNumFilters}:{
                         setHover={setHover}
                         setVersion={setVersion}/>
                     </div>
-                    <div className="border-t border-dark/30   w-full text-center p-3 flex justify-between items-center fixed bottom-0 left-0 right-0 z-50 bg-black px-4 md:static rounded-b-xl">
+                    <div className="border-t border-dark/30   w-full text-center p-3 flex justify-between items-center fixed bottom-0 left-0 right-0 z-50 bg-black px-4 md:static rounded-b-xl border-t-white/20">
                         <p className="font-semibold cursor-pointer hover:opacity-60 transition-all duration-300 active:opacity-40 underline" onClick={handleReset}>Remove all</p>
                         <Button className="flex-1 max-w-[200px] hover:opacity-60 hover:bg-green-1/50 transition-all duration-300 active:opacity-40 bg-green-1" onClick={handleSave}>Filter</Button>  
                     </div>

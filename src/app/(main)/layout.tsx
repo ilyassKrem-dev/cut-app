@@ -8,6 +8,7 @@ import AuthProvider from "@/assets/wrappers/AuthWrapper";
 import { Suspense } from "react";
 import LoadingAnimation from "@/assets/other/spinner";
 import { LoginProvider } from "@/assets/wrappers/loginWrapper";
+
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

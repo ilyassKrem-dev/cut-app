@@ -40,7 +40,7 @@ export default function PriceFilter({priceFilter,setPriceFilter}:{
     }
     
     return (
-        <div className="p-4 flex flex-col gap-5 bg-black/50 rounded-xl mx-3">
+        <div className="p-4 flex flex-col gap-5 bg-black/50 rounded-xl mx-3 border border-white/10">
             <div className="flex flex-col px-2">
                 <h1 className="font-bold text-lg">Price</h1>
                 <p className="text-sm text-gray-500">Filter by price</p>

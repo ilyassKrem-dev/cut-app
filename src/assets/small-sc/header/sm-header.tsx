@@ -12,7 +12,7 @@ export default function SmMainHeader() {
     const searchParams = useSearchParams()
     useEffect(() => {
         setNumFilters(getFiltersNums(searchParams))
-    },[])
+    },[searchParams])
     return (
         <>
             <div className="p-4  bg-black border-b border-white/20 md:hidden fixed top-0 right-0 left-0 z-50">
@@ -44,16 +44,16 @@ export default function SmMainHeader() {
 function getFiltersNums(searchParams:any) {
     
     let num = 0
-    if(searchParams.get("rating")!=="null") {
+    if(searchParams.get("ratings") != null&&searchParams.get("rating")!=="null")  {
         num++
     }
-    if(searchParams.get("equ") !== "null") {
+    if(searchParams.get("equ") != null&&searchParams.get("equ") !== "null") {
         num++
     }
-    if(searchParams.get("min") !== "0") {
+    if(searchParams.get("min") != null&&searchParams.get("min") !== "0") {
         num++
     }
-    if(searchParams.get("max") !== "0") {
+    if(searchParams.get("max") != null&&searchParams.get("max") !== "0") {
         num++
     }
     return num

@@ -15,7 +15,7 @@ export default function SearchCities({setUserInput,handleClick,userInput,classNa
 
     return (
         <div className="flex-wrap  gap-2 flex  items-center">
-            <Input id={name} type="text" value={userInput} placeholder="City" onChange={(e) => setUserInput(e.target.value)} className={`bg-dark text-white focus-visible:ring-offset-white/20 border-0  ${classNameInput}`}/>
+            <Input id={name} type="text" value={userInput} placeholder="City" onChange={(e) => setUserInput(e.target.value)} className={`bg-black text-white focus-visible:ring-offset-white/20 border border-white/10  ${classNameInput}`}/>
             {maCities.length !==0&&<div className={`p-2 flex flex-col gap-2 w-full ${classNameResult}`}>
                 {maCities.slice(0,5).map((city:any,index:number) => {
                     return (

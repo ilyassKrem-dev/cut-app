@@ -48,7 +48,11 @@ export default function SalonId({barber,userId}:Props) {
     return (
         <div className="sm:px-4 pb-24">
             <div className="md:pt-28">
-                <AboveView userId={userId} barberId={barber?.id}/>
+                <AboveView 
+                userId={userId} 
+                barberId={barber?.id}
+                barberImage={barber?.images[0] as string}
+                barberName={barber?.salonName as string}/>
             </div>
             <div className="flex flex-col gap-10">
                 <div className="">
@@ -110,7 +114,8 @@ export default function SalonId({barber,userId}:Props) {
                     <SalonButtons 
                     barberPrices={barber?.Prices as number[]}
                     barberTimes={barber?.time as string[]}
-                    userId={userId}/>
+                    userId={userId}
+                    />
                 </div>
             </div>
             <div className="border-y my-9 py-5 flex gap-4 items-center border-white/20 mx-4 justify-center">

@@ -4,7 +4,8 @@ import { motion } from "framer-motion"
 import Location from "./search/location"
 import { useSearchParams,useRouter } from "next/navigation"
 import { RxCross2 } from "react-icons/rx";
-
+import { FaMapMarked } from "react-icons/fa";
+import ShowHomeMap from "@/components/home/misc/showHomeMap"
 export default function SearchBar({scrolling}:{
     scrolling:boolean
 }) {
@@ -15,7 +16,7 @@ export default function SearchBar({scrolling}:{
     const [showLocation,setShowLocation] = useState<boolean>(false)
     const cityString = searchParams.get("city")
     const router = useRouter()
-    
+    const [showMap,setShowMap] = useState<boolean>(false)
     const handleClick = () => {
         
         const current = new URLSearchParams(Array.from(searchParams.entries()))
@@ -56,10 +57,13 @@ export default function SearchBar({scrolling}:{
             initial={{top:"-3.2rem"}} 
             animate={{top:scrolling?"-6rem":"-3.2rem"}}
            
-            className={`absolute -top-12 text-white flex items-center justify-center w-full`}>
-                <p className="text-lg font-bold cursor-pointer hover:opacity-65 transition-all duration-300 text-gray-400">Map</p>
-                
+            className={`absolute -top-12 text-white flex items-center justify-center w-full group`} onClick={() => setShowMap(true)}>
+                <p className="text-lg font-bold cursor-pointer hover:opacity-65 transition-all duration-300 "><FaMapMarked className="text-2xl text-white/90"/></p>
+                <div className="absolute text-xs bg-dark rounded-lg  -bottom-8 p-1 hidden group-hover:block text-gray-300 px-2">
+                    <p>Map</p>
+                </div>
             </motion.div>
+            {showMap&&<ShowHomeMap setShowMap={setShowMap}/>}
             <Location
             scrolling={scrolling}
             enter={enter} 

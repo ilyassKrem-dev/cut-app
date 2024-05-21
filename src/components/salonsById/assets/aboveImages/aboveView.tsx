@@ -5,19 +5,21 @@ import { FaArrowLeft  } from "react-icons/fa";
 import Link from "next/link";
 import {  getUserFavorites } from "@/lib/actions/user.action";
 import FavoritesIcon from "./favorites";
-
+import ShareLink from "@/assets/other/shareLink";
 import { useEffect, useState } from "react";
-export default function AboveView({userId,barberId}:{
+export default function AboveView({userId,barberId,barberImage,barberName}:{
     userId:string | null | undefined;
-    barberId:string|undefined
+    barberId:string|undefined,
+    barberImage:string;
+    barberName:string
 }) {
     const [userFav,setUserFav] = useState<boolean|null>(null)
-   
+    const [showShare,setShowShare] = useState<boolean>(false)
     useEffect(() => {
         if(!userId) return setUserFav(false)
         const fetchingUser = async() => {
                 try {
-                    const res = await getUserFavorites(userId)
+                    const res = await getUserFavorites(userId,barberId as string)
                     setUserFav(res)
                     
                 } catch (error) {
@@ -35,10 +37,14 @@ export default function AboveView({userId,barberId}:{
             </Link>
             {userFav!==null?
             <div className="flex justify-end gap-4 ">
-                <div className=" rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer flex items-center gap-2">
+                <div className=" rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer flex items-center gap-2" onClick={() => setShowShare(true)}>
                     <LuShare className="text-xl "/>
                     <p className="text-xs underline hidden md:block cursor-pointer">Share</p>
                 </div>
+                {showShare&&<ShareLink 
+                barberImage={barberImage} 
+                barberName={barberName}
+                setShowShare={setShowShare}/>}
                 <FavoritesIcon 
                 userId={userId}
                 barberId={barberId}

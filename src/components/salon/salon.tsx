@@ -1,12 +1,17 @@
+"use client"
 import { IoMdCut } from "react-icons/io";
 import { Button } from "../ui/button";
 import Link from "next/link";
+
 interface Props {
     userId:string | undefined
 }
 
 export default  function Salon({userId}:Props) {
     const salon = {}
+    const handleCopy = () => {
+        navigator.clipboard.writeText("rer")
+    }
     return (
         <div>
             {salon
@@ -29,7 +34,7 @@ export default  function Salon({userId}:Props) {
                     </Link>
 
                 </div>
-
+                
             </div>
             :
             ""}

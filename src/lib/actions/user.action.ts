@@ -95,7 +95,7 @@ export const addFavorite = async(userId:string | null | undefined,barberId:strin
     }
 }
 
-export const getUserFavorites = async(userId:string | null | undefined) => {
+export const getUserFavorites = async(userId:string | null | undefined,barberId:string) => {
     try {
         const user = await prisma.user.findUnique(
             {
@@ -110,7 +110,7 @@ export const getUserFavorites = async(userId:string | null | undefined) => {
         if(!user) {
             throw new Error(`Failed to get  User`)
         }
-        const UserFav = user.favorites.some(fav=>fav.userId == userId)
+        const UserFav = user.favorites.some(fav=>fav.userId == userId&&fav.barberId==barberId)
 
         return UserFav
     } catch (error:any) {

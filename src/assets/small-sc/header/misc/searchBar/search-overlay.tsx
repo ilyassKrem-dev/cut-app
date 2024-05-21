@@ -53,8 +53,8 @@ export default function SearchOverlay({setShow,show}:{
             animate={{y:"0"}}
             
             transition={{duration:0.3,ease:"easeInOut"}}
-            className="fixed top-0 left-0 bottom-0 right-0 bg-[rgb(20,20,20)] z-50 flex flex-col items-center py-6 px-4 gap-10" >
-                <div className="flex items-center w-full justify-center">
+            className="fixed top-0 left-0 bottom-0 right-0 bg-black z-50 flex flex-col items-center py-6 px-4 gap-10" >
+                <div className="flex items-center w-full justify-center border-b border-b-white/20 pb-5">
                     <div className="text-base font-semibold border-white/20 rounded-full p-[0.2rem] 
                     px-[0.65rem] border-2 bg-black cursor-pointer hover:scale-105 hover:border-black hover:shadow-[0px_0px_6px_2px_rgb(255,255,255)] transition-all duration-300" onClick={() => setShow(false)}>
                         x
@@ -62,7 +62,7 @@ export default function SearchOverlay({setShow,show}:{
                     <h1 className="font-bold text-xl text-light text-center flex-1 mr-8">Search</h1>
                 </div>
                 <div className="flex-1 flex flex-col self-start w-full">
-                    <div className="bg-black/70 rounded-xl p-6 gap-6 flex flex-col">
+                    <div className="bg-black/70 rounded-xl p-6 gap-6 flex flex-col border border-white/20">
                         <h1 className=" text-xl font-semibold">Location</h1>
                         <div>
                             <SearchCities 
@@ -77,7 +77,7 @@ export default function SearchOverlay({setShow,show}:{
                     </div>
 
                 </div>
-                <div className="border-t border-dark/30   w-full text-center p-3 flex justify-between items-center fixed bottom-0 left-0 right-0 z-50 bg-black px-4 md:static rounded-b-xl ">
+                <div className="border-t   w-full text-center p-3 flex justify-between items-center fixed bottom-0 left-0 right-0 z-50 bg-black px-4 md:static rounded-b-xl border-t-white/10">
                         <p className="font-semibold cursor-pointer hover:opacity-60 transition-all duration-300 active:opacity-40 underline" onClick={handleReset}>Remove all</p>
                         <Button className="flex-1 max-w-[200px] hover:opacity-60 hover:bg-green-1/50 transition-all duration-300 active:opacity-40 bg-green-1 flex gap-3 text-base" onClick={handleSearch}>
                         <IoSearchOutline className="text-xl"/>

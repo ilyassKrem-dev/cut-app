@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import ImageButtons from "./misc/imageButtons";
 import { IoMdStar } from "react-icons/io";
 import ImageChange from "./misc/imageChange";
@@ -31,7 +31,12 @@ export default function Home({userId,barbers}:Props) {
                     w-full sm:max-w-[280px] cursor-pointer" key={barber.salonName+index}>
                         <div className="w-full h-full relative">
                             <ImageChange images={barber.images} barberId={barber.id}/>
-                            <ImageButtons userId={userId}/>
+                            <ImageButtons 
+                            userId={userId} 
+                            barberId={barber.id}
+                        
+                            barberImage={barber.images[0]}
+                            barberName={barber.salonName}/>
                         </div>
                         <Link 
                         href={`/salons/${barber.id}`} className="flex justify-between items-start">

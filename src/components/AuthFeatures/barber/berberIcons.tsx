@@ -8,7 +8,7 @@ export default function BarberIcons() {
         <>
             <Link href={"/salon"} className="group relative">
                 <RiHomeLine className=" hover:opacity-60 transition-all duration-300 cursor-pointer"/>
-                <div className="absolute text-xs bg-dark rounded-lg -left-[8.5px] -bottom-8 p-1 hidden group-hover:block text-gray-300">
+                <div className="absolute text-xs bg-dark rounded-lg -left-[8.5px] -bottom-8 p-1 hidden group-hover:block text-gray-300 px-2">
                     <p>salon</p>
                 </div>
             </Link>

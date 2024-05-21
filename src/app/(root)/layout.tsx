@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "../globals.css";
+import 'leaflet/dist/leaflet.css'
 import BiMainNav from "@/assets/big-sc/Nav/bi-nav";
 import SmMainHeader from "@/assets/small-sc/header/sm-header";
 import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
