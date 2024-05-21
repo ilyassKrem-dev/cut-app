@@ -1,6 +1,6 @@
 "use client"
 import { LuShare } from "react-icons/lu";
-import { CiHeart } from "react-icons/ci";
+
 import FavoritesIcon from "@/components/salonsById/assets/aboveImages/favorites";
 import { getUserFavorites } from "@/lib/actions/user.action";
 import { useEffect, useState } from "react";

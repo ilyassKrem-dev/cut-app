@@ -45,7 +45,7 @@ export default function ShowHomeMap({setShowMap}:{
         };
     }, []);
     return (
-        <div className="fixed top-0 right-0 left-0 bottom-0 z-[9999] flex justify-center items-center bg-black/80 blur-md">
+        <div className="fixed top-0 right-0 left-0 bottom-0 z-[9999] flex justify-center items-center bg-black/80 ">
             <div className="w-full map-home-over">
                 {
                         barbers!==null&&<Homemap barbers={barbers}/>
