@@ -37,7 +37,7 @@ export default function FavoritesIcon({userId,barberId,favState}:{
             {favoriteState?
             <motion.div
             animate={{scale:loading?"1.2":"1"}}
-            transition={{duration:0.2,ease:"easeInOut"}}
+            transition={{duration:0.1,ease:"easeInOut"}}
             >
                 <FaHeart className={`${pathname!=="/"?"text-2xl":"text-lg text-black"}`}/>
 
@@ -45,7 +45,7 @@ export default function FavoritesIcon({userId,barberId,favState}:{
             :
             <motion.div
             animate={{scale:loading?"1.2":"1"}}
-            transition={{duration:0.2,ease:"easeInOut"}}
+            transition={{duration:0.1,ease:"easeInOut"}}
             >
                 <FaRegHeart className={`${pathname!=="/"?"text-2xl":"text-lg text-black"}`}/>
 

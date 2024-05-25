@@ -115,6 +115,7 @@ export default function SalonId({barber,userId}:Props) {
                     barberPrices={barber?.Prices as number[]}
                     barberTimes={barber?.time as string[]}
                     userId={userId}
+                    barberId={barber?.id as string}
                     />
                 </div>
             </div>

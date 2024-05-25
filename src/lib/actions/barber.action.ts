@@ -209,3 +209,68 @@ export const getBaberById = async(barberId:string) => {
         throw new Error(`Failed to get the barber ${error.message}`)
     }
 }
+
+
+export const talkToBarber = async(
+    {
+        userId,
+        barberId
+    }:{
+        userId:string;
+        barberId:string
+    }
+) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id:userId
+            },
+            select:{
+                id:true,
+                barberId:true
+            }
+        })
+        if(!user) return {error:"No user Found"}
+        const barber = await prisma.barber.findUnique({
+            where:{
+                id:barberId,
+            }
+        })
+        if(!barber) return {error:"No barber found"}
+        if(user.barberId == barber.id) return {message:"You are the barber"}
+        const convo = await prisma.convo.findFirst({
+            where: {
+              participants: {
+                some: {
+                  userId: userId,
+                  barberId: barberId,
+                },
+              },
+            },
+          });
+        if(convo) return {success:convo.id}
+        const newConvo = await prisma.convo.create({
+            data:{
+                participants:{
+                    create:[
+                        {
+                            user:{
+                                connect:{
+                                    id:user.id
+                                }
+                            },
+                            barber:{
+                                connect:{
+                                    id:barber.id
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        })
+        return {success:newConvo.id}
+    } catch (error:any) {
+        throw new Error(`Failed to continue ${error.message}`)
+    }
+}

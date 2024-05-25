@@ -1,22 +1,27 @@
 "use client"
 import { FaExternalLinkAlt } from "react-icons/fa";
 import SocialMedia from "./socialMedia";
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast"
 export default function ShareLink({barberImage,barberName,setShowShare,barberId}:{
     barberImage:string;
     barberName:string;
     setShowShare:React.Dispatch<SetStateAction<boolean>>;
     barberId?: string;
 }) {
+    const {toast} = useToast()
     const pathname = usePathname()
-    const [copied,setCopied] = useState<boolean>(false)
     const url = `${process.env.NEXT_PUBLIC_API_URL}${barberId||pathname}`
     const handleCopy = () => {
         navigator.clipboard.writeText(url)
-        setCopied(true)
+        toast({
+            
+            title:"Copied",
+            action: <ToastAction altText="Close">Close</ToastAction>,
+        })
     }
     useEffect(() => {
         function handleOutsideClick(event: any) {
@@ -33,13 +38,7 @@ export default function ShareLink({barberImage,barberName,setShowShare,barberId}
           document.body.removeEventListener("click", handleOutsideClick);
         };
     }, []);
-    useEffect(() => {
-        const id = setTimeout(() => {
-                setCopied(false)
-        }, 5000);
-
-        return () => clearTimeout(id)
-    },[copied])
+  
     return (
         <div className="fixed top-0 right-0 bottom-0 left-0 bg-black/10  z-[9999] md:justify-center md:items-center flex justify-end items-end">
             <div className="flex bg-black rounded-t-lg  w-full border-t border-white/10  p-6 h-fit flex-col md:w-[50%] md:h-fit md:border md:rounded-lg justify-between share-overlay">
@@ -69,19 +68,6 @@ export default function ShareLink({barberImage,barberName,setShowShare,barberId}
                     <SocialMedia url={url}/>
                 </div>
             </div>
-            {copied&&
-            <motion.div 
-            initial={{y:"-300%",opacity:"0"}}
-            animate={{y:"0%",opacity:1}}
-            transition={{ease:"linear"}}
-            className="fixed top-10 z-[9999] flex justify-center items-center w-full ">
-                <div className="bg-green-1 p-1 px-3 rounded-full flex items-center gap-2 cursor-pointer group " onClick={() => setCopied(false)}>
-                    <div className="border rounded-full px-2 group-hover:opacity-60 transition-all duration-300 group-hover:bg-white/20">
-                        x
-                    </div>
-                    <p className="cursor-pointer group-hover:opacity-60 transition-all duration-300">Copied</p>
-                </div>
-            </motion.div>}
         </div>
     )
 }

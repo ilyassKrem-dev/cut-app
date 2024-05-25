@@ -73,7 +73,7 @@ model Message {
 
 model Convo {
   id  String   @id @default(auto()) @map("_id") @db.ObjectId
-  participants Participant?
+  participants Participant[]
   messages Message[]
   createdAt DateTime @default(now())
 }
@@ -85,6 +85,8 @@ model Participant {
   userId     String     @db.ObjectId
   barberId     String     @db.ObjectId
   convoId    String     @unique @db.ObjectId
+
+  
 }
 model Comment {
   id String     @id @default(auto()) @map("_id") @db.ObjectId

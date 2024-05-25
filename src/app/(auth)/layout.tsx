@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Sora } from "next/font/google";
 import "../globals.css";
-import NavBar from "@/components/connection/navBar";
+import NavBar from "@/assets/header-assets/navBar";
 import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
 const sora = Sora({ subsets: ["latin"] });
 
@@ -19,9 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={sora.className}>
             <NavBar />
-            <main>
-              {children}
-            </main>
+              <main>
+                {children}
+              </main>
             <SmMainNav />
       </body>
     </html>

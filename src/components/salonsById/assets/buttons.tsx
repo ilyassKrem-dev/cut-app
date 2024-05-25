@@ -2,20 +2,44 @@
 import { Button } from "@/components/ui/button";
 import { useLoginContext } from "@/assets/wrappers/loginWrapper";
 import { useRouter } from "next/navigation";
+import { talkToBarber } from "@/lib/actions/barber.action";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 
-
-export default function SalonButtons({barberPrices,barberTimes,userId}:{
+export default function SalonButtons({barberPrices,barberTimes,userId,barberId}:{
     barberPrices:number[];
     barberTimes:string[]
-    userId:string|null|undefined
+    userId:string|null|undefined;
+    barberId:string
 }) {
-    
+    const {toast} = useToast()
     const {setShowLogin} = useLoginContext()
     const router = useRouter()
-    const handleClick = () => {
+    const handleClick = async() => {
         if(!userId) {
             return setShowLogin(true)
+        }
+        try {
+            const res = await talkToBarber({userId,barberId})
+            if(res?.message) {
+                return toast({
+                    title:"Message",
+                    description:`${res.message}`,
+                    action: <ToastAction altText="Close">Close</ToastAction>,
+                })
+            }
+            if(res.success) {
+                router.push(`/messages/${res.success}`)
+            }
+        } catch (error:any) {
+            console.log(error.message)
+            toast({
+                variant:"destructive",
+                title:"Error",
+                description:`Failed to Continue`,
+                action: <ToastAction altText="Close">Close</ToastAction>,
+            })
         }
     }
     return (
