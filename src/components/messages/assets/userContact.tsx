@@ -3,14 +3,15 @@ import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Skeleton } from "@/components/ui/skeleton"
-export default function UserContact({userId}:{
-    userId:string|null|undefined
+export default function UserContact({userId,tab}:{
+    userId:string|null|undefined;
+    tab:string
 }) {
     const [convos,setConvos] = useState<any |null>(null)
     useEffect(() => {
         const fetchCons = async() => {
             try {
-                const res = await getContacts(userId as string)
+                const res = await getContacts(userId as string,tab)
                 if(res) {
                     return setConvos(res)
                 }
@@ -19,7 +20,8 @@ export default function UserContact({userId}:{
             }
         }
         fetchCons()
-    },[])
+    },[tab])
+    console.log(convos)
     if(!convos) {
         return (
             <>
@@ -38,18 +40,18 @@ export default function UserContact({userId}:{
         )
     }
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col overflow-y-auto custom-scrollbar w-[350px]">
             {convos && convos.length >0 && convos.map((convo:any,index:number) => {
                 return (
                     <Link key={convo.id+index} href={`/messages/${convo.id}`} className="flex gap-2 px-2 cursor-pointer hover:opacity-60 hover:bg-white/10 transition-all duration-300 py-4">
                         <Image 
-                        src={convo.participants[0].barber.images[0]} 
-                        alt={`${convo.participants[0].barber.salonName} image`}
+                        src={tab == "user"?convo.participants[0].barber.images[0]:convo.participants[0].user.image} 
+                        alt={`${tab == "user"?convo.participants[0].barber.salonName:convo.participants[0].user.name} image`}
                         width={500}
                         height={500}
                         className="rounded-full w-[40px] object-cover h-[40px]" />
                         <div className="flex flex-col">
-                            <p className="font-semibold cursor-pointer">{convo.participants[0].barber.salonName}</p>
+                            <p className="font-semibold cursor-pointer">{tab == "user"?convo.participants[0].barber.salonName:convo.participants[0].user.name}</p>
                         </div>
                     </Link>
                 )

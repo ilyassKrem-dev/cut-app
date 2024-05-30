@@ -10,7 +10,7 @@ export default function LoggedInIcons() {
     return (
         <div>
             <div className="flex gap-4 text-xl">
-                <Link href={"/salon"} className="group relative">
+                <Link href={"/messages"} className="group relative">
                     <LuMessagesSquare className=" hover:opacity-60 transition-all duration-300 cursor-pointer"/>
                     <div className="absolute text-xs bg-dark rounded-lg -left-[25px] -bottom-8 p-1 hidden group-hover:block text-gray-300 px-2">
                         <p>messages</p>

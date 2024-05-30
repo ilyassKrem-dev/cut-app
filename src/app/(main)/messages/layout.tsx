@@ -24,24 +24,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
-          
-          
             <AuthProvider>
                 <LoginProvider>
                   <NavBar />
                   <Suspense fallback={<LoadingAnimation />}>
 
-                    <main className="min-h-screen flex md:pt-[5.4rem]">
+                    <main className="h-screen flex md:pt-[5.4rem]">
                       <SideBar />
                       {children}
                     </main>
                     <Toaster />
                   </Suspense>
                 </LoginProvider>
+                <SmMainNav />
             </AuthProvider>
-           
-          <SmMainNav />
-        
+          
       </body>
     </html>
   );
