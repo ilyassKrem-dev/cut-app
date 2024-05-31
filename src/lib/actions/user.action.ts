@@ -117,3 +117,30 @@ export const getUserFavorites = async(userId:string | null | undefined,barberId:
         throw new Error(`Failed to get  favorites ${error.message}`)
     }
 }
+
+export const fetchUser = async(userId:string) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id:userId
+            },
+            select:{
+                comments:true,
+                id:true,
+                isBarber:true,
+                name:true,
+                image:true,
+                email:true,
+                emailVerified:true,
+                phoneNumber:true,
+                createdAt:true,
+                completed:true
+
+            }
+        })
+        if(!user) return {message:"Error getting profile"}
+        return user
+    } catch (error:any) {
+        throw Error(`Failed to get Profile ${error.message}`)
+    }
+}

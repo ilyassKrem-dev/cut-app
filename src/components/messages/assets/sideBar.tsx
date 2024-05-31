@@ -4,11 +4,13 @@ import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import UserContact from "./userContact"
 import { Skeleton } from "@/components/ui/skeleton"
-import { useRouter } from "next/navigation"
+import { useRouter,usePathname } from "next/navigation"
+
 export default function SideBar() {
     const {data:session,status} = useSession()
     const [tab,setTab] = useState<string>("user")
     const router = useRouter()
+    const pathname = usePathname()
     const handleClick = (tab:string) => {
         setTab(tab)
     }
@@ -18,15 +20,15 @@ export default function SideBar() {
         router.push("/")
     },[session,status])
     return (
-        <div className="flex-col border-r border-white/10   py-6 w-[350px] hidden md:flex">
-            <h1 className=" px-4 text-lg border-b border-white/10 pb-4">Messages</h1>
+        <div className={`flex-col border-r border-white/10   py-6 w-full md:w-[350px]   ${pathname !== "/messages"? "hidden md:flex":"flex"}`}>
+            <h1 className=" px-4 text-lg border-b border-white/10 pb-4 text-center md:text-start">Messages</h1>
             {status=="loading"?
             <>
                 
                 <Skeleton className="h-[48px] rounded-none bg-white/20"/>
                 {[...Array(2)].map((_,index) => {
                     return (
-                        <div key={index} className="flex gap-2 px-2 cursor-pointer hover:opacity-60 hover:bg-white/10 transition-all duration-300 py-4">
+                        <div key={index} className="flex gap-2 px-2 cursor-pointer hover:opacity-60 hover:bg-white/10 transition-all duration-300 py-4 w-full md:w-[350px]">
                             <Skeleton 
                             className="rounded-full w-[40px] h-[40px] bg-white/10" />
                             <div className="flex flex-col w-full mt-1">

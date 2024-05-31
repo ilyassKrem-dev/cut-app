@@ -6,11 +6,11 @@ import Login from "./profile/login"
 import { useSession } from "next-auth/react"
 import { signOut } from "next-auth/react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname,useRouter } from "next/navigation"
 export default function ProfileIcon() {
     const [show,setShow] = useState<boolean>(false)
     const session = useSession()
-
+    const router = useRouter()
     const pathname = usePathname()
     useEffect(() => {
         function handleOutsideClick(event: any) {
@@ -43,6 +43,15 @@ export default function ProfileIcon() {
         </div>)
 
     }
+
+    const handleSignOut = () => {
+        if(!/^\/salons\/[^\/]+$/.test(pathname)) {
+            signOut({redirect:false}).then(() => router.push("/"))
+
+        }else {
+            signOut()
+        }
+    }
     return (
         <div className="relative profile-tabs">
             <div className="bg-black rounded-full  px-3 flex gap-4 items-center cursor-pointer py-2 hover:opacity-80 transition-all duration-300 border border-dark shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)]" onClick={() => setShow(!show)}>
@@ -67,12 +76,12 @@ export default function ProfileIcon() {
                         {pathname === "/login"||pathname==="/signup"
                         ? 
                         <>
-                            <div  className="p-3  hover:bg-white/30 cursor-pointer group text-sm rounded-t-xl">
+                            <Link href={'/login'} className="p-3  hover:bg-white/30 cursor-pointer group text-sm rounded-t-xl">
                                 Login
-                            </div>
-                            <div  className="p-3  hover:bg-white/30 cursor-pointer group text-sm">
+                            </Link>
+                            <Link href={'/signup'} className="p-3  hover:bg-white/30 cursor-pointer group text-sm">
                                 Sign Up
-                            </div>
+                            </Link>
                         </>
                         :
                         <>
@@ -88,12 +97,18 @@ export default function ProfileIcon() {
                     </div>
                 </div>
                 :
-                <div className="absolute -bottom-24 36 bg-black shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)] rounded-xl w-[200px] right-0">
-                    <div className="flex flex-col  p-3 border-b border-white/40 hover:bg-white/30 rounded-t-xl cursor-pointer group text-sm transition-all duration-300" >
-                       Profile
-                    </div>
+                <div className="absolute -bottom-36 bg-black shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)] rounded-xl w-[200px] right-0">
                     
-                    <div className="flex flex-col  p-3 hover:bg-accent rounded-b-xl cursor-pointer group text-sm text-accent hover:text-white transition-all duration-300" onClick={() => signOut()}>
+                    <div className="flex flex-col   border-b border-white/40">
+                        <div className="flex flex-col  p-3 hover:bg-white/30 rounded-t-xl cursor-pointer group text-sm transition-all duration-300" >
+                        Profile
+                        </div>
+                        <div className="flex flex-col  p-3 hover:bg-white/30 cursor-pointer group text-sm transition-all duration-300" >
+                        History
+                        </div>
+                    </div>
+                        
+                    <div className="flex flex-col  p-3 hover:bg-accent rounded-b-xl cursor-pointer group text-sm text-accent hover:text-white transition-all duration-300" onClick={handleSignOut}>
                         SignOut
                     </div>
                 </div>}

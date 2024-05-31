@@ -27,7 +27,7 @@ export default function UserContact({userId,tab}:{
             <>
                 {[...Array(2)].map((_,index) => {
                         return (
-                            <div key={index} className="flex gap-2 px-2 cursor-pointer hover:opacity-60 hover:bg-white/10 transition-all duration-300 py-4">
+                            <div key={index} className="flex gap-2 px-2 cursor-pointer hover:opacity-60 hover:bg-white/10 transition-all duration-300 py-4 md:w-[350px] w-full">
                                 <Skeleton 
                                 className="rounded-full w-[40px] h-[40px] bg-white/10" />
                                 <div className="flex flex-col w-full mt-1">
@@ -40,7 +40,7 @@ export default function UserContact({userId,tab}:{
         )
     }
     return (
-        <div className="flex flex-col overflow-y-auto custom-scrollbar w-[350px]">
+        <div className="flex flex-col overflow-y-auto custom-scrollbar md:w-[350px] w-full">
             {convos && convos.length >0 && convos.map((convo:any,index:number) => {
                 return (
                     <Link key={convo.id+index} href={`/messages/${convo.id}`} className="flex gap-2 px-2 cursor-pointer hover:opacity-60 hover:bg-white/10 transition-all duration-300 py-4">

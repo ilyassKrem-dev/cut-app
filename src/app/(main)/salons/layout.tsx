@@ -12,7 +12,7 @@ import { Toaster } from "@/components/ui/toaster";
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BarberCut",
+  title: "Salons",
   description: "BerberCut for getting in call with barbers online",
 };
 

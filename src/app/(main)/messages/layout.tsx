@@ -12,7 +12,7 @@ import { LoginProvider } from "@/assets/wrappers/loginWrapper";
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "BarberCut",
+  title: "Messages",
   description: "BerberCut for getting in call with barbers online",
 };
 

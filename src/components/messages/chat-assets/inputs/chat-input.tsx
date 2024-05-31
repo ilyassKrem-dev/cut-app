@@ -2,8 +2,9 @@
 import { IoMdSend } from "react-icons/io";
 import { Textarea } from "@/components/ui/textarea";
 import { ChangeEvent, useState,useRef, useEffect } from "react";
-import { FaRegFaceSmile } from "react-icons/fa6";
+
 import axios from "axios";
+import EmotesToogle from "./emotes";
 export default function ChatInput({userId,convoId,barberId,isBarber}:{
     userId:string;
     convoId:string;
@@ -34,7 +35,7 @@ export default function ChatInput({userId,convoId,barberId,isBarber}:{
                     convoId:convoId,
                 }
             )
-            if(res) setUserInput("")
+            setUserInput("")
         } catch (error) {
             console.log(error)
         }
@@ -43,12 +44,11 @@ export default function ChatInput({userId,convoId,barberId,isBarber}:{
         <div className="border-t border-t-white/10  pb-24 pt-4 px-2  md:p-4">
             <div  className="flex items-center justify-center ">
                 <div className="flex max-w-[650px] justify-center items-end w-full gap-1 bg-black border px-3 rounded-xl  border-white/10 h-fit">
-                    <div className={`text-2xl mb-2 cursor-pointer  hover:opacity-60 transition-all duration-300 text-white/70`}>
-                        <FaRegFaceSmile />
-                    </div>
+                    <EmotesToogle setUserInput={setUserInput}/>
                     <div className="flex-1 relative h-fit ">
                         <Textarea 
                         ref={textAreaRef}
+                        id="textArea-input"
                         placeholder="Aa.."
                         onKeyDown={(e) => {
                             

@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { getConvo } from "@/lib/actions/messages.action"
 
 import TopChat from "./chat-assets/topChat";
@@ -8,6 +8,7 @@ import TopChat from "./chat-assets/topChat";
 import ChatInput from "./chat-assets/inputs/chat-input";
 import Pusher from "pusher-js";
 import Messages from "./chat-assets/messages";
+import LoadingAnimation from "@/assets/other/spinner";
 interface Barber {
     salonName:string;
     images:string[];
@@ -33,7 +34,7 @@ export default function Chat({convoId,userId,isBarber}:{
     isBarber:boolean
 }) {
     const [convo,setConvo] = useState<Convo|null>(null)
-   
+    const messagesEndRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const fetchConvo = async() => {
             try {
@@ -45,7 +46,6 @@ export default function Chat({convoId,userId,isBarber}:{
         }
         fetchConvo()
     },[])
-    console.log(convo)
     const handleNewMessage = useCallback((data: any) => {
         setConvo((prevConvo) => {
             if (!prevConvo) return prevConvo;
@@ -69,7 +69,18 @@ export default function Chat({convoId,userId,isBarber}:{
         };
         
     }, [convoId, handleNewMessage]);
-    
+    console.log(messagesEndRef)
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+        }, [convo?.messages]);
+
+    if(convo == null) {
+        return (
+            <div className=" justify-center items-center w-full flex-col h-screen" >
+                <LoadingAnimation />
+            </div>
+        )
+    }
     return (
         <div className="w-full h-full">
             {convo&&
@@ -81,6 +92,7 @@ export default function Chat({convoId,userId,isBarber}:{
                     userImage={isBarber ? convo.participants.barber.images[0]:convo.participants.user.image}
                     otherUserImage={!isBarber ? convo.participants.barber.images[0]:convo.participants.user.image}
                     userId={isBarber ? convo.participants.barber.id:userId}/>
+                    <div ref={messagesEndRef} />
                 </div>
                 <ChatInput barberId={convo.participants.barber.id as string} userId={convo.participants.user.id as string} convoId={convoId as string} isBarber={isBarber}/>
             </div>}

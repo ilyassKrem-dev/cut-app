@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { VscEye ,VscEyeClosed } from "react-icons/vsc";
 import axios from "axios";
 import { signIn } from "next-auth/react";
+import { useSearchParams,useRouter,usePathname } from "next/navigation";
 export default function PasswordForm(
     {
     password, 
@@ -21,6 +22,9 @@ export default function PasswordForm(
         const [clickedPassword,setClickedpassword] = useState<boolean>(false)
         const [loading,setLoading] = useState<boolean>(false)
         const [showPassword,setShowPassword] = useState<boolean>(false)
+        const router = useRouter()
+        const searchParams = useSearchParams()
+        const pathname = usePathname()
         const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
             if(passwordError) setPasswordError("")
             setPassword(e.target.value)
@@ -37,8 +41,22 @@ export default function PasswordForm(
                     setLoading(false)
                     return setPasswordError(res.data.message)
                 }
-            
+                
                 if(res.data.success) {
+                    if(searchParams.get("next")) {
+                        await signIn('credentials',{
+                            redirect:false,
+                            email
+                        })
+                        return router.push(`/${searchParams.get("next")}`)
+                    }
+                    else if (pathname == "/login") {
+                        await signIn('credentials',{
+                            redirect:false,
+                            email
+                        })
+                        return router.push(`/`)
+                    }
                     await signIn('credentials',{
                         email
                     })
