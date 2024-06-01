@@ -29,7 +29,7 @@ export default function RootLayout({
                   <NavBar />
                   <Suspense fallback={<LoadingAnimation />}>
 
-                    <main className="h-screen flex">
+                    <main className="h-screen">
                       {children}
                     </main>
                     <Toaster />

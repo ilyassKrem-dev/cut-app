@@ -97,15 +97,12 @@ export default function ProfileIcon() {
                     </div>
                 </div>
                 :
-                <div className="absolute -bottom-36 bg-black shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)] rounded-xl w-[200px] right-0">
+                <div className="absolute -bottom-24 bg-black shadow-[0px_0px_1px_0.5px_rgba(255,255,255,0.2)] rounded-xl w-[200px] right-0">
                     
                     <div className="flex flex-col   border-b border-white/40">
-                        <div className="flex flex-col  p-3 hover:bg-white/30 rounded-t-xl cursor-pointer group text-sm transition-all duration-300" >
+                        <Link href={"/profile"} className="flex flex-col  p-3 hover:bg-white/30 rounded-t-xl cursor-pointer group text-sm transition-all duration-300" >
                         Profile
-                        </div>
-                        <div className="flex flex-col  p-3 hover:bg-white/30 cursor-pointer group text-sm transition-all duration-300" >
-                        History
-                        </div>
+                        </Link>
                     </div>
                         
                     <div className="flex flex-col  p-3 hover:bg-accent rounded-b-xl cursor-pointer group text-sm text-accent hover:text-white transition-all duration-300" onClick={handleSignOut}>

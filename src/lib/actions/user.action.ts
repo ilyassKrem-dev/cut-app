@@ -131,10 +131,10 @@ export const fetchUser = async(userId:string) => {
                 name:true,
                 image:true,
                 email:true,
-                emailVerified:true,
                 phoneNumber:true,
                 createdAt:true,
-                completed:true
+                completed:true,
+                barberId:true
 
             }
         })
