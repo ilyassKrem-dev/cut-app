@@ -25,6 +25,7 @@ export default function ProfileTop({profileImage,profileName,profileBarber,profi
                     src={profileImage} 
                     alt={`${profileName} image`} 
                     width={500}
+                    priority
                     height={500}
                     className="w-[200px] h-[200px] rounded-lg object-cover"/>
                 </div>
@@ -44,7 +45,7 @@ export default function ProfileTop({profileImage,profileName,profileBarber,profi
                                 </div>}
                                 
                             </div>
-                            {!profileBarber.isBarber&&
+                            {profileBarber.isBarber&&
                             <Link className="flex gap-2 text-white/60 underline cursor-pointer hover:opacity-60 transition-all duration-300 text-sm md:text-base items-center   " href={`salons/${profileBarber.barberId}`}>
                                 <FaExternalLinkAlt/>
                                 <p className="cursor-pointer">Salon</p>
