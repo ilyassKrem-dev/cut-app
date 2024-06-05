@@ -21,7 +21,6 @@ export default function UserContact({userId,tab}:{
         }
         fetchCons()
     },[tab])
-    console.log(convos)
     if(!convos) {
         return (
             <>
