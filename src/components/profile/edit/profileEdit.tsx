@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { FaCloudDownloadAlt } from "react-icons/fa";
 import ProfileEditNameEmail from "./nameEmail";
@@ -8,7 +9,7 @@ import ProfileNumber from "./phoneInput";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { useUploadThing } from "@/lib/uploadthing";
-import { useRouter } from "next/navigation";
+
 import { isBase64Image } from "@/lib/utils";
 import LoadingAnimation from "@/assets/other/spinner";
 import { updateUser } from "@/lib/actions/user.action";
@@ -34,7 +35,6 @@ interface UserInfo {
 export default function ProfileEdit({userDetails}:{
     userDetails:UserProps
 }) {
-
     const [userInfo,setUserInfo] = useState<UserInfo>({
         name:userDetails.name,email:userDetails.email,number:userDetails.number,image:{
             file:[],
@@ -46,7 +46,6 @@ export default function ProfileEdit({userDetails}:{
     const {startUpload} = useUploadThing("media")
     const [errorForm,setErrorForm] = useState<boolean>(false)
     const {toast} =  useToast()
-    const router = useRouter()
     const checkChange = userDetails.image == userInfo.image.url && userDetails.name == userInfo.name && userDetails.email == userInfo.email && userDetails.number == userInfo.number
     const handleImageChange = (e:ChangeEvent<HTMLInputElement>) => {
         const fileReader = new FileReader()
@@ -99,17 +98,11 @@ export default function ProfileEdit({userDetails}:{
                 }
             )
             if(res) {
-                
-                setLoading(false)
-                userDetails.name = res.name
-                userDetails.email = res.email
-                userDetails.image = res.image as string
-                userDetails.number = res.phoneNumber ? res.phoneNumber : ""
                 toast({
                     title:"Updated",
                     description:`Your info has been updated`
                 })
-                router.push('/profile')
+                window.location.href = "/profile"
             }
         } catch (error:any) {
             setLoading(false)
@@ -190,7 +183,7 @@ export default function ProfileEdit({userDetails}:{
                     setShow={setShow}
                     userInfo={userInfo}
                     userDetails={userDetails}
-                    setUserInfo={setUserInfo}
+                    
                     />
                 </div>
             </div>}

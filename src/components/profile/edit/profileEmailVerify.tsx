@@ -4,7 +4,6 @@ import LoadingAnimation from "@/assets/other/spinner";
 
 import axios from "axios";
 import VerificationInput from "@/assets/other/verify-Input";
-import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { isBase64Image } from "@/lib/utils";
 import { useUploadThing } from "@/lib/uploadthing";
@@ -30,7 +29,6 @@ interface Props {
         number:string,
         image:string
     };
-    setUserInfo:React.Dispatch<SetStateAction<UserInfoProps>>
 }
 export default function ProfileEmailChange(
     {
@@ -38,7 +36,6 @@ export default function ProfileEmailChange(
     setShow,
     userInfo,
     userDetails,
-    setUserInfo
     }
     :Props) {
         const [code,setCode] = useState<string>(() =>
@@ -51,7 +48,6 @@ export default function ProfileEmailChange(
         const [time,setTime] = useState<string>("")
         const [loading,setLoading] = useState<boolean>(false)
         const {startUpload} =  useUploadThing("media")
-        const router = useRouter()
         useEffect(() => {
             const id = setInterval(() => {
                 setCode((Math.random()*(995489-100000)+100000).toFixed().toString())
@@ -103,21 +99,12 @@ export default function ProfileEmailChange(
                         }
                     )
                     if(res) {
-                        
-                        setLoading(false)
-                        userDetails.name = res.name
-                        userDetails.email = res.email
-                        userDetails.image = res.image as string
-                        userDetails.number = res.phoneNumber ? res.phoneNumber.split("212")[1] : ""
                         toast({
                             title:"Updated",
                             description:`Your info has been updated`
                         })
-                        setUserInfo(prev => {
-                            return {...prev,image:{...prev.image,url:res.image as string,file:[]}}
-                        })
                         setShow(false)
-                        router.push('/profile')
+                        window.location.href = "/profile"
                     }
                 } catch (error:any) {
                     setLoading(false)

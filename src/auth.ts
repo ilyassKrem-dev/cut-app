@@ -4,6 +4,7 @@ import Credentials from "next-auth/providers/credentials"
 import Google from "next-auth/providers/google"
 import { PrismaClient } from "@prisma/client/edge"
 import bcrypt from "bcryptjs"
+
 const prisma = new PrismaClient()
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -71,6 +72,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                   
               })
               session.user.id = user?.id as string
+              session.user.name = user?.name
+              session.user.email = user?.email as string
+              session.user.image = user?.image
               //@ts-ignore
               session.user.isBarber = user?.isBarber;
               //@ts-ignore
@@ -79,7 +83,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           
           return session
       },
-      
+      async jwt({token,user,trigger,session}) {
+        if(trigger =="update") {
+          return {...token,...session.user}
+        }
+        return {...token,...user}
+      }
     }
   })
 
