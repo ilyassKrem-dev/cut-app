@@ -27,7 +27,7 @@ export default function Profile({userId}:{
         const getuser = async() => {
             try {
                 const res = await fetchUser(userId)
-                console.log(res)
+                
                 //@ts-ignore
                 if(res) {
                     setProfile(res as any)

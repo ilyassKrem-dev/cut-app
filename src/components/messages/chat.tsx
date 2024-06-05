@@ -69,7 +69,7 @@ export default function Chat({convoId,userId,isBarber}:{
         };
         
     }, [convoId, handleNewMessage]);
-    console.log(messagesEndRef)
+
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
         }, [convo?.messages]);

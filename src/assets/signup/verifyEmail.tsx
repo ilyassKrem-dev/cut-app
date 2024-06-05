@@ -1,7 +1,7 @@
 import {  useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingAnimation from "@/assets/other/spinner";
-import { motion } from "framer-motion";
+
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import VerificationInput from "../other/verify-Input";

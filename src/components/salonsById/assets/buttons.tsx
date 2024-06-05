@@ -33,7 +33,7 @@ export default function SalonButtons({barberPrices,barberTimes,userId,barberId}:
                 router.push(`/messages/${res.success}`)
             }
         } catch (error:any) {
-            console.log(error.message)
+            
             toast({
                 variant:"destructive",
                 title:"Error",

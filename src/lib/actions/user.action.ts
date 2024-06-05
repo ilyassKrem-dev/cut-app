@@ -144,3 +144,52 @@ export const fetchUser = async(userId:string) => {
         throw Error(`Failed to get Profile ${error.message}`)
     }
 }
+
+export const updateUser = async({userId,name,email,image,number}:{
+    userId:string;
+    name:string;
+    email:string;
+    image:string;
+    number:string
+}) => {
+
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id:userId
+            }
+        })
+        if(!user) throw new Error(`No user found`)
+        if(!number) {
+            const updatedUser = await prisma.user.update({
+                where:{
+                    id:user.id
+                },
+                data:{
+                    name:name,
+                    email:email,
+                    image:image,
+                    completed:false
+                }
+        
+            })
+            return updatedUser
+        } 
+        const updatedUser = await prisma.user.update({
+            where:{
+                id:user.id
+            },
+            data:{
+                name:name,
+                email:email,
+                image:image,
+                phoneNumber:`+212${number}`,
+                completed:true
+            },
+            
+        })
+        return updatedUser
+    } catch (error:any) {
+        throw new Error(`Failed to update profile ${error.message}`)
+    }
+}

@@ -11,17 +11,17 @@ interface Props {
     number:string;
     setInfo:React.Dispatch<SetStateAction<Info>>
 }
-const NameSchema = z.string().length(9)
+const PhoneSchema = z.string().length(9)
 export default function PhoneS({number,setInfo}:Props) {
     const [phoneErrorCss,setPhoneErrorCss] = useState<boolean>(false)
 
-    const valdiateName = (value:string) => {
+    const valdiatePhone = (value:string) => {
         if (value.trim().length === 0) {
             setPhoneErrorCss(false); 
         } else {
             try {
             
-                NameSchema.parse(value);
+                PhoneSchema.parse(value);
                 
                 setPhoneErrorCss(false);
             } catch (error) {
@@ -30,7 +30,7 @@ export default function PhoneS({number,setInfo}:Props) {
             }
         }
     }
-    const handleChangeName = (e:ChangeEvent<HTMLInputElement>) => {
+    const handleChangePhone = (e:ChangeEvent<HTMLInputElement>) => {
 
         if(phoneErrorCss) setPhoneErrorCss(false)
         const input = e.target.value
@@ -38,7 +38,7 @@ export default function PhoneS({number,setInfo}:Props) {
             setInfo((prev:Info) => {
                 return {...prev,number:input}
             })
-            valdiateName(input)
+            valdiatePhone(input)
         } 
         
         
@@ -54,9 +54,9 @@ export default function PhoneS({number,setInfo}:Props) {
                 <div className="flex flex-col gap-2 relative flex-1 max-w-[350px]">
                     <input
                         autoComplete="on"
-                        name="name" 
+                        name="phone" 
                         value={number} 
-                        onChange={handleChangeName} 
+                        onChange={handleChangePhone} 
                         type="text"  
                         className={`w-full h-10 text-white rounded-lg focus:outline-none px-3 bg-darker focus:border-2 focus:bg-darker  ${phoneErrorCss ?"border-accent":""} pl-12`} 
                         placeholder="Number"/>
