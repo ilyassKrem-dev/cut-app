@@ -37,7 +37,7 @@ export default function ChatInput({userId,convoId,barberId,isBarber}:{
             )
             setUserInput("")
         } catch (error) {
-            console.log(error)
+            console.log("Error sending message")
         }
     }
     return (

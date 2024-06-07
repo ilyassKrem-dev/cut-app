@@ -41,7 +41,7 @@ export default function Chat({convoId,userId,isBarber}:{
                 const res = await getConvo(convoId as string,userId as string)
                 if(res) setConvo(res as any)
             } catch (error) {
-                console.log(error)
+                console.log("Failed to fetch converstation")
             }
         }
         fetchConvo()

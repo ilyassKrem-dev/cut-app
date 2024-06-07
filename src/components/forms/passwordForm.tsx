@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import LoadingAnimation from "@/assets/other/spinner";
 import { motion } from "framer-motion";
 import { VscEye ,VscEyeClosed } from "react-icons/vsc";
+import Link from "next/link";
 import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useSearchParams,useRouter,usePathname } from "next/navigation";
@@ -115,7 +116,7 @@ export default function PasswordForm(
                     
                 </div>
                 <p className="h-1 text-accent text-sm">{passwordError}</p>
-                <p className="underline text-sm cursor-pointer hover:opacity-50 transition-all duration-300 w-fit mt-3">Forgot password</p>
+                <Link href={`/forget?em=${email}`} className="underline text-sm cursor-pointer hover:opacity-50 transition-all duration-300 w-fit mt-3">Forgot password</Link>
             </div>
             <Button className=" bg-green-1 text-black hover:bg-green-1 hover:opacity-60 transition-all duration-300" onClick={handleLogin} disabled={password.length ===0 || loading}>
                 {loading?<LoadingAnimation />:"Login"}

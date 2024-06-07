@@ -14,7 +14,7 @@ import { isBase64Image } from "@/lib/utils";
 import LoadingAnimation from "@/assets/other/spinner";
 import { updateUser } from "@/lib/actions/user.action";
 
-import ProfileEmailChange from "./profileEmailVerify";
+import EmailVerification from "../../shared/emailVerification";
 interface UserProps {
     id:string
     name:string,
@@ -179,7 +179,7 @@ export default function ProfileEdit({userDetails}:{
             </form>
            {show&&<div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center  bg-black/80 z-50 items-end md:items-center">
                 <div className="bg-black rounded-t-lg border border-white/10  w-full md:rounded-lg pt-6  md:w-[500px] verify-tab">
-                    <ProfileEmailChange email={userDetails.email} 
+                    <EmailVerification email={userDetails.email} 
                     setShow={setShow}
                     userInfo={userInfo}
                     userDetails={userDetails}

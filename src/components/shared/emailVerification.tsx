@@ -1,4 +1,4 @@
-import {  SetStateAction, useEffect, useState } from "react";
+import React, {  SetStateAction, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import LoadingAnimation from "@/assets/other/spinner";
 
@@ -20,22 +20,24 @@ interface UserInfoProps {
 }
 interface Props {
     email:string;
-    setShow:React.Dispatch<SetStateAction<boolean>>;
-    userInfo:UserInfoProps;
-    userDetails:{
+    setShow?:React.Dispatch<SetStateAction<boolean>>;
+    userInfo?:UserInfoProps;
+    userDetails?:{
         id:string
         name:string,
         email:string,
         number:string,
         image:string
     };
+    setNext?:(arg:number) => void
 }
-export default function ProfileEmailChange(
+export default function EmailVerification(
     {
     email,
     setShow,
     userInfo,
     userDetails,
+    setNext
     }
     :Props) {
         const [code,setCode] = useState<string>(() =>
@@ -77,13 +79,13 @@ export default function ProfileEmailChange(
             setResent(true)
         }
         const handleVerify = async() => {
-            if(verificationCode == code) {
+            if(verificationCode == code && !setNext) {
                 setLoading(true)
                 if(loading) return
                 let imgeUrl = ""
-                const blob = isBase64Image(userInfo.image.url)
+                const blob = isBase64Image((userInfo as any).image.url)
                 if(blob) {
-                    const imgFile = await startUpload(userInfo.image.file)
+                    const imgFile = await startUpload((userInfo as any).image.file)
                     if(imgFile && imgFile[0].url) {
                         imgeUrl = imgFile[0].url
                     }
@@ -91,11 +93,11 @@ export default function ProfileEmailChange(
                 try {
                     const res = await updateUser(
                         {
-                            userId:userDetails.id,
-                            name:userInfo.name,
-                            email:userInfo.email,
+                            userId:(userDetails as any).id,
+                            name:(userInfo as any).name,
+                            email:(userInfo as any).email,
                             image:imgeUrl,
-                            number:userInfo.number
+                            number:(userInfo as any).number
                         }
                     )
                     if(res) {
@@ -103,24 +105,29 @@ export default function ProfileEmailChange(
                             title:"Updated",
                             description:`Your info has been updated`
                         })
-                        setShow(false)
-                        window.location.href = "/profile"
+                        if(setShow) {
+                            setShow(false)
+                            window.location.href = "/profile"
+
+                        }
                     }
                 } catch (error:any) {
                     setLoading(false)
-                    setShow(false)
-                    toast({
-                        variant:"destructive",
-                        title:"Error",
-                        description:`${error.message}`
-                    })
+                    if(setShow) {
+                        setShow(false)
+                        toast({
+                            variant:"destructive",
+                            title:"Error",
+                            description:`${error.message}`
+                        })
+                    }
                 }
+            } else if(verificationCode == code && setNext) {
+                setNext && setNext(2)
             }
+            
         }
         useEffect(() => {
-            
-            
-
             
             if(!resent) return
             const id = setTimeout(() => {
@@ -150,7 +157,7 @@ export default function ProfileEmailChange(
         <div className="flex flex-col gap-8">
             <div className="flex items-center justify-center flex-col gap-4">
                 <h3 className="font-bold">Verify email</h3>
-                <p className="text-center">A verification code has been sent to your email</p>
+                <p className="text-center text-white/60">A verification code has been sent to your email</p>
                 <p className="h-1 text-accent text-sm">{verifyError}</p>
                 <VerificationInput 
                 verificationCode={verificationCode}

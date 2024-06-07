@@ -22,7 +22,7 @@ export default function ProfileTop({profileImage,profileName,profileBarber,profi
             <div className="flex gap-10 flex-col md:flex-row items-center md:gap-12 md:items-start h-full">
                 <div>
                     <Image 
-                    src={profileImage} 
+                    src={profileImage || "/profile.jpg"} 
                     alt={`${profileName} image`} 
                     width={500}
                     priority

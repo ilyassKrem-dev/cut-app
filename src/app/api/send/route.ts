@@ -21,7 +21,7 @@ export async function POST(req:NextRequest) {
     await transporter.sendMail({
     from: "nothingreply1@gmail.com",
     to: email,
-    subject: 'Your login code for BarberCut',
+    subject: 'Your verification code for BarberCut',
     html:templateHTML
     });
     return Response.json({success:true});

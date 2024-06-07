@@ -1,6 +1,6 @@
 "use server"
 import { PrismaClient } from "@prisma/client/edge"
-
+import bcrypt from "bcryptjs"
 const prisma = new PrismaClient()
 export const SkipCompletion = async(id:string | null | undefined) => {
     
@@ -191,5 +191,82 @@ export const updateUser = async({userId,name,email,image,number}:{
         return updatedUser
     } catch (error:any) {
         throw new Error(`Failed to update profile ${error.message}`)
+    }
+}
+
+
+export const changeUserPassword = async(
+    {
+        userId,
+        email,
+        passwords
+    }:{
+        userId?:string;
+        email?:string;
+        passwords:{
+            oldPass?:string;
+            newPass:string;
+            confirmPass:string;
+        }
+    }) => {
+    try {
+        let user;
+        if(userId) {
+            user = await prisma.user.findUnique({
+                where:{
+                    id:userId
+                }
+            })
+        } else {
+            user = await prisma.user.findFirst({
+                where:{
+                    email:email
+                }
+            })
+            if(!user) {
+                throw new Error(`Failed to find User`)
+            }
+            if(passwords.newPass !== passwords.confirmPass) {
+                throw new Error(`Passwords dont match`)
+            }
+            const salt = await bcrypt.genSalt(12)
+            const hashedPassword = await bcrypt.hash(passwords.newPass,salt)
+            await prisma.user.update({
+                where:{
+                    email:email
+                },
+                data:{
+                    password:hashedPassword
+                }
+            })
+            return {succes:true}
+        }
+        if(!user) {
+            throw new Error(`Failed to find User`)
+        }
+        if(passwords.newPass !== passwords.confirmPass) {
+            throw new Error(`Passwords dont match`)
+        }
+        if(passwords.oldPass == passwords.newPass) {
+            throw new Error(`Old password must not be the same as the new`)
+        }
+        const comparePass = await bcrypt.compare(passwords.oldPass as string,user.password)
+        if(!comparePass) {
+            throw new Error(`Old passowrd is incorrect`)
+        }
+        const salt = await bcrypt.genSalt(12)
+        const hashedPassword = await bcrypt.hash(passwords.newPass,salt)
+        await prisma.user.update({
+            where:{
+                id:userId
+            },
+            data:{
+                password:hashedPassword
+            }
+        })
+        return {succes:true}
+        
+    } catch (error:any) {
+        throw new Error(error.message)
     }
 }
