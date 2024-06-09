@@ -30,7 +30,7 @@ export default function RootLayout({
               <LoginProvider>
                 <NavBar />
                 <Suspense fallback={<LoadingAnimation />}>
-                  <main className="min-h-screen">
+                  <main className="h-screen">
                     {children}
                   </main>
                   <Toaster />

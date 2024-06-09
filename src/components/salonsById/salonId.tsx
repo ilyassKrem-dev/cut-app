@@ -9,6 +9,7 @@ import BarberImages from "./assets/barberImages";
 
 import SalonButtons from "./assets/buttons";
 import AboveView from "./assets/aboveImages/aboveView";
+import { Button } from "../ui/button";
 const MapSalon = dynamic(() => import("./assets/mapSalon"), { ssr: false,loading:() => (
     <div className="h-[500px]">
         <LoadingAnimation/>
@@ -37,23 +38,24 @@ interface Props {
             image:string | null;
             phoneNumber:string | null
         },
-        comments:any[]
+        comments:any
     } | undefined;
-    userId:string |null |undefined
+    userId:string |null |undefined;
+    pathname?:string
 }
 
-export default function SalonId({barber,userId}:Props) {
+export default function SalonId({barber,userId,pathname}:Props) {
     
     const datesCheck = barber?.openDays.length === 7 ? "Entire week" : barber?.openDays.join("-")
     return (
         <div className="sm:px-4 pb-24">
-            <div className="md:pt-28">
+            {!pathname&&<div className="md:pt-28">
                 <AboveView 
                 userId={userId} 
                 barberId={barber?.id}
                 barberImage={barber?.images[0] as string}
                 barberName={barber?.salonName as string}/>
-            </div>
+            </div>}
             <div className="flex flex-col gap-10">
                 <div className="">
                     <BarberImages barberImages={barber?.images}/>
@@ -111,12 +113,25 @@ export default function SalonId({barber,userId}:Props) {
                         </div>
                         
                     </div>
-                    <SalonButtons 
+                    {!pathname?<SalonButtons 
                     barberPrices={barber?.Prices as number[]}
                     barberTimes={barber?.time as string[]}
                     userId={userId}
                     barberId={barber?.id as string}
                     />
+                    :
+                    <div className="hidden md:flex flex-1 max-w-[400px] h-fit mt-10">
+                            <div className="bg-black border border-white/20 rounded-lg flex justify-center p-3 py-6 flex-col gap-8  items-center w-full shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
+                                <div className="text-center">
+                                    <p className="font-bold text-xl">{barber?.Prices[0]}DH - {barber?.Prices[1]}DH</p>
+                                    <p className="text-sm mt-1 text-gray-400">
+                                        {barber?.time[0]}-{barber?.time[1]}
+                                        
+                                    </p>
+                                </div>
+                                <Button className="bg-green-1  hover:opacity-100 hover:bg-green-1 w-full">Talk</Button>
+                            </div>
+                    </div>}
                 </div>
             </div>
             <div className="border-y my-9 py-5 flex gap-4 items-center border-white/20 mx-4 justify-center">

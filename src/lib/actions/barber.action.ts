@@ -274,3 +274,40 @@ export const talkToBarber = async(
         throw new Error(`Failed to continue ${error.message}`)
     }
 }
+
+export const getBarberInfo = async(userId:string) => {
+
+    try {
+        const barber = await prisma.barber.findFirst({
+            where:{
+                userId:userId
+            },
+            include:{
+                comments:true,
+                ratings:true,
+                user:{
+                    select:{
+                        phoneNumber:true,
+                        id:true,
+                        image:true,
+                        name:true
+
+                    }
+                },
+            }
+        })
+        const barberData = {
+            ...barber,
+            ratings:{
+            people:barber?.ratings.length,
+            rating:barber?.ratings && barber?.ratings.reduce((t,a) => t+a.star,0) / barber?.ratings.length || 0
+            },
+            comments:barber?.comments.length
+        }
+
+        if(!barber) new Error(`No barber found`)
+        return barberData
+    } catch (error) {
+        throw new Error(`Failed to get salon info`)
+    }
+}
