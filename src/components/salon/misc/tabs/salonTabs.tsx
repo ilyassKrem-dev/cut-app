@@ -22,6 +22,7 @@ export default function SalonTabs({tab,setTab}:{
     tab:string;
     setTab:React.Dispatch<SetStateAction<string>>
 }) {
+
     const [windowWidth,setWindowWidth] = useState<number>(window.innerWidth)
     const [show,setShow] = useState<boolean>(false)
     useEffect(() => {
@@ -132,13 +133,13 @@ export default function SalonTabs({tab,setTab}:{
                                         initial={
                                             {
                                             display:tab==tabInfo.tab?"none":"inline",
-                                            scale:tab==tabInfo.tab?"1":"0"
+                                            scale:tab==tabInfo.tab?1:0
                                         }
                                         }
                                         animate={
                                             {
                                             display:tab==tabInfo.tab?"inline":"none",
-                                            scale:tab==tabInfo.tab?"1":"0"
+                                            scale:tab==tabInfo.tab?1:0
                                             }}
                                         transition={{duration:0.4,ease:"easeInOut"}}
                                         className={`  ${tab==tabInfo.tab ?"group-hover:animate-bounce repeat-1" : ""}`}

@@ -1,9 +1,10 @@
-import { MdPreview,MdEdit  } from "react-icons/md";
-import { FaArrowRight } from "react-icons/fa6";
-import { useState } from "react";
-import { motion } from "framer-motion";
+
+
+import { SetStateAction, useState } from "react";
+
 import SalonTabs from "./tabs/salonTabs";
 import SalonId from "@/components/salonsById/salonId";
+import SalonEdit from "./pages/salonEdit";
 interface Props {
     salon:{
         id:string;
@@ -28,45 +29,43 @@ interface Props {
             image:string|null;
             name:string
         }
-    } | null |boolean
+    };
+    userId:string;
+    setSalon:React.Dispatch<SetStateAction<any>>
 }
 
 
-const tabs = [
-    {
-        tab:"overview",
-        text:"Overview",
-        icon:<MdPreview className="text-xl"/>
 
-    },
-    {
-        tab:"edit",
-        text:"Edit",
-        icon:<MdEdit className="text-xl"/>
-
-    }
-]
-
-export default function HubSalon({salon}:Props) {
+export default function HubSalon({salon,userId,setSalon}:Props) {
     
-    const [tab,setTab] = useState<string>("overview")
+    const [tab,setTab] = useState<string>("edit")
     return (
         <div className="flex items-center md:pt-24 h-full flex-col min-[1001px]:flex-row">
             <SalonTabs 
                 tab={tab}
                 setTab={setTab}
             />
-            <div className="overflow-y-auto h-full flex-1 custom-scrollbar">
+            <div className="overflow-y-auto h-full flex-1 custom-scrollbar w-full pb-32">
                 {
                     tab=="overview"
                     ?
-                    <div className=" ">
+                    <div>
                         <SalonId 
                             barber={salon as any}
                             userId={null}
                             pathname="salon"
                         />
 
+                    </div>
+                    :
+                    tab=="edit"
+                    ?
+                    <div>
+                        <SalonEdit 
+                        salon={salon}
+                        userId={userId}
+                        setSalon={setSalon}
+                        />
                     </div>
                     :
                     ""

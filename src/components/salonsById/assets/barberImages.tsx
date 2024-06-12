@@ -24,7 +24,7 @@ export default function BarberImages({barberImages}:{barberImages:string[]| unde
     }, []);
     return (
         <div className="flex gap-2">
-            {barberImages?.map((img,index:number) => {
+            {barberImages?.slice(0,3).map((img,index:number) => {
                 
                 return (
                     <div key={index} className={` h-[400px]  ${index==0?"flex-1 w-[300px] ":"w-[250px]"} hidden md:block`}>

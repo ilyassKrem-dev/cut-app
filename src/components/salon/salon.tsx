@@ -62,7 +62,10 @@ export default  function Salon({userId}:Props) {
             ?
             <NoSalon userId={userId as string} />
             :
-            <HubSalon salon={salon} />}
+            <HubSalon 
+            salon={salon as salonType} 
+            userId={userId as string}
+            setSalon={setSalon} />}
         </div>
     )
 } 

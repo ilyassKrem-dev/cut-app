@@ -60,7 +60,7 @@ export default function Preview({prefernces,info,locationInfo,images,userInfo,us
             <div className="flex flex-col gap-10">
                 <div className="">
                     <div className="flex gap-2">
-                        {images.map((img,index:number) => {
+                        {images.slice(0,3).map((img,index:number) => {
                             
                             return (
                                 <div key={index} className={` h-[400px]  ${index==0?"flex-1 w-[300px] ":"w-[250px]"} hidden md:block`}>
