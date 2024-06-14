@@ -16,7 +16,7 @@ export default function EditImages({images,ids,setSalon}:{
     };
     setSalon:React.Dispatch<SetStateAction<any>>
 }) {
-    const [show,setShow] = useState<boolean>(false)
+    const [show,setShow] = useState<boolean>(true)
     const [imagesIndex,setImagesIndex] = useState<number>(0)
     const [direction, setDirection] = useState<'left' | 'right' | null>(null);
     const [showDelete,setShowDelete] = useState<boolean>(false)
@@ -54,7 +54,7 @@ export default function EditImages({images,ids,setSalon}:{
                         ease:"linear"
                     }}
                     >
-                        <FaArrowDown className="self-end text-xl mb-[0.15rem]"/>
+                        <FaArrowDown className="self-end text-xl mb-[0.15rem] lg:hidden"/>
 
                     </motion.div>
                 </div>
@@ -84,7 +84,7 @@ export default function EditImages({images,ids,setSalon}:{
                                         placeholder="blur"
                                         blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(1280, 1280))}`}
                                         height={600}
-                                        className="h-[310px] sm:h-[300px] rounded-lg opacity-80 max-[420px]:h-[200px]  max-w-[500px] max-[600px]:w-full object-cover" 
+                                        className="h-[310px] sm:h-[300px] rounded-lg opacity-80 max-[420px]:h-[200px]   w-full object-cover" 
                                         />
                                 
                                 </div>

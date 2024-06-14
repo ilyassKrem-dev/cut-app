@@ -105,3 +105,113 @@ export const addImagesTobarber = async(
         throw new Error(`Failed to add images`)
     }
 }
+
+export const changeSalonInfo = async({
+    userId,barberId,salonInfo
+}:{
+    userId:string;
+    barberId:string;
+    salonInfo:{
+        salonName:string;
+        number:string;
+    }
+}) =>{
+
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id:userId
+            },
+            select:{
+                id:true,
+                barberId:true
+            }
+        })
+        if(!user) throw new Error(`Couldnt find user`)
+        if(user.barberId !== barberId) throw new Error(`The user is not the owner of this salon`)
+        const barber = await prisma.barber.findUnique(
+        {
+            where:{
+                id:barberId
+            }
+        })
+        if(!barber) throw new Error(`Failed to find barber`)
+        const updatedBarber = await prisma.barber.update(
+            {
+                where:{
+                    id:barberId
+                },
+                data:{
+                    salonName:salonInfo.salonName,
+                    phoneNumber:`+212${salonInfo.number}`
+                },
+                select:{
+                    salonName:true,
+                    phoneNumber:true
+                }
+            }
+        )
+        return updatedBarber
+    } catch (error) {
+        throw new Error(`Failed to save,try again later`)
+    }
+}
+
+export const changeSalonLocation = async({
+    userId,barberId,location
+}:{
+    userId:string;
+    barberId:string;
+    location:{
+        city:string;
+        mapLocation:{
+            latitude:number,
+            longitude:number
+        },
+        address:string
+    }
+}) =>{
+
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id:userId
+            },
+            select:{
+                id:true,
+                barberId:true
+            }
+        })
+        if(!user) throw new Error(`Couldnt find user`)
+        if(user.barberId !== barberId) throw new Error(`The user is not the owner of this salon`)
+        const barber = await prisma.barber.findUnique(
+        {
+            where:{
+                id:barberId
+            }
+        })
+        if(!barber) throw new Error(`Failed to find barber`)
+        const updatedBarber = await prisma.barber.update(
+            {
+                where:{
+                    id:barberId
+                },
+                data:{
+                    city:location.city,
+                    address:location.address,
+                    latitude:location.mapLocation.latitude,
+                    longitude:location.mapLocation.longitude
+                },
+                select:{
+                    city:true,
+                    address:true,
+                    latitude:true,
+                    longitude:true
+                }
+            }
+        )
+        return updatedBarber
+    } catch (error) {
+        throw new Error(`Failed to save,try again later`)
+    }
+}
