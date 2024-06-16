@@ -18,7 +18,7 @@ export default function SideBar() {
         if(!session) return
         const fetchCons = async() => {
             try {
-                const res = await getContacts(session?.user?.id as string,tab)
+                const res = await getContacts(session?.user?.id as string)
                 if(res) {
                 
                     return setConvos(res)
@@ -28,50 +28,133 @@ export default function SideBar() {
             }
         }
         fetchCons()
-    },[session,tab])
+    },[session])
     const handleNewMessage = useCallback((data: any) => {
-        const newArray = [] as any;
-        convos.map((conv:any) => {
-            if(conv.id === data.convoId) {
-                return newArray.unshift({
-                    ...conv,
-                    messages: data.content
-                });
-            } else {
-                return newArray.push(conv)
-            }
-        })
+        const newArray = {
+            barbers:[],
+            clients:[]
+        } as any;
+        const updateMessages = (array: any[], key: 'barbers' | 'clients') => {
+            array.forEach((conv: any) => {
+                if (conv.id === data.convoId) {
+                    newArray[key].unshift({
+                        ...conv,
+                        messages: data.content
+                    });
+                } else {
+                    newArray[key].push(conv);
+                }
+            });
+        };
+        updateMessages(convos.barbers, 'barbers');
+        updateMessages(convos.clients, 'clients');
+        
         setConvos(newArray);
     }, [convos]);
     useEffect(() => {
-        if(!convos || convos.length==0) return
+        if(!convos || (convos.barbers.length === 0 && convos.clients.length === 0)) return
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         });
-        let channel:any;
-        convos.forEach((convo:any) => {
-            channel = pusher.subscribe(`chat-${convo.id}`);
-            channel.bind("message", handleNewMessage);
-            
-        })
+        //@ts-ignore
+        const channels = new Map<string, Pusher.Channel>();
+        const subscribeToChannel = (array: any[], handleNewMessage: any) => {
+            array.forEach((convo: any) => {
+                const channel = pusher.subscribe(`chat-${convo.id}`);
+                channel.bind("message", handleNewMessage);
+                channels.set(convo.id, channel);
+            });
+        };
+        subscribeToChannel(convos.barbers, handleNewMessage);
+        subscribeToChannel(convos.clients, handleNewMessage);
+        
 
         return () => {
-            convos.forEach((convo:any) => {
+            channels.forEach((channel, convoId) => {
                 channel.unbind("message", handleNewMessage);
-                pusher.unsubscribe(`chat-${convo.id}`);
-            })
+                pusher.unsubscribe(`chat-${convoId}`);
+            });
         };
         
     }, [convos, handleNewMessage]);
+
+    useEffect(() => {
+        if (!convos || !pathname.startsWith("/messages/")) return;
+        const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+            cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+        });
+        //@ts-ignore
+        const channels = new Map<string, Pusher.Channel>();
+        const handleSeenMessages = (data:any) => {
+            console.log(data[data.length-1])
+            setConvos((prev:any) => {
+                const newData = prev.barbers.map((barber:any) => {
+                    if(barber.messages === data.content) {
+                        return {...barber,unseen:[]}
+                    } else {
+                        return barber
+                    }
+                    
+                })
+                const newData2 = prev.clients.map((client:any) => {
+                    if(client.messages === data.content) {
+                        return {...client,unseen:[]}
+                    } else {
+                        return client
+                    }
+                    
+                })
+                return {
+                    barbers:newData,
+                    clients:newData2
+                }
+            })
+        }
+        const subscribeToChannel = (array: any[]) => {
+            array.forEach((convo: any) => {
+                const channel = pusher.subscribe(`chat-${convo.id}`);
+                channel.bind("seen", handleSeenMessages);
+                channels.set(convo.id, channel);
+            });
+        };
+        
+        subscribeToChannel(convos.barbers?convos.barbers : [])
+        subscribeToChannel(convos.clients?convos.clients:[])
+        return () => {
+            channels.forEach((channel, convoId) => {
+                channel.unbind("seen", handleNewMessage);
+                pusher.unsubscribe(`chat-${convoId}`);
+            });
+        };
+        
+    },[convos,pathname])
+
     const changeTab = (tabC:string) => {
-        if(!convos || convos==undefined || tabC===tab) return
-        setConvos(false)
+        if(!convos || convos==undefined || tabC===tab || !session ) return
         setTab(tabC)
-    }
+    }   
+
     useEffect(() => {
         if(session || status=="loading") return
         router.push("/")
     },[session,status])
+
+    const unseenClients = () => {
+        if(!session || !convos || convos.clients.length == 0) return
+
+        return convos.clients
+                .map((client:any) => client.unseen
+                .reduce((t:number,msg:any) => t + (msg.senderId !== (session?.user as any).barberId ? 1: 0),0))[0]
+    }
+    const unseenBarbers = () => {
+        if(!session || !convos || convos.barbers.length == 0) return
+
+        return convos.barbers
+                .map((client:any) => client.unseen
+                .reduce((t:number,msg:any) => t + (msg.senderId !== session?.user?.id ? 1: 0),0))[0]
+
+
+    }
     return (
         <div className={`flex-col border-r border-white/10   py-6 w-full md:w-[350px]   ${pathname !== "/messages"? "hidden md:flex":"flex"}`}>
             <h1 className=" px-4 text-lg border-b border-white/10 pb-4 text-center md:text-start">Messages</h1>
@@ -95,15 +178,20 @@ export default function SideBar() {
             session && convos !==null?
             <>
                 {(session.user as  any).isBarber&&<div className="flex items-center border-y border-white/10 justify-center bg-darker/80">
-                    <div className={`px-10 py-3 flex-1 text-center cursor-pointer hover:opacity-60 hover:bg-black/80 transition-all duration-300 ${tab === "user"?"bg-black":"opacity-40"}`} onClick={() => changeTab("user")}>
+                    <div className={`px-10 py-3 flex-1 text-center cursor-pointer hover:opacity-60 hover:bg-black/80 transition-all duration-300 ${tab === "user"?"bg-black":"opacity-40 "} flex items-center`} onClick={() => changeTab("user")}>
                         <Contact className="text-center w-full"/>
+                        {unseenBarbers()>0 &&<span className="text-sm rounded-full text-white bg-accent  px-1">{unseenBarbers() > 10 ?"10+" : unseenBarbers()}</span>}
                     </div>
-                    <div className={`px-10 py-2 flex-1 text-center cursor-pointer hover:opacity-60 hover:bg-black/80 transition-all duration-300  ${tab === "clients"?"bg-black":"opacity-40"}`} onClick={() => changeTab("clients")}>
+                    <div className={`px-10 py-2 flex-1 text-center cursor-pointer hover:opacity-60 hover:bg-black/80 transition-all duration-300  ${tab === "clients"?"bg-black":"opacity-40"} flex items-center`} onClick={() => changeTab("clients")}>
                         <ScissorsLineDashed className="text-center w-full"/>
+                        {unseenClients()>0 &&<span className="text-sm rounded-full text-white bg-accent  px-1">{unseenClients() > 10 ?"10+" : unseenClients()}</span>}
                     </div>
                 </div>}
-            
-                <UserContact convos={convos} tab={tab}/>
+                
+                <UserContact 
+                unseenBarbers={unseenBarbers()}
+                unseenClients={unseenClients()}
+                convos={convos} tab={tab}/>
             </>
             :
             ""}

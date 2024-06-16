@@ -79,6 +79,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               session.user.isBarber = user?.isBarber;
               //@ts-ignore
               session.user.completed = user?.completed;
+              //@ts-ignore
+              session.user.barberId = user?.barberId ? user?.barberId : null
           }
           
           return session

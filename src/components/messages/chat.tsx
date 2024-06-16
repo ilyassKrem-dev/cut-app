@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { getConvo } from "@/lib/actions/messages.action"
-
+import { usePathname } from "next/navigation";
 import TopChat from "./chat-assets/topChat";
 import { useToast } from "../ui/use-toast";
 import ChatInput from "./chat-assets/inputs/chat-input";
@@ -38,18 +38,37 @@ export default function Chat({convoId,userId,isBarber}:{
     const [convo,setConvo] = useState<Convo|null>(null)
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const {toast} = useToast()
+    const pathname = usePathname()
+    const handelSeenMsg = async(res?:any) => {
+        
+        try {
+            let seenMsgs;
+            if(res) {
+                seenMsgs = await axios.post("/api/messages/seen",{
+                    userId: isBarber ? res.participants.barber.id : userId,
+                    isBarber:isBarber,
+                    convoId:res.id
+                })
+            } else {
+                seenMsgs = await axios.post("/api/messages/seen",{
+                    userId: isBarber ? convo?.participants.barber.id : userId,
+                    isBarber:isBarber,
+                    convoId:convo?.id
+                })
+            }
+            return seenMsgs
+        } catch (error) {
+            throw new Error(`Internal server error`)
+        }
+    }
     useEffect(() => {
         const fetchConvo = async() => {
             try {
                 const res = await getConvo(convoId as string,userId as string)
                 if(res) {
-                    console.log(res)
+                    
                     setConvo(res as any)
-                    const seenMsgs = await axios.post("/api/messages/seen",{
-                        userId: isBarber ? res.participants.barber.id : userId,
-                        isBarber:isBarber,
-                        convoId:res.id
-                    })
+                    await handelSeenMsg(res)
                     
                 } 
             } catch (error:any) {
@@ -70,9 +89,19 @@ export default function Chat({convoId,userId,isBarber}:{
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         });
         const handleSeenMessages = (data:any) => {
-            setConvo((prev:any) => {
-                return {...prev,messages:data}
-            })
+            if(data) {
+                console.log(data)
+                console.log(convo)
+                setConvo((prev:any) => {
+                    const newData = prev.messages.map((msg:any) => {
+                        if(!msg.isSeen && msg.recieverId == isBarber ? convo?.participants.barber.userId : userId) {
+                            return {...msg,isSeen:true}
+                        }
+                        return msg
+                    })
+                    return {...prev,messages:newData}
+                })
+            }
         }
         const channel = pusher.subscribe(`chat-${convoId}`);
         channel.bind("seen", handleSeenMessages);
@@ -82,8 +111,8 @@ export default function Chat({convoId,userId,isBarber}:{
             pusher.unsubscribe(`chat-${convoId}`);
         };
         
-    },[convo])
-    const handleNewMessage = useCallback((data: any) => {
+    },[convoId,convo])
+    const handleNewMessage = useCallback( async (data: any) => {
         setConvo((prevConvo) => {
             if (!prevConvo) return prevConvo;
             return {
@@ -91,7 +120,12 @@ export default function Chat({convoId,userId,isBarber}:{
                 messages: [...prevConvo.messages, data]
             };
         });
-    }, []);
+        if(pathname === `/messages/${convoId}` && data.recieverId === isBarber ? convo?.participants.barber.userId : userId) {
+            handelSeenMsg()
+        }
+    
+        
+    }, [convo, convoId, isBarber, pathname, userId]);
     useEffect(() => {
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,

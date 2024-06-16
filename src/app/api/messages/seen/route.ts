@@ -61,7 +61,7 @@ export  async function POST(req:NextRequest)
                 isSeen:true
             }
         })
-        pusher.trigger(`chat-${convoId}`, "seen", seenMessages);
+        pusher.trigger(`chat-${convoId}`, "seen", seenMessages[seenMessages.length -1].content);
         return NextResponse.json({
             success:true
         },{
