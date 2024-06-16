@@ -88,7 +88,7 @@ export default function InfoTab(
 
 
     return (
-        <div className="flex flex-col gap-10 mt-4 w-full px-10 py-4 2xl:w-[582px]">
+        <div className="flex flex-col gap-14 mt-4 w-full px-10 py-4 2xl:w-[582px]">
             
             <div className="flex items-start  w-full flex-col gap-2 ">
                 <div className="flex gap-1 mb-2 flex-col">

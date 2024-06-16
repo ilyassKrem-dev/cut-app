@@ -4,11 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { getConvo } from "@/lib/actions/messages.action"
 
 import TopChat from "./chat-assets/topChat";
-
+import { useToast } from "../ui/use-toast";
 import ChatInput from "./chat-assets/inputs/chat-input";
 import Pusher from "pusher-js";
 import Messages from "./chat-assets/messages";
 import LoadingAnimation from "@/assets/other/spinner";
+import axios from "axios";
 interface Barber {
     salonName:string;
     images:string[];
@@ -16,7 +17,8 @@ interface Barber {
     phoneNumber:string;
     id:string;
     holidays:boolean;
-    openDays:string[]
+    openDays:string[];
+    userId:string
 
 }
 interface Convo {
@@ -35,17 +37,52 @@ export default function Chat({convoId,userId,isBarber}:{
 }) {
     const [convo,setConvo] = useState<Convo|null>(null)
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const {toast} = useToast()
     useEffect(() => {
         const fetchConvo = async() => {
             try {
                 const res = await getConvo(convoId as string,userId as string)
-                if(res) setConvo(res as any)
-            } catch (error) {
-                console.log("Failed to fetch converstation")
+                if(res) {
+                    console.log(res)
+                    setConvo(res as any)
+                    const seenMsgs = await axios.post("/api/messages/seen",{
+                        userId: isBarber ? res.participants.barber.id : userId,
+                        isBarber:isBarber,
+                        convoId:res.id
+                    })
+                    
+                } 
+            } catch (error:any) {
+                
+                toast({
+                    variant:"destructive",
+                    title:"Error",
+                    description:error.response.data.error
+                })
+
             }
         }
         fetchConvo()
     },[])
+    
+    useEffect(() => {
+        const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
+            cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
+        });
+        const handleSeenMessages = (data:any) => {
+            setConvo((prev:any) => {
+                return {...prev,messages:data}
+            })
+        }
+        const channel = pusher.subscribe(`chat-${convoId}`);
+        channel.bind("seen", handleSeenMessages);
+
+        return () => {
+            channel.unbind("seen", handleSeenMessages);
+            pusher.unsubscribe(`chat-${convoId}`);
+        };
+        
+    },[convo])
     const handleNewMessage = useCallback((data: any) => {
         setConvo((prevConvo) => {
             if (!prevConvo) return prevConvo;
@@ -81,11 +118,15 @@ export default function Chat({convoId,userId,isBarber}:{
             </div>
         )
     }
+
     return (
         <div className="w-full h-full">
             {convo&&
             <div className="flex flex-col h-full"> 
-                <TopChat barber={convo.participants.barber}/>
+                <TopChat 
+                barber={convo.participants.barber.userId === userId ?null :convo.participants.barber}
+                user={convo.participants.barber.userId === userId ?convo.participants.user :null}
+                />
                 <div className="flex-1 overflow-y-auto custom-scrollbar">
                     <Messages 
                     messages={convo.messages}

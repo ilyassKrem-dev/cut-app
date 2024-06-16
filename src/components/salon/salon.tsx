@@ -11,8 +11,9 @@ interface Props {
 
 interface salonType {
         id:string;
-        prices:string[];
+        Prices:number[];
         city:string;
+        address:string;
         comments:number;
         holidays:boolean;
         images:string[];
@@ -34,6 +35,7 @@ interface salonType {
             name:string
         }
 }
+
 export default  function Salon({userId}:Props) {
     const [salon,setSalon] = useState<salonType|null |boolean>(null)
     
@@ -56,6 +58,7 @@ export default  function Salon({userId}:Props) {
                     <LoadingAnimation/>
         </div>)
     }
+    
     return (
         <div className="h-full">
             {!salon

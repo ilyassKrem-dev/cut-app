@@ -19,8 +19,8 @@ export default function EditInfo({info,ids,setSalon}:{
     const [show,setShow] = useState<boolean>(true)
     
     return (
-        <div className="mt-4 md:mt-8 w-full  px-6 ">
-            <div className={`border border-white/10 rounded-xl w-full flex flex-col   items-center  ${show?"h-[450px]":""}`}>
+        <div className="h-full w-full  px-6 ">
+            <div className={`border border-white/10 rounded-xl w-full flex flex-col   items-center  ${show?"h-full":""}`}>
                 <div className={`flex justify-center items-center w-full group hover:opacity-60 transition-all duration-300 cursor-pointer hover:bg-white/30 p-2   ${show?"border-b border-b-white/10   rounded-t-xl":"rounded-xl"}`} onClick={() => setShow(prev => !prev)}>
                     <p className="flex-1 text-center cursor-pointer">Info</p>
                     <motion.div

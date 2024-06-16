@@ -38,7 +38,7 @@ export default function EditImages({images,ids,setSalon}:{
     
     }
     return (
-        <div className="mt-8 w-full  px-6">
+        <div className=" w-full  px-6 h-full">
             <div className="border border-white/10 rounded-xl w-full flex flex-col   items-center">
                 <div className={`flex justify-center items-center w-full group hover:opacity-60 transition-all duration-300 cursor-pointer hover:bg-white/30 p-2   ${show?"border-b border-b-white/10   rounded-t-xl":"rounded-xl"}`} onClick={() => setShow(prev => !prev)}>
                     <p className="flex-1 text-center cursor-pointer">Images</p>
@@ -61,7 +61,7 @@ export default function EditImages({images,ids,setSalon}:{
                 
                 {show&&
                 <>
-                    <div className="py-6 flex gap-6 px-4 flex-col w-full">
+                    <div className="py-6 flex gap-6 px-4 flex-col w-full 2xl:w-[582px]">
                         <div className="relative flex justify-center items-center group w-full">
                             <div className={`absolute left-0 ${imagesIndex === 0 ? "hidden":"hidden group-hover:flex"} z-30  bg-black/30 top-0 left-0 h-full rounded-l-lg  items-center justify-center p-2 px-4`}
                             onClick={() => changeImage("reduce")}>
@@ -103,11 +103,11 @@ export default function EditImages({images,ids,setSalon}:{
                                 })}
                             </div>
                         </div>
-                        <div className="flex justify-between items-center gap-5">
-                            <Button className="bg-green-1 hover:bg-green-1/60 transition-all duration-300 flex-1 flex items-center gap-1" onClick={() => setShowAdd(true)}>
+                        <div className="flex justify-between items-center gap-5 max-[397px]:gap-3 max-[310px]:flex-col">
+                            <Button className="bg-green-1 hover:bg-green-1/60 transition-all duration-300 flex-1 flex items-center gap-1 max-[397px]:text-xs max-[397px]:p-1 max-[310px]:w-full" onClick={() => setShowAdd(true)}>
                             <span className="text-xl mt-[0.15rem]">+</span> Add images
                             </Button>
-                            <Button className={` transition-all duration-300 ${images.length == 1 ?"bg-accent hover:bg-accent":"bg-accent/80 hover:bg-accent/40"} flex-1 flex items-center gap-1`}
+                            <Button className={` transition-all duration-300 ${images.length == 1 ?"bg-accent hover:bg-accent":"bg-accent/80 hover:bg-accent/40"} flex-1 flex items-center gap-1 max-[397px]:text-xs max-[397px]:p-1 max-[310px]:p-2 max-[310px]:w-full`}
                             onClick={() => setShowDelete(true)}
                             disabled={images.length==1}>
                                 <MdDeleteOutline className="text-xl"/>

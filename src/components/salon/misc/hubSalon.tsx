@@ -8,11 +8,12 @@ import SalonEdit from "./pages/salonEdit";
 interface Props {
     salon:{
         id:string;
-        prices:string[];
+        Prices:number[];
         city:string;
         comments:number;
         holidays:boolean;
         images:string[];
+        address:string;
         latitude:number;
         longitude:number;
         openDays:string[];

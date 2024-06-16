@@ -36,6 +36,9 @@ export  default function DatesPre({dates,setPrefences}:Props) {
             }
             return {...prev,dates:{...prev.dates,week:updateWeek}}
         })
+        setPrefences((prev:any) => {
+            return {...prev,dates:{...prev.date,week:[...prev.date.week.sort((a:string,b:string) => weekDays.indexOf(a) - weekDays.indexOf(b))]}}
+        })
     }
     const handleToogle = (value:boolean) => {
    
@@ -59,6 +62,7 @@ export  default function DatesPre({dates,setPrefences}:Props) {
             })
         }
     }
+    const allSame = (weekDays.length == dates.week.length) && dates.week.every((value, index) => value === weekDays[index])
     return (
         <div className="md:flex items-center justify-between space-y-3 md:space-y-0 border border-white/20 md:border-0 p-6 md:p-0 rounded-lg md:rounded-none">
             <div className="flex items-center gap-5 w-full md:gap-5">
@@ -71,7 +75,7 @@ export  default function DatesPre({dates,setPrefences}:Props) {
                     <div className="md:border border-white/30   rounded-xl flex flex-wrap md:flex-auto justify-center md:justify-start">
                         {weekDays.map((day,index) => {
                             return (
-                                <div key={day+"-"+index} className={` max-[400px]:text-xs
+                                <label htmlFor={day+index} key={day+"-"+index} className={` max-[400px]:text-xs
                                 text-sm  hover:bg-white/50 hover:text-black p-2 cursor-pointer transition-all duration-300  ${index ===0 ?"min-[400px]:rounded-l-xl" :index===weekDays.length-1 ? "min-[400px]:rounded-r-xl":"" } ${dates.week.includes(day) ? "bg-white text-black":""} border border-white/30 md:border-0`}>
                                     <label htmlFor={day+index} className=" cursor-pointer">
                                         {day}
@@ -82,7 +86,7 @@ export  default function DatesPre({dates,setPrefences}:Props) {
                                     onChange={handleChange}
                                     id={day+index} className=" appearance-none "/>
 
-                                </div>
+                                </label>
 
                             )
                         })}
@@ -92,7 +96,7 @@ export  default function DatesPre({dates,setPrefences}:Props) {
                         <div className="flex gap-2 items-center text-xs justify-center">
                             All days
                             <Checkbox 
-                            checked={dates.week == weekDays}
+                            checked={allSame}
                             onCheckedChange={setAll}/>
                         </div>
                         <div className="flex gap-2 items-center text-xs justify-center">

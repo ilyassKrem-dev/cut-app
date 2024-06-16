@@ -13,7 +13,7 @@ export const  getContacts = async (userId:string,type:string) => {
             }
         })
         if(!user) return {error:"user not found"}
-        let convos;
+        let convos:any;
         if(type == "user") {
             convos = await prisma.convo.findMany({
                  where:{
@@ -24,7 +24,13 @@ export const  getContacts = async (userId:string,type:string) => {
                      }
                  },
                  include:{
-                     participants:{
+                    messages:{
+                        orderBy:{
+                            sentAt:"desc"
+                        },
+                        take:1
+                    },
+                    participants:{
                          select:{
                              barber:{
                                  select:{
@@ -49,6 +55,12 @@ export const  getContacts = async (userId:string,type:string) => {
                     }
                 },
                 include:{
+                    messages:{
+                        orderBy:{
+                            sentAt:"desc"
+                        },
+                        take:1
+                    },
                     participants:{
                         select:{
                             user:{
@@ -56,14 +68,18 @@ export const  getContacts = async (userId:string,type:string) => {
                                     image:true,
                                     name:true
                                 }
-                            }
+                            },
                         }
                     }
                 }
     
             })
         }
-        return convos
+        const newConvos = convos && convos.map((convo:any) => {
+            return {...convo,messages:convo.messages.length>0 ?convo.messages[0].content: null}
+        })
+
+        return newConvos
     } catch (error:any) {
         throw new Error(`Failed to get messages ${error.message}`)
     }
@@ -77,14 +93,15 @@ export const getConvo = async(convoId:string,userId:string) => {
                 participants:{
                     select:{
                         barber:{
-                            select:{
+                            select:{    
                                 id:true,
                                 salonName:true,
                                 images:true,
                                 openDays:true,
                                 time:true,
                                 holidays:true,
-                                phoneNumber:true
+                                phoneNumber:true,
+                                userId:true
                             }
                         },
                         user:{
@@ -114,6 +131,7 @@ export const getConvo = async(convoId:string,userId:string) => {
             }
         })
         const newConvo = convo && {...convo,participants:convo?.participants[0]}
+        
         return newConvo
     } catch (error:any) {
         throw new Error(`Failed to getConvo ${error.message}`)

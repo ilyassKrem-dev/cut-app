@@ -80,7 +80,7 @@ export default function LocationEditTab({
     }
     const check = newLocation.city !== location.city && !mapChanged || newLocation.city === location.city && newLocation.address === location.address && newLocation.mapLocation.latitude === location.coord.latitude && newLocation.mapLocation.longitude === location.coord.longitude && !mapChanged 
     return (
-        <div className="flex-col flex gap-5 w-full p-6 px-10"> 
+        <div className="flex-col flex gap-[2.8rem] w-full p-6 px-10 2xl:w-[582px]"> 
             <div className=" space-y-3 md:space-y-0 rounded-lg  w-full">
                 <div className="flex items-start  w-full gap-3 flex-col">
                     <div className="flex gap-1  mb-2 flex-col">

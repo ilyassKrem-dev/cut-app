@@ -304,7 +304,7 @@ export const getBarberInfo = async(userId:string) => {
             },
             comments:barber?.comments.length
         }
-
+    
         if(!barber) new Error(`No barber found`)
         return barberData
     } catch (error) {

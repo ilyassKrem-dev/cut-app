@@ -215,3 +215,61 @@ export const changeSalonLocation = async({
         throw new Error(`Failed to save,try again later`)
     }
 }
+
+export const ChangeSalonPrefer = async(
+    {
+        userId,
+        barberId,
+        preferences
+    }:{
+        userId:string;
+        barberId:string;
+        preferences:{
+            prices:number[],
+            dates:string[],
+            time:string[],
+            holiday:boolean
+        }
+    }
+) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id:userId
+            },
+            select:{
+                id:true,
+                barberId:true
+            }
+        })
+        if(!user) throw new Error(`Couldnt find user`)
+        if(user.barberId !== barberId) throw new Error(`The user is not the owner of this salon`)
+        const barber = await prisma.barber.findUnique(
+        {
+            where:{
+                id:barberId
+            }
+        })
+        if(!barber) throw new Error(`Failed to find barber`)
+        const updatedBarber = await prisma.barber.update({
+                where:{
+                    id:barber.id
+                },
+                data:{
+                    Prices:preferences.prices,
+                    holidays:preferences.holiday,
+                    time:preferences.time,
+                    openDays:preferences.dates
+                },
+                select:{
+                    openDays:true,
+                    Prices:true,
+                    time:true,
+                    holidays:true
+                }
+        })
+        return updatedBarber
+    } catch (error) {
+        throw new Error(`Failed to save,try again later`)
+    }
+}

@@ -1,17 +1,14 @@
-import { motion } from "framer-motion";
-import { SetStateAction, useState } from "react";
-import { FaArrowDown } from "react-icons/fa6";
-import LocationEditTab from "./locationEditTab";
-
+import { motion } from "framer-motion"
+import { SetStateAction, useState } from "react"
+import { FaArrowDown } from "react-icons/fa6"
+import PrefernceTab from "./preferTab"
 interface Props {
-    location:{
-            city:string;
-            coord:{
-                latitude:number,
-                longitude:number
-            },
-            address:string
-        } 
+    preferences:{
+        prices:number[],
+        dates:string[],
+        time:string[],
+        holiday:boolean
+    } 
     ids:{
         userId:string;
         barberId:string;
@@ -20,15 +17,17 @@ interface Props {
     setSalon:React.Dispatch<SetStateAction<any>>
 }
 
-export default function EditLocation({
-    location,ids,setSalon
+
+export default function EditPrefereneces({
+    preferences,ids,setSalon
 }:Props) {
+
     const [show,setShow] = useState<boolean>(true)
     return (
-        <div className="h-full w-full  px-6 ">
+        <div className="w-full  px-6 h-full">
             <div className={`border border-white/10 rounded-xl w-full flex flex-col   items-center  ${show?"h-full":""}`}>
                 <div className={`flex justify-center items-center w-full group hover:opacity-60 transition-all duration-300 cursor-pointer hover:bg-white/30 p-2   ${show?"border-b border-b-white/10   rounded-t-xl":"rounded-xl"}`} onClick={() => setShow(prev => !prev)}>
-                    <p className="flex-1 text-center cursor-pointer">location</p>
+                    <p className="flex-1 text-center cursor-pointer">Preferences</p>
                     <motion.div
                     initial={{
                         rotate:"0deg"
@@ -45,11 +44,11 @@ export default function EditLocation({
 
                     </motion.div>
                 </div>
-                {show&&<LocationEditTab 
-                    location={location}
+                <PrefernceTab 
+                    preferences={preferences} 
                     ids={ids}
                     setSalon={setSalon}
-                />}
+                />
                     
             </div>
         </div>
