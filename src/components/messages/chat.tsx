@@ -30,10 +30,11 @@ interface Convo {
         user:any
     }
 }
-export default function Chat({convoId,userId,isBarber}:{
+export default function Chat({convoId,userId,isBarber,barberId}:{
     convoId:string | undefined;
     userId:string|null|undefined;
-    isBarber:boolean
+    isBarber:boolean;
+    barberId:string
 }) {
     const [convo,setConvo] = useState<Convo|null>(null)
     const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -43,17 +44,19 @@ export default function Chat({convoId,userId,isBarber}:{
         
         try {
             let seenMsgs;
-            if(res) {
+            if(res !=="One") {
                 seenMsgs = await axios.post("/api/messages/seen",{
                     userId: isBarber ? res.participants.barber.id : userId,
                     isBarber:isBarber,
                     convoId:res.id
                 })
             } else {
+                
                 seenMsgs = await axios.post("/api/messages/seen",{
-                    userId: isBarber ? convo?.participants.barber.id : userId,
+                    userId: isBarber ? barberId : userId,
                     isBarber:isBarber,
-                    convoId:convo?.id
+                    convoId:convo?.id,
+                    type:"One"
                 })
             }
             return seenMsgs
@@ -83,26 +86,42 @@ export default function Chat({convoId,userId,isBarber}:{
         }
         fetchConvo()
     },[])
+    const handleSeenMessages = useCallback( (data: any) => {
+        if(typeof data == "object") {
+            
+            setConvo((prev:any) => {
+                const newData = prev.messages.map((msg:any) => {
+                    if(msg.id === data.id) {
+            
+                        return data
+                    }
+                    return msg
+                })
+                return {...prev,messages:newData}
+            })
+        }else {
+            
+            setConvo((prev:any) => {
+                const newData = prev.messages.map((msg:any) => {
+                    if(!msg.isSeen) {
+                        
+                        return {...msg,isSeen:true}
+                    }
+                    return msg
+                })
+                return {...prev,messages:newData}
+            })
+
+        }
     
+        
+    }, [convo]);
     useEffect(() => {
+        if(!convo) return
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         });
-        const handleSeenMessages = (data:any) => {
-            if(data) {
-                console.log(data)
-                console.log(convo)
-                setConvo((prev:any) => {
-                    const newData = prev.messages.map((msg:any) => {
-                        if(!msg.isSeen && msg.recieverId == isBarber ? convo?.participants.barber.userId : userId) {
-                            return {...msg,isSeen:true}
-                        }
-                        return msg
-                    })
-                    return {...prev,messages:newData}
-                })
-            }
-        }
+        
         const channel = pusher.subscribe(`chat-${convoId}`);
         channel.bind("seen", handleSeenMessages);
 
@@ -111,8 +130,8 @@ export default function Chat({convoId,userId,isBarber}:{
             pusher.unsubscribe(`chat-${convoId}`);
         };
         
-    },[convoId,convo])
-    const handleNewMessage = useCallback( async (data: any) => {
+    },[convoId,handleSeenMessages])
+    const handleNewMessage = useCallback( (data: any) => {
         setConvo((prevConvo) => {
             if (!prevConvo) return prevConvo;
             return {
@@ -120,12 +139,14 @@ export default function Chat({convoId,userId,isBarber}:{
                 messages: [...prevConvo.messages, data]
             };
         });
-        if(pathname === `/messages/${convoId}` && data.recieverId === isBarber ? convo?.participants.barber.userId : userId) {
-            handelSeenMsg()
+        if(pathname === `/messages/${convoId}` ) {
+            
+            handelSeenMsg("One")
         }
     
         
     }, [convo, convoId, isBarber, pathname, userId]);
+   
     useEffect(() => {
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,

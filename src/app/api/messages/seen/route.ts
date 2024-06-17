@@ -18,7 +18,7 @@ export  async function POST(req:NextRequest)
 {
     try {
         const data = await req.json()
-        const {userId,convoId,isBarber} = data as any
+        const {userId,convoId,isBarber,type} = data as any
         let user:any;
         if(isBarber) {
             user = await prisma.barber.findUnique({
@@ -61,7 +61,12 @@ export  async function POST(req:NextRequest)
                 isSeen:true
             }
         })
-        pusher.trigger(`chat-${convoId}`, "seen", seenMessages[seenMessages.length -1].content);
+        if(type!=="One") {
+            pusher.trigger(`chat-${convoId}`, "seen", seenMessages[seenMessages.length -1].content);
+        } else {
+            
+            pusher.trigger(`chat-${convoId}`, "seen", seenMessages[seenMessages.length -1]);
+        }
         return NextResponse.json({
             success:true
         },{

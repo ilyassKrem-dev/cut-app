@@ -79,14 +79,13 @@ export default function SideBar() {
     }, [convos, handleNewMessage]);
 
     useEffect(() => {
-        if (!convos || !pathname.startsWith("/messages/")) return;
+        if (!convos ) return;
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
             cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER!,
         });
         //@ts-ignore
         const channels = new Map<string, Pusher.Channel>();
         const handleSeenMessages = (data:any) => {
-            console.log(data[data.length-1])
             setConvos((prev:any) => {
                 const newData = prev.barbers.map((barber:any) => {
                     if(barber.messages === data.content) {
@@ -97,7 +96,7 @@ export default function SideBar() {
                     
                 })
                 const newData2 = prev.clients.map((client:any) => {
-                    if(client.messages === data.content) {
+                    if(client.messages === data) {
                         return {...client,unseen:[]}
                     } else {
                         return client
@@ -127,7 +126,7 @@ export default function SideBar() {
             });
         };
         
-    },[convos,pathname])
+    },[convos])
 
     const changeTab = (tabC:string) => {
         if(!convos || convos==undefined || tabC===tab || !session ) return

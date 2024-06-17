@@ -11,7 +11,11 @@ export default async function Page({params}:{
         if(!session) redirect("/")
         return (
           <div className="w-full">
-            <Chat convoId={params?.id} userId={session?.user?.id} isBarber={(session?.user as any).isBarber}/>
+            <Chat 
+            convoId={params?.id} 
+            userId={session?.user?.id} 
+            isBarber={(session?.user as any).isBarber}
+            barberId={(session?.user as any).barberId}/>
           </div>
         );
       } catch (error) {

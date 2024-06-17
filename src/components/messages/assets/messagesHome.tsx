@@ -20,7 +20,7 @@ export default function MessagesHome() {
             {windowSize > 767 &&<div className=" justify-center items-center w-full flex-col gap-2 flex" >
                 <motion.div
                 initial={{opacity:"0",y:"-50%"}}
-                animate={{opacity:"100",y:"0"}}
+                animate={{opacity:1,y:0}}
                 transition={{duration:0.2,ease:'linear'}}
                 >
                     <AiOutlineMessage className="text-7xl"/>
@@ -28,7 +28,7 @@ export default function MessagesHome() {
                 </motion.div>
                 <motion.p
                     initial={{opacity:"0",y:"50%"}}
-                    animate={{opacity:"100",y:"0"}}
+                    animate={{opacity:1,y:0}}
                     transition={{duration:0.2,ease:'linear'}}
                     >Start chatiing</motion.p>
             </div>
