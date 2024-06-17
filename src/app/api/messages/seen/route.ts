@@ -18,7 +18,7 @@ export  async function POST(req:NextRequest)
 {
     try {
         const data = await req.json()
-        const {userId,convoId,isBarber,type} = data as any
+        const {userId,convoId,isBarber} = data as any
         let user:any;
         if(isBarber) {
             user = await prisma.barber.findUnique({
@@ -45,13 +45,14 @@ export  async function POST(req:NextRequest)
             }
         })
         if(!convo) return NextResponse.json({error:"No convo found"},{status:404})
-        const seenMessages = convo.messages.map((msg) => {
+        const seenMessages = convo.messages.filter(msg => msg.receiverId == user.id && !msg.isSeen).map((msg) => {
             if(!msg.isSeen && msg.receiverId == user.id) {
                 return {...msg,isSeen:true}
             } else {
                 return msg
             }
         })
+        
        await prisma.message.updateMany({
             where:{
                 convoId:convo.id,
@@ -61,12 +62,9 @@ export  async function POST(req:NextRequest)
                 isSeen:true
             }
         })
-        if(type!=="One") {
-            pusher.trigger(`chat-${convoId}`, "seen", seenMessages[seenMessages.length -1].content);
-        } else {
-            
-            pusher.trigger(`chat-${convoId}`, "seen", seenMessages[seenMessages.length -1]);
-        }
+        
+        pusher.trigger(`chat-${convoId}`, "seen", seenMessages);
+    
         return NextResponse.json({
             success:true
         },{

@@ -41,7 +41,7 @@ export default function UserContact({convos,tab,unseenBarbers,unseenClients}:{
                         <div className="flex flex-col w-full pr-2">
                             <p className="font-semibold cursor-pointer">{convo.participants[0].barber.salonName}</p>
                             <div className="flex justify-between items-center w-full">
-                                <p className="text-sm text-white/60">{convo.messages}</p>
+                                <p className="text-sm text-white/60">{convo.messages.content}</p>
                                 {unseenBarbers>0 &&<span className="text-sm rounded-full text-white bg-accent  px-1">{unseenBarbers > 10 ?"10+" : unseenBarbers}</span>}
                             </div>
                         </div>
@@ -61,7 +61,7 @@ export default function UserContact({convos,tab,unseenBarbers,unseenClients}:{
                         <div className="flex flex-col w-full pr-2">
                             <p className="font-semibold cursor-pointer">{convo.participants[0].user.name}</p>
                             <div className="flex justify-between items-center w-full">
-                                <p className="text-sm text-white/60">{convo.messages}</p>
+                                <p className="text-sm text-white/60">{convo.messages.content}</p>
                                 {unseenClients>0 &&<span className="text-sm rounded-full text-white bg-accent  px-1">{unseenClients > 10 ?"10+" : unseenClients}</span>}
                             </div>
                         </div>

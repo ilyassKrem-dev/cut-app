@@ -31,6 +31,7 @@ export const POST = async(req:NextRequest) => {
             }
         })
         pusher.trigger(`chat-${convoId}`, "message", message);
+        pusher.trigger(`chat-${convoId}`, "message-bar", message);
         return NextResponse.json(message,{
             status:200
         });

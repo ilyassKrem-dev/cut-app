@@ -40,25 +40,15 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const {toast} = useToast()
     const pathname = usePathname()
-    const handelSeenMsg = async(res?:any) => {
+    const handelSeenMsg = async() => {
         
         try {
-            let seenMsgs;
-            if(res !=="One") {
-                seenMsgs = await axios.post("/api/messages/seen",{
-                    userId: isBarber ? res.participants.barber.id : userId,
-                    isBarber:isBarber,
-                    convoId:res.id
-                })
-            } else {
-                
-                seenMsgs = await axios.post("/api/messages/seen",{
-                    userId: isBarber ? barberId : userId,
-                    isBarber:isBarber,
-                    convoId:convo?.id,
-                    type:"One"
-                })
-            }
+            const seenMsgs = await axios.post("/api/messages/seen",{
+                userId: isBarber ? barberId : userId,
+                isBarber:isBarber,
+                convoId:convoId
+            })
+            
             return seenMsgs
         } catch (error) {
             throw new Error(`Internal server error`)
@@ -71,7 +61,7 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
                 if(res) {
                     
                     setConvo(res as any)
-                    await handelSeenMsg(res)
+                    await handelSeenMsg()
                     
                 } 
             } catch (error:any) {
@@ -79,7 +69,7 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
                 toast({
                     variant:"destructive",
                     title:"Error",
-                    description:error.response.data.error
+                    description:error.message
                 })
 
             }
@@ -87,27 +77,18 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
         fetchConvo()
     },[])
     const handleSeenMessages = useCallback( (data: any) => {
-        if(typeof data == "object") {
-            
+    
+        if (data.length > 0) {
             setConvo((prev:any) => {
                 const newData = prev.messages.map((msg:any) => {
-                    if(msg.id === data.id) {
-            
-                        return data
-                    }
-                    return msg
-                })
-                return {...prev,messages:newData}
-            })
-        }else {
-            
-            setConvo((prev:any) => {
-                const newData = prev.messages.map((msg:any) => {
-                    if(!msg.isSeen) {
+                    const findMsg = data.find((data:any) => msg.id == data.id)
+                    if(findMsg) {
                         
-                        return {...msg,isSeen:true}
+                        return findMsg
+                    } else {
+                        return msg
                     }
-                    return msg
+                    
                 })
                 return {...prev,messages:newData}
             })
@@ -141,7 +122,7 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
         });
         if(pathname === `/messages/${convoId}` ) {
             
-            handelSeenMsg("One")
+            handelSeenMsg()
         }
     
         

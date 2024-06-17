@@ -116,11 +116,11 @@ export const  getContacts = async (userId:string) => {
 
         
         const barbersConvos = allConvos.barbers.length > 0 ? {...allConvos,barbers:[...allConvos.barbers].map((convo:any) => {
-            return {...convo,messages:convo.messages.length>0 ?convo.messages[0].content: null,unseen:convo.messages.filter((msg:any) => !msg.isSeen && msg.receiverId === userId)}
+            return {...convo,messages:convo.messages.length>0 ?convo.messages[0]: null,unseen:convo.messages.filter((msg:any) => !msg.isSeen && msg.receiverId === userId)}
         })} : []
         allConvos.barbers = barbersConvos.barbers ? barbersConvos.barbers : []
         const clientsConvos = allConvos.clients.length > 0 ? {...allConvos,clients:[...allConvos.clients].map((convo:any) => {
-            return {...convo,messages:convo.messages.length>0 ?convo.messages[0].content: null,unseen:convo.messages.filter((msg:any) => !msg.isSeen && msg.receiverId == barber?.id)}
+            return {...convo,messages:convo.messages.length>0 ?convo.messages[0]: null,unseen:convo.messages.filter((msg:any) => !msg.isSeen && msg.receiverId == barber?.id)}
         })} : []
         allConvos.clients = clientsConvos.clients? clientsConvos.clients : []
 
