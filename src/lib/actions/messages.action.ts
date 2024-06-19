@@ -158,7 +158,12 @@ export const getConvo = async(convoId:string,userId:string) => {
                         }
                     }
                 },
-                messages:true
+                messages:{
+                    orderBy:{
+                        sentAt:"desc"
+                    },
+                    take:20
+                }
             },
             where:{
                 id:convoId,
@@ -176,9 +181,83 @@ export const getConvo = async(convoId:string,userId:string) => {
             }
         })
         const newConvo = convo && {...convo,participants:convo?.participants[0]}
-        
-        return newConvo
+        const reversed = newConvo?.messages.reverse()
+        return {...newConvo,messages:reversed}
     } catch (error:any) {
         throw new Error(`Failed to getConvo ${error.message}`)
+    }
+}
+export const  getMoreMessages = async(convoId:string,lastMessageId:string,take:number=20) => {
+    try {
+        const lastMessage = await prisma.message.findUnique({
+            where:{
+                id:lastMessageId
+            }
+        })
+
+        if(!lastMessage) {
+            throw new Error("Message not found")
+        }
+        const moreMessages = await prisma.message.findMany(
+            {
+                where:{
+                    convoId:convoId,
+                    sentAt:{
+                        lt:lastMessage.sentAt
+                    }
+                },
+                orderBy:{
+                    sentAt:"desc"
+                },
+                take:take
+            }
+        )
+    
+        const reversed = moreMessages.reverse()
+        return reversed
+    } catch (error) {
+        throw new Error(`Error fetching older messages,try again later`)
+    }
+}
+export const getUnreedMessagesN = async(userId:string) => {
+    try {
+        const user = await prisma.user.findUnique(
+            {
+                where:{
+                    id:userId
+                }
+            }
+        )
+        if(!user) throw new Error(`User not found`)
+        const barber = await prisma.barber.findFirst({
+        where:{
+            userId:userId
+        }})
+        let messages;
+        if(barber) {
+            messages = await prisma.message.findMany(
+                {
+                    where:{
+                        receiverId:barber.id,
+                        isSeen:false
+                    }
+                })
+        }else {
+            messages = await prisma.message.findMany(
+            {
+                where:{
+                    receiverId:user.id,
+                    isSeen:false
+                }
+            })
+
+        }
+        const messagesChanged = messages.map(msg => {
+            return msg.convoId
+        } )
+        
+        return messagesChanged
+    } catch (error) {
+        throw new Error('Failed to load')
     }
 }

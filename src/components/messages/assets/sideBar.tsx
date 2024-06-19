@@ -119,6 +119,7 @@ export default function SideBar() {
     useEffect(() => {
         if(!pathname.startsWith("/messages/") || !session || !convos) return
         const splited = pathname.split("/")[2]
+        if(!splited) return
         changeSeen(splited)
     },[pathname])
     useEffect(() => {

@@ -1,7 +1,7 @@
 "use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
-import { getConvo } from "@/lib/actions/messages.action"
+import { getConvo,getMoreMessages } from "@/lib/actions/messages.action"
 import { usePathname } from "next/navigation";
 import TopChat from "./chat-assets/topChat";
 import { useToast } from "../ui/use-toast";
@@ -37,6 +37,9 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
     barberId:string
 }) {
     const [convo,setConvo] = useState<Convo|null>(null)
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [scrolledToBottom,setScrolledToBottom] = useState<boolean>(false)
+    const messagesContainerRef = useRef<HTMLDivElement>(null);
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const {toast} = useToast()
     const pathname = usePathname()
@@ -113,6 +116,7 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
         
     },[convoId,handleSeenMessages])
     const handleNewMessage = useCallback( (data: any) => {
+        setScrolledToBottom(false)
         setConvo((prevConvo) => {
             if (!prevConvo) return prevConvo;
             return {
@@ -144,8 +148,38 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
     }, [convoId, handleNewMessage]);
 
     useEffect(() => {
+        if(scrolledToBottom) return
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        }, [convo?.messages]);
+        setScrolledToBottom(true)
+        
+    }, [convo?.messages]);
+    const loadMoreMessages = async () => {
+        if (loadingMore || !convo) return;
+        setLoadingMore(true);
+        try {
+            const moreMessages = await getMoreMessages(convoId as string,convo.messages[0].id);
+            setConvo(prevConvo => ({
+                ...prevConvo!,
+                messages: [...moreMessages, ...prevConvo!.messages]
+            }));
+        } catch (error) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Failed to load more messages"
+            });
+        } finally {
+            setLoadingMore(false);
+        }
+    };
+    const handleScroll = () => {
+        if (messagesContainerRef.current && messagesContainerRef.current.scrollTop ==0) {
+            
+            loadMoreMessages();
+            messagesContainerRef.current.scrollTo(0,10)
+          
+        }
+    };
 
     if(convo == null) {
         return (
@@ -163,7 +197,10 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
                 barber={convo.participants.barber.userId === userId ?null :convo.participants.barber}
                 user={convo.participants.barber.userId === userId ?convo.participants.user :null}
                 />
-                <div className="flex-1 overflow-y-auto custom-scrollbar">
+                <div ref={messagesContainerRef} className="flex-1 overflow-y-auto custom-scrollbar relative" onScroll={handleScroll}>
+                    {loadingMore&&<div className="absolute top-0 right-0 left-0 mt-5">
+                        <LoadingAnimation />
+                    </div>}
                     <Messages 
                     messages={convo.messages}
                     userImage={isBarber ? convo.participants.barber.images[0]:convo.participants.user.image}
