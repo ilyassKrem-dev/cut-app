@@ -30,7 +30,7 @@ export default function TimePre({time,setPrefences}:Props) {
 
     const handleChangeOpen = (value: Dayjs | null) => {
         if(value ==null) return
-        const formattedTime = value?.format('h:mm A');
+        const formattedTime = value?.format('HH:mm');
         setPrefences((prev:any) => {
             return {...prev,time:{...prev.time,open:formattedTime?.toString()}}
         })
@@ -38,14 +38,14 @@ export default function TimePre({time,setPrefences}:Props) {
     };
     const handleChangeClose = (value: Dayjs | null) => {
         if(value ==null) return
-        const formattedTime = value?.format('h:mm A');
+        const formattedTime = value?.format('HH:mm');
         setPrefences((prev:any) => {
             return {...prev,time:{...prev.time,close:formattedTime?.toString()}}
         })
         
     };
-    const openTime = time.open ? dayjs(time.open, 'h:mm A') : null;
-    const closeTime = time.close ? dayjs(time.close, 'h:mm A') : null;
+    const openTime = time.open ? dayjs(time.open, 'HH:mm') : null;
+    const closeTime = time.close ? dayjs(time.close, 'HH:mm') : null;
     
     return (
         <div className="md:flex items-center justify-between space-y-3 md:space-y-0 border border-white/20 md:border-0 p-6 md:p-0 rounded-lg md:rounded-none">
@@ -66,6 +66,7 @@ export default function TimePre({time,setPrefences}:Props) {
                                         minutes: renderTimeViewClock,
                                         seconds: renderTimeViewClock,
                                     }}
+                                    ampm={false}
                                     value={openTime}
                                     sx={
                                         {"& .MuiSvgIcon-root":{
@@ -94,6 +95,7 @@ export default function TimePre({time,setPrefences}:Props) {
                                 <MobileTimePicker
                                     label="Open time"
                                     name='open'
+                                    ampm={false}
                                     onChange={handleChangeOpen}
                                     value={openTime}
                                     viewRenderers={{
@@ -133,6 +135,7 @@ export default function TimePre({time,setPrefences}:Props) {
                             <div className="hidden md:flex">
                                 <DesktopTimePicker
                                 value={closeTime}
+                                ampm={false}
                                 onChange={handleChangeClose}
                                     label="Close time"
                                     name='close'
@@ -167,6 +170,7 @@ export default function TimePre({time,setPrefences}:Props) {
                             </div>
                             <div className="flex md:hidden">
                                 <MobileTimePicker
+                                    ampm={false}
                                     label="Close time"
                                     value={closeTime}
                                     name='close'

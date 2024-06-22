@@ -15,5 +15,8 @@ export default async function Page({params}:{
         redirect("/")
     }
     
-    return <SalonId barber={barber} userId={session?.user?.id}/>
+    return <SalonId 
+        barber={barber} 
+        userId={session?.user?.id}
+        barberUserId={barber.userId}/>
 }

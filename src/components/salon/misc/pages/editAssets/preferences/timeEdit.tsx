@@ -21,22 +21,24 @@ export default function TimeEdit({time,setNewPreferences}:{
 
     const handleChangeOpen = (value: Dayjs | null) => {
         if(value ==null) return
-        const formattedTime = value?.format('h:mm A');
+        const formattedTime = value?.format('HH:mm');
         setNewPreferences((prev:any) => {
-            return {...prev,time:{...prev.time,open:formattedTime?.toString()}}
+            const newTime = prev.time.map((time:string,index:number) => index == 0 ? time = formattedTime.toString():time)
+            return {...prev,time:newTime}
         })
         
     };
     const handleChangeClose = (value: Dayjs | null) => {
         if(value ==null) return
-        const formattedTime = value?.format('h:mm A');
+        const formattedTime = value?.format('HH:mm');
         setNewPreferences((prev:any) => {
-            return {...prev,time:{...prev.time,close:formattedTime?.toString()}}
+            const newTime = prev.time.map((time:string,index:number) => index == 1 ? time = formattedTime.toString():time)
+            return {...prev,time:newTime}
         })
         
     };
-    const openTime = time[0] ? dayjs(time[0], 'h:mm A') : null;
-    const closeTime = time[1] ? dayjs(time[1], 'h:mm A') : null;
+    const openTime = time[0] ? dayjs(time[0], 'HH:mm') : null;
+    const closeTime = time[1] ? dayjs(time[1], 'HH:mm') : null;
     
     return (
         <div className=" ">
@@ -52,6 +54,7 @@ export default function TimeEdit({time,setNewPreferences}:{
                                 <DesktopTimePicker
                                     label="Open time"
                                     name='open'
+                                    ampm={false}
                                     viewRenderers={{
                                         hours: renderTimeViewClock,
                                         minutes: renderTimeViewClock,
@@ -85,6 +88,7 @@ export default function TimeEdit({time,setNewPreferences}:{
                                 <MobileTimePicker
                                     label="Open time"
                                     name='open'
+                                    ampm={false}
                                     onChange={handleChangeOpen}
                                     value={openTime}
                                     viewRenderers={{
@@ -124,6 +128,7 @@ export default function TimeEdit({time,setNewPreferences}:{
                             <div className="hidden md:flex">
                                 <DesktopTimePicker
                                 value={closeTime}
+                                ampm={false}
                                 onChange={handleChangeClose}
                                     label="Close time"
                                     name='close'
@@ -161,6 +166,7 @@ export default function TimeEdit({time,setNewPreferences}:{
                                     label="Close time"
                                     value={closeTime}
                                     name='close'
+                                    ampm={false}
                                     onChange={handleChangeClose}
                                     viewRenderers={{
                                         hours: renderTimeViewClock,

@@ -27,7 +27,7 @@ model User {
   participants Participant[]
   comments Comment[]
   favorites   Favorite[] 
-  reservations Resevation[]  
+  reservations Reservation[]  
 }
 
 model Barber {
@@ -49,15 +49,15 @@ model Barber {
   participants Participant[]
   favorites   Favorite[]
   salonName String
-  reservations Resevation[]  
+  reservations Reservation[]  
 }
-model Resevation {
+model Reservation {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   user User @relation(fields: [userId],references: [id])
   userId String @db.ObjectId
   barber Barber @relation(fields: [barberId],references: [id])
   barberId String @db.ObjectId
-  data DateTime
+  date DateTime
   time String
 
 }

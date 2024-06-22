@@ -232,6 +232,7 @@ export const ChangeSalonPrefer = async(
         }
     }
 ) => {
+
     try {
         const user = await prisma.user.findUnique({
             where:{

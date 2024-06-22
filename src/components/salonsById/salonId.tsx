@@ -41,10 +41,11 @@ interface Props {
         comments:any
     } | undefined;
     userId:string |null |undefined;
-    pathname?:string
+    pathname?:string;
+    barberUserId?:string
 }
 
-export default function SalonId({barber,userId,pathname}:Props) {
+export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
     
     const datesCheck = barber?.openDays.length === 7 ? "Entire week" : barber?.openDays.join("-")
     return (
@@ -115,9 +116,13 @@ export default function SalonId({barber,userId,pathname}:Props) {
                     </div>
                     {!pathname?<SalonButtons 
                     barberPrices={barber?.Prices as number[]}
-                    barberTimes={barber?.time as string[]}
                     userId={userId}
                     barberId={barber?.id as string}
+                    barberUserId={barberUserId}
+                    barberTime={{
+                        times:barber?.time as string[],
+                        days:barber?.openDays as string[]
+                    }}
                     />
                     :
                     <div className="hidden md:flex flex-1 max-w-[400px] h-fit mt-10">
