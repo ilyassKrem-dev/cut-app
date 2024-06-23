@@ -28,7 +28,7 @@ export default function SavePref(
 ) {
     const [loading,setLoading] = useState<boolean>(false)
     const {toast} = useToast()
-    console.log(newPreferences.time)
+    
     const handleSave = async() => {
         if(loading||check) return
         try {

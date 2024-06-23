@@ -3,26 +3,37 @@ import { SetStateAction, useEffect, useState } from "react"
 import { FaArrowLeft } from "react-icons/fa";
 import { MdArrowForwardIos } from "react-icons/md"
 import TimePicker from "./assets/timePicker";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 
 
-
-export default function TimeSelect({selectedTime,setSelectedTime,barberTime}:{
+export default function TimeSelect({reserved,selectedDay,selectedTime,setSelectedTime,barberTime}:{
+    reserved:any[]
+    selectedDay:string;
     barberTime:string[];
     selectedTime:string;
     setSelectedTime:React.Dispatch<SetStateAction<string>>
 }) {
+  
     const [windowSize,setWindowSize] = useState<number>(window.innerWidth)
     const [showTime,setShowTime] = useState<boolean>(false)
     const [continueToMinute,setContinueToMinute] = useState<boolean>(false)
-    const [fullTime,setFullTime] = useState<string>("")
+    const [fullTime,setFullTime] = useState<string>(selectedTime)
     const handleBack = () => {
-        if(continueToMinute) return setContinueToMinute(false)
+        if(continueToMinute) {
+            return setContinueToMinute(false)
+        }
         setShowTime(false)
-        setFullTime("")
         if(selectedTime) return
+        
         setSelectedTime("")
         setContinueToMinute(false)
-        setFullTime("")
+
     }
     useEffect(() => {
         const changedWidth = () => {
@@ -44,12 +55,34 @@ export default function TimeSelect({selectedTime,setSelectedTime,barberTime}:{
 
         return () => document.body.removeEventListener("click",handleOutsideClick)
     },[])
+    const findDates = reserved.filter(dates => dates.date == selectedDay)
+    const times:string[] = [];
+    for(let i = Number(barberTime[0].split(":")[0]);i <= Number(barberTime[1].split(":")[0]);i++) {
+        if(Number(barberTime[0].split(":")[0])!==i && Number(barberTime[0].split(":")[1]) >= 30 ){
+            if(Number(barberTime[1].split(":")[0]) != i ) {
+                if(!findDates.find(dates => dates.time == i.toString()+":00")) {
+                    times.push(i.toString()+":00")
 
+                }
+
+            }
+        }
+    }
+
+    const minuteAdded = times.map(time => {
+        if(Number(barberTime[1].split(":")[0]) == Number(time.split(":")[0]) || findDates && findDates.find(dates => dates.time == time.split(":")[0]+":30")) return
+        return time.split(":")[0]+":30"})
+    const combinedTimes = [...times,...minuteAdded].sort().filter(times => times !==undefined)
+    
+    const handleChangeTime = (value:string) => {
+        setSelectedTime(value)
+    }
     return (
         <>
             {windowSize <767 
                 ?
                 <>
+                {selectedDay&&<div>
                     <div className="relative border-white/20 border rounded-lg flex justify-between p-4 items-center cursor-pointer hover:bg-white/30 hover:opacity-80 transition-all duration-300" onClick={() =>setShowTime(true)}>
                         <div className="flex justify-center items-center " >
                             Time
@@ -87,6 +120,8 @@ export default function TimeSelect({selectedTime,setSelectedTime,barberTime}:{
                                     <p className="text-sm text-white/40 mt-3 h-3">{fullTime&&`Time: ${fullTime}`}</p>
                                 </div> 
                                 <TimePicker
+                                    findDates={findDates as any[]}
+                                    selectedTime={selectedTime}
                                     setFullTime={setFullTime}
                                     time={barberTime}
                                     continueM={continueToMinute}
@@ -99,9 +134,23 @@ export default function TimeSelect({selectedTime,setSelectedTime,barberTime}:{
 
                         </div>
                     </div>}
+
+                </div>}
                 </>
                 :
-                ""
+                <div className="flex-1">
+                <Select value={selectedTime} onValueChange={handleChangeTime} disabled={!selectedDay}>
+                    <SelectTrigger className="w-full  bg-black ">
+                        <SelectValue placeholder="Time" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-black text-white max-h-[200px]">
+                        {combinedTimes.map((time,index) => {
+                            return <SelectItem key={index} value={time as string}>{time}</SelectItem>
+                        })}
+                    </SelectContent >
+                </Select>
+
+            </div>
             }
         </>
         

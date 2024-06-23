@@ -1,53 +1,43 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { useLoginContext } from "@/assets/wrappers/loginWrapper";
-import { useRouter } from "next/navigation";
-import { talkToBarber } from "@/lib/actions/barber.action";
-import { useToast } from "@/components/ui/use-toast";
-import { ToastAction } from "@/components/ui/toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Reserve from "./reservation/reserve";
+import { getReservations } from "@/lib/actions/reservation.action";
 
 
-export default function SalonButtons({barberPrices,userId,barberId,barberUserId,barberTime}:{
+export default function SalonButtons({barberPrices,userId,barberId,barberUserId,barberTimeAprices}:{
     barberPrices:number[];
     userId:string|null|undefined;
     barberId:string;
     barberUserId?:string;
-    barberTime:{
+    barberTimeAprices:{
         times:string[];
         days:string[];
+        prices:number[];
     }
 }) {
-    const {toast} = useToast()
+    const [barberReserv,setBarberReserv] = useState<any[]>([])
     const {setShowLogin} = useLoginContext()
     const [show,setShow] = useState<boolean>(false)
-    const router = useRouter()
+    useEffect(() => {
+        if(!userId) return
+        const fetchResev = async() => {
+            try {
+                const res = await getReservations({
+                    barberId
+                })
+                if(res) setBarberReserv(res)
+            } catch (error) {
+                
+            }
+        }
+        fetchResev()
+    },[userId,barberId])
     const handleClick = async() => {
         if(!userId) {
             return setShowLogin(true)
         }
-        // try {
-        //     const res = await talkToBarber({userId,barberId})
-        //     if(res?.message) {
-        //         return toast({
-        //             title:"Message",
-        //             description:`${res.message}`,
-        //             action: <ToastAction altText="Close">Close</ToastAction>,
-        //         })
-        //     }
-        //     if(res.success) {
-        //         router.push(`/messages/${res.success}`)
-        //     }
-        // } catch (error:any) {
-            
-        //     toast({
-        //         variant:"destructive",
-        //         title:"Error",
-        //         description:`Failed to Continue`,
-        //         action: <ToastAction altText="Close">Close</ToastAction>,
-        //     })
-        // }
         setShow(true)
     }
 
@@ -59,7 +49,7 @@ export default function SalonButtons({barberPrices,userId,barberId,barberUserId,
                     <div className="text-center">
                         <p className="font-bold text-xl">{barberPrices[0]}DH - {barberPrices[1]}DH</p>
                         <p className="text-sm mt-1 text-gray-400">
-                            {barberTime.times[0]}-{barberTime.times[1]}
+                            {barberTimeAprices.times[0]}-{barberTimeAprices.times[1]}
                             
                         </p>
                     </div>
@@ -71,7 +61,7 @@ export default function SalonButtons({barberPrices,userId,barberId,barberUserId,
                     <div className="flex flex-col flex-1 max-[331px]:text-sm">
                         <p className="font-bold">{barberPrices[0]}DH - {barberPrices[1]}DH</p>
                         <p className="text-xs mt-1 text-gray-400">
-                            {barberTime.times[0]}-{barberTime.times[1]}
+                            {barberTimeAprices.times[0]}-{barberTimeAprices.times[1]}
                         </p>
 
                     </div>
@@ -79,8 +69,9 @@ export default function SalonButtons({barberPrices,userId,barberId,barberUserId,
                     className="bg-green-1  hover:opacity-80 hover:bg-green-1 flex-1">Talk</Button>}
                 </div>
             </div>
-            {!show&&<Reserve
-            barberTime={barberTime}
+            {show&&<Reserve
+            barberReserves={barberReserv}
+            barberTimeAprice={barberTimeAprices}
             barberId={barberId} 
             userId={userId as string}
             setShow={setShow}/>}

@@ -36,7 +36,7 @@ export default function FavoritesIcon({userId,barberId,favState}:{
         <div className=" rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer flex items-center gap-2" onClick={handleClick}>
             {favoriteState?
             <motion.div
-            animate={{scale:loading?"1.2":"1"}}
+            animate={{scale:loading?1.2:1}}
             transition={{duration:0.1,ease:"easeInOut"}}
             >
                 <FaHeart className={`${pathname!=="/"?"text-2xl":"text-lg text-black"}`}/>
@@ -44,7 +44,7 @@ export default function FavoritesIcon({userId,barberId,favState}:{
             </motion.div>
             :
             <motion.div
-            animate={{scale:loading?"1.2":"1"}}
+            animate={{scale:loading?1.2:1}}
             transition={{duration:0.1,ease:"easeInOut"}}
             >
                 <FaRegHeart className={`${pathname!=="/"?"text-2xl":"text-lg text-black"}`}/>

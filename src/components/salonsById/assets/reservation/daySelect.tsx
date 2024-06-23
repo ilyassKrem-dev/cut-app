@@ -74,6 +74,9 @@ export default function DaySelect({setSelectedDay,selectedDay,barberDays}:{
         daysNew.push(fullDate);
     }
     const daysOfbarber = daysNew.filter((day) => barberDays.includes(day.substring(0,2)))
+    const handleChangeDay = (value:string) => {
+        setSelectedDay(value)
+    }
     return (
         <>
             {windowSize <767 
@@ -135,7 +138,7 @@ export default function DaySelect({setSelectedDay,selectedDay,barberDays}:{
             </>
             :
             <div className="flex-1">
-                <Select>
+                <Select value={selectedDay} onValueChange={handleChangeDay}>
                         <SelectTrigger className="w-full  bg-black">
                             <SelectValue placeholder="Day" />
                         </SelectTrigger>

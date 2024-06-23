@@ -119,9 +119,10 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                     userId={userId}
                     barberId={barber?.id as string}
                     barberUserId={barberUserId}
-                    barberTime={{
+                    barberTimeAprices={{
                         times:barber?.time as string[],
-                        days:barber?.openDays as string[]
+                        days:barber?.openDays as string[],
+                        prices:barber?.Prices as number[]
                     }}
                     />
                     :

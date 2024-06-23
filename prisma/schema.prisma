@@ -57,8 +57,10 @@ model Reservation {
   userId String @db.ObjectId
   barber Barber @relation(fields: [barberId],references: [id])
   barberId String @db.ObjectId
-  date DateTime
+  date String
   time String
+  price Int
+  createdAt DateTime @default(now())
 
 }
 model Favorite {
@@ -106,6 +108,8 @@ model Comment {
   barberId String @db.ObjectId
   barber Barber @relation(fields: [barberId],references: [id])
   stars Star?
+  createdAt DateTime @default(now())
+  updatedAt DateTime? 
 }
 
 model Star {
