@@ -1,11 +1,7 @@
-"use client"
 
-import { fetchUser } from "@/lib/actions/user.action"
-import { useEffect, useState } from "react"
-import { useToast } from "../ui/use-toast"
-import { ToastAction } from "../ui/toast"
+import { useState } from "react"
 import ProfileTop from "./assets/profileTop"
-interface Profile {
+type Profile  = {
     id:string;
     image:string;
     name:string;
@@ -17,42 +13,10 @@ interface Profile {
     comments:any[];
     barberId:string|null
 }
-export default function Profile({userId}:{
-    userId:string
+export default function Profile({profile}:{
+    profile:Profile
 }) {
-    const [profile,setProfile] = useState<Profile>()
     const [tab,setTab] = useState<string>("about")
-    const {toast} = useToast()
-    useEffect(() => {
-        const getuser = async() => {
-            try {
-                const res = await fetchUser(userId)
-                
-                //@ts-ignore
-                if(res) {
-                    setProfile(res as any)
-                }else {
-                    toast({
-                        variant:"destructive",
-                        title:"Error",
-                        //@ts-ignore
-                        description:res.message,
-                        action:<ToastAction altText="Close">Close</ToastAction>
-                    })
-                }
-            } catch (error:any) {
-                toast({
-                    variant:"destructive",
-                    title:"Error",
-                    description:error.message,
-                    action:<ToastAction altText="Close">Close</ToastAction>
-                })
-            }
-            
-        }
-        getuser()
-    },[userId])
-    
     return (
         <> 
             {profile&&

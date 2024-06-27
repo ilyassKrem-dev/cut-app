@@ -138,7 +138,7 @@ export const fetchUser = async(userId:string) => {
 
             }
         })
-        if(!user) return {message:"Error getting profile"}
+        if(!user) throw Error(`Error getting profile`)
         return user
     } catch (error:any) {
         throw Error(`Failed to get Profile ${error.message}`)

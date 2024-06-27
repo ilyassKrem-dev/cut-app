@@ -32,7 +32,7 @@ export default function ProfileSettings() {
 
     return (
         <div>
-            <div className="absolute right-0 top-0 border-b border-l md:static  p-1 rounded-l-lg group flex gap-1 transition-all duration-300 cursor-pointer border-white/20 items-center md:border-0" onClick={() => setShow(prev => !prev)}>
+            <div className="absolute right-0 top-0 border-b border-l md:static  p-1 rounded-l-lg group hidden gap-1 transition-all duration-300 cursor-pointer border-white/20 items-center md:border-0 md:flex" onClick={() => setShow(prev => !prev)}>
                 <IoSettingsSharp  className="text-3xl cursor-pointer text-white/60 group-hover:opacity-60 transition-all duration-300"/>
                 <p className=" group-hover:inline-block hidden transition-all duration-300 cursor-pointer group-hover:opacity-60 md:group-hover:hidden">Settings</p>
             </div>
@@ -55,7 +55,7 @@ export default function ProfileSettings() {
                         <p className="flex-1 text-center font-semibold text-lg">Settings</p>
                     </div>
                     <div className=" mx-2 flex flex-col gap-4 md:mx-0 md:gap-2">
-                    <Link 
+                        <Link 
                         href={"/profile/edit"}
                         className="flex gap-4 text-lg items-center hover:bg-white/10 rounded-lg p-1 px-2 transition-all duration-300 cursor-pointer md:p-3 md:rounded-t-2xl md:text-base md:rounded-b-none">
                             <FaUserEdit className="text-xl text-white/60 cursor-pointer"/>

@@ -1,6 +1,6 @@
 
 import { useSession } from "next-auth/react"
-import { FaRegHeart,FaHeart } from "react-icons/fa"
+import { FaRegHeart } from "react-icons/fa"
 import BarberIcons from "./barber/berberIcons";
 import MessagesIcon from "./user/messagesIcon";
 import Link from "next/link";
