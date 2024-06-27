@@ -53,7 +53,7 @@ export default function SalonButtons({barberPrices,userId,barberId,barberUserId,
                             
                         </p>
                     </div>
-                    <Button onClick={handleClick} className="bg-green-1  hover:opacity-80 hover:bg-green-1 w-full">Talk</Button>
+                    <Button onClick={handleClick} className="bg-green-1  hover:opacity-80 hover:bg-green-1 w-full">Reserve</Button>
                 </div>
             </div>
             <div className="sm:hidden fixed z-50 bottom-0 right-0 left-0 bg-black">
@@ -66,7 +66,7 @@ export default function SalonButtons({barberPrices,userId,barberId,barberUserId,
 
                     </div>
                     {userId !== barberUserId&&<Button onClick={handleClick}  
-                    className="bg-green-1  hover:opacity-80 hover:bg-green-1 flex-1">Talk</Button>}
+                    className="bg-green-1  hover:opacity-80 hover:bg-green-1 flex-1">Reserve</Button>}
                 </div>
             </div>
             {show&&<Reserve

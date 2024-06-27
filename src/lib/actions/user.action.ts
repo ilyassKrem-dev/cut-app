@@ -270,3 +270,36 @@ export const changeUserPassword = async(
         throw new Error(error.message)
     }
 }
+
+export const getAllFavorites = async(userId:string) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where:{
+                id:userId
+            }
+        })
+        if(!user) throw new Error(`Cant find user`)
+        const favorites = await prisma.favorite.findMany({
+            where:{
+                userId:userId
+            },
+            select:{
+                barber:{
+                    select:{
+                        images:true,
+                        salonName:true,
+                        id:true,
+                        time:true,
+                        Prices:true
+                    }
+                },
+                id:true,
+
+            }
+        })
+        const favoriteUpdated = favorites.map((fav) => ({...fav,barber:{...fav.barber,images:fav.barber.images[0]}}))
+        return favoriteUpdated
+    } catch (error:any) {
+        throw new Error(error.message)
+    }
+}

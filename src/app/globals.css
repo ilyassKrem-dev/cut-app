@@ -189,3 +189,16 @@ input[data-autocompleted] {
 .leaflet-container {
   z-index: 30 !important;
 }
+
+
+
+.seperator::before {
+  position: absolute;
+  content:"";
+  left: 50%;
+  top: 28%;
+  height: 60px;
+  width: 100%;
+  background-color: black;
+  transform: rotate(124deg) scale(1.5) skew(3deg) translate(-6px);
+}

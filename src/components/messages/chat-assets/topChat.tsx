@@ -1,6 +1,7 @@
 
 import Image from "next/image"
 
+
 interface Props {
     barber:{
         salonName:string;
@@ -20,24 +21,7 @@ interface Props {
 }
 
 export default function TopChat({barber,user}:Props) {
-    function isCurrentTimeBetween(startTime:any, endTime:any) {
-        const currentTime = new Date();
-        
-        const start = new Date();
-        const [startHours, startMinutes, startPeriod] = startTime.match(/(\d+):(\d+)\s*(AM|PM)/i).slice(1);
-        start.setHours((startPeriod === 'PM' && +startHours !== 12 ? +startHours + 12 : +startHours) % 24);
-        start.setMinutes(+startMinutes);
-        start.setSeconds(0);
-        
-        const end = new Date();
-        const [endHours, endMinutes, endPeriod] = endTime.match(/(\d+):(\d+)\s*(AM|PM)/i).slice(1);
-        end.setHours((endPeriod === 'PM' && +endHours !== 12 ? +endHours + 12 : +endHours) % 24);
-        end.setMinutes(+endMinutes);
-        end.setSeconds(0);
     
-        return currentTime >= start && currentTime <= end;
-    }
-
     return (
         <>
             {barber?
@@ -65,7 +49,7 @@ export default function TopChat({barber,user}:Props) {
                             <div className="rounded-full p-1 bg-accent"/>
                             <p className="text-xs text-accent cursor-pointer">Close</p>
                         </div>}
-                    </div>
+                        </div>
                 </div>
             </div>
             :
@@ -86,4 +70,25 @@ export default function TopChat({barber,user}:Props) {
             </div>}
         </>
     )
+}
+function isCurrentTimeBetween(startTime:any, endTime:any) {
+    const currentTime = new Date();
+    
+    const start = new Date();
+    const [startHours, startMinutes] = startTime.match(/(\d+):(\d+)/i).slice(1);
+    start.setHours(+startHours);
+    start.setMinutes(+startMinutes);
+    start.setSeconds(0);
+    
+    const end = new Date();
+    const [endHours, endMinutes] = endTime.match(/(\d+):(\d+)/i).slice(1);
+    end.setHours(+endHours);
+    end.setMinutes(+endMinutes);
+    end.setSeconds(0);
+    if (start > end) {
+        return currentTime >= start || currentTime <= end;
+    } else {
+        return currentTime >= start && currentTime <= end;
+    }
+
 }

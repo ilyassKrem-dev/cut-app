@@ -23,7 +23,7 @@ export default function BarberImages({barberImages}:{barberImages:string[]| unde
         };
     }, []);
     return (
-        <div className="flex gap-2">
+        <div className="flex gap-2 max-w-[1400px] mx-auto">
             {barberImages?.slice(0,3).map((img,index:number) => {
                 
                 return (
@@ -31,8 +31,8 @@ export default function BarberImages({barberImages}:{barberImages:string[]| unde
                         <Image
                             src={img}
                             alt="image"
-                            width={1280}
-                            height={1280}
+                            width={2000}
+                            height={2000}
                             priority
                             placeholder="blur"
                             blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(1280, 1280))}`}

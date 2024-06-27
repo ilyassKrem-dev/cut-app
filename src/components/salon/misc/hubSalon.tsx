@@ -39,7 +39,7 @@ interface Props {
 
 export default function HubSalon({salon,userId,setSalon}:Props) {
     
-    const [tab,setTab] = useState<string>("edit")
+    const [tab,setTab] = useState<string>("overview")
     return (
         <div className="flex items-center md:pt-24 h-full flex-col min-[1001px]:flex-row">
             <SalonTabs 

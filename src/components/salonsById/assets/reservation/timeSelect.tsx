@@ -56,7 +56,9 @@ export default function TimeSelect({reserved,selectedDay,selectedTime,setSelecte
         return () => document.body.removeEventListener("click",handleOutsideClick)
     },[])
     const findDates = reserved.filter(dates => dates.date == selectedDay)
+    
     const times:string[] = [];
+
     for(let i = Number(barberTime[0].split(":")[0]);i <= Number(barberTime[1].split(":")[0]);i++) {
         if(Number(barberTime[0].split(":")[0])!==i && Number(barberTime[0].split(":")[1]) >= 30 ){
             if(Number(barberTime[1].split(":")[0]) != i ) {
