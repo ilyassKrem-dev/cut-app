@@ -44,11 +44,11 @@ export default function EditPrefereneces({
 
                     </motion.div>
                 </div>
-                <PrefernceTab 
+                {show&&<PrefernceTab 
                     preferences={preferences} 
                     ids={ids}
                     setSalon={setSalon}
-                />
+                />}
                     
             </div>
         </div>

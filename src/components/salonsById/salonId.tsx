@@ -1,7 +1,7 @@
 
 
 import Image from "next/image";
-import { FaCalendar, FaCheck, FaMapMarkerAlt, FaPhoneAlt,FaStar } from "react-icons/fa";
+import { FaCalendar, FaCheck, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
 
 import dynamic from "next/dynamic";
 import LoadingAnimation from "@/assets/other/spinner";
@@ -10,6 +10,7 @@ import BarberImages from "./assets/barberImages";
 import SalonButtons from "./assets/buttons";
 import AboveView from "./assets/aboveImages/aboveView";
 import { Button } from "../ui/button";
+import RatingsACommentes from "./assets/ratingsComment/rAndC";
 const MapSalon = dynamic(() => import("./assets/mapSalon"), { ssr: false,loading:() => (
     <div className="h-[500px]">
         <LoadingAnimation/>
@@ -68,19 +69,13 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                             <h1 className="font-bold text-2xl">{barber?.salonName}</h1>
                             <p className="max-w-[400px] text-gray-400 text-sm">{barber?.city}</p>
                         </div>
-                        <div className="border-white/20 border rounded-lg  mt-4 justify-center flex items-center">
-                            <div className=" max-[300px]:px-6 flex  gap-2 py-8 px-8 md:py-8 md:px-16 flex-1 justify-center items-center">    
-                                <FaStar className="text-2xl text-white/30"/>
-                                <p className="text-lg">{barber?.ratings.rating}</p>
-                            </div>
-                            <div className="w-px   border border-white/20 h-[96px] max-h-full"/>
-
-                            
-                            <div className="max-[300px]:px-6 px-8 md:py-8 md:px-16 flex flex-col items-center flex-1 justify-center ">
-                                <p className="max-[300px]:text-sm">Comments</p>
-                                <p className="text-sm text-white/30">{barber?.comments.length}</p>
-                            </div>
-                        </div>
+                        <RatingsACommentes 
+                        rating={barber?.ratings.rating}
+                        nmbreComment={barber?.comments.length}
+                        userId={userId}
+                        barberId={barber?.id as string}
+                        show={pathname}
+                        barberUserId={barber?.userId as string}/>
                         <div className="border-y my-9 py-5 flex gap-4 items-center border-white/20">
                             <Image 
                             src={barber?.user.image || "/profile.jpg"}
