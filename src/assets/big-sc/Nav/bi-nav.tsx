@@ -1,6 +1,6 @@
 "use client"
 import Logo from "../../Logo/logo"
-import ProfileIcon from "./misc/profile-icon"
+import ProfileIcon from "../../header-assets/misc/profile-icon"
 import { useEffect, useState } from "react"
 import SearchBar from "./misc/SearchBar"
 import { motion } from "framer-motion"

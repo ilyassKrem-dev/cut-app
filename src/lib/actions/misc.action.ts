@@ -119,3 +119,81 @@ export const changeRating = async({
         throw new Error(error.message)
     }
 }
+
+
+export const getReservations = async(userId:string) => {
+    try {
+        const user = await prisma.user.findUnique(
+            {
+                where:{
+                    id:userId
+                }
+            }
+        )
+        if(!user) throw new Error(`Error getting user`)
+        const reserve = await prisma.reservation.findMany(
+            {
+                where:{
+                    userId:user.id
+                },
+                select:{
+                    barber:{
+                        select:{
+                            id:true,
+                            salonName:true,
+                            images:true,
+                            latitude:true,
+                            longitude:true,
+                            address:true,
+                            city:true
+                        }
+                    },
+                    userId:true,
+                    price:true,
+                    time:true,
+                    date:true,
+                    id:true,
+                }
+            }
+        )
+        const newReserve = reserve.map(res => ({...res,barber:{...res.barber,images:res.barber.images[0]}}))
+        return newReserve
+    } catch (error) {
+        throw new Error(`Internal server error`)
+    }
+} 
+
+export const cancelReservation = async(userId:string,resId:string) => {
+    try {
+        const user = await prisma.user.findUnique(
+            {
+                where:{
+                    id:userId
+                }
+            }
+        )
+        if(!user) throw new Error(`Error getting user`)
+        const reserve = await prisma.reservation.findUnique(
+    
+            {
+                where:{
+                    id:resId
+                }
+            }
+            )
+
+        if(!reserve) throw new Error(`Error,no reservation found`)
+        await prisma.reservation.delete(
+            {
+                where:{
+                    id:resId,
+                    userId:user.id
+                }
+            }
+                )
+
+        return {success:true}
+    } catch (error) {
+        throw new Error(`Internal server Error`)
+    }
+}

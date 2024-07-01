@@ -133,7 +133,7 @@ export default function Reserve({barberReserves,barberId,userId,setShow,barberTi
                             
                         </div>
                         <div className="border-t border-white/20 p-4 flex justify-between gap-3">
-                            <Link className="flex-1" href={`/profile/reservation`}>
+                            <Link className="flex-1" href={`/reserves`}>
                                 <Button className="w-full bg-black/80 
                                 border border-white
                                 hover:bg-white/40 transition-all duration-300

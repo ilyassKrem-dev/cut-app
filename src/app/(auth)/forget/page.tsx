@@ -1,5 +1,5 @@
 
-import ForgetTemplate from "@/assets/forget/forget-template"
+import ForgetTemplate from "@/assets/templates/forget-template"
 import { Suspense } from "react"
 
 export default function Page() {

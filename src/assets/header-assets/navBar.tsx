@@ -1,6 +1,6 @@
 "use client"
 import Logo from "@/assets/Logo/logo"
-import ProfileIcon from "@/assets/big-sc/Nav/misc/profile-icon"
+import ProfileIcon from "@/assets/header-assets/misc/profile-icon"
 import LoggedInIcons from "../../components/AuthFeatures/loggedInIcons"
 import AuthProvider from "@/assets/wrappers/AuthWrapper"
 export default function NavBar() {
