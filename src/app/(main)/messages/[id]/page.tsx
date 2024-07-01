@@ -2,6 +2,8 @@
 import Chat from "@/components/messages/chat"
 import { auth } from "@/auth"
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default async function Page({params}:{
     params:{id:string | undefined}|undefined
@@ -21,9 +23,13 @@ export default async function Page({params}:{
       } catch (error) {
         console.error("Failed to fetch session:", error);
         return (
-          <div>
-            <h1>Error loading page. Please try again later.</h1>
-          </div>
+            <div className="h-screen flex justify-center items-center flex-col gap-1">
+                <h1 className="font-bold text-lg">Error loading page</h1>
+                <Link href={`/messages/${params?.id}`} className="w-[150px]">
+                    <Button className="w-full">Reload</Button>
+                    
+                </Link>
+            </div>
         );
       }
 }

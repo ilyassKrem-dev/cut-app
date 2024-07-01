@@ -1,7 +1,7 @@
 "use client"
 import { LuShare } from "react-icons/lu";
 
-import { FaArrowLeft  } from "react-icons/fa";
+import { FaArrowLeft ,FaRegCommentDots  } from "react-icons/fa";
 import Link from "next/link";
 import {  getUserFavorites } from "@/lib/actions/user.action";
 import FavoritesIcon from "./favorites";
@@ -41,7 +41,12 @@ export default function AboveView({userId,barberId,barberImage,barberName}:{
                     <LuShare className="text-xl "/>
                     <p className="text-xs underline hidden md:block cursor-pointer">Share</p>
                 </div>
-                {showShare&&<ShareLink 
+                <Link href={`/salons/${barberId}/comments`} className="rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer flex items-center gap-2">
+                    <FaRegCommentDots className="text-xl"/>
+                    <p className="text-xs underline hidden md:block cursor-pointer">Comments</p>
+                </Link>
+                {showShare&&
+                <ShareLink 
                 barberImage={barberImage} 
                 barberName={barberName}
                 setShowShare={setShowShare}/>}
@@ -53,6 +58,10 @@ export default function AboveView({userId,barberId,barberImage,barberName}:{
             </div>
             :
             <div className="flex justify-end gap-4 ">
+                <div className=" rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer flex items-center gap-2">
+                    <div className="bg-gray-500 w-[20px] h-[20px] text-xl rounded-md "/>
+                    <div className="bg-gray-500 w-[35px] h-[20px] text-xl rounded-md hidden md:block"/>
+                </div>
                 <div className=" rounded-full p-1 hover:opacity-60 transition-all duration-300 cursor-pointer flex items-center gap-2">
                     <div className="bg-gray-500 w-[20px] h-[20px] text-xl rounded-md "/>
                     <div className="bg-gray-500 w-[35px] h-[20px] text-xl rounded-md hidden md:block"/>

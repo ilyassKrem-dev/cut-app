@@ -191,15 +191,39 @@ export const getBaberById = async(barberId:string) => {
                         phoneNumber:true
                     }
                 },
-                comments:true
+                comments:{
+                    orderBy:{
+                        createdAt:"desc"
+                    },
+                    select:{
+                        id:true,
+                        comment:true,
+                        stars:{
+                            select:{
+                                star:true
+                            }
+                        },
+                        user:{
+                            select:{
+                                name:true,
+                                image:true
+                            }
+                        }
+                    }
+                }
             }
         })
         if(!barber) {
             throw new Error(`No barber found`)
         }
-        const barberRa = barber.ratings.length > 0  ? barber.ratings.reduce((sum,rate)=> sum + rate.star,0)/barber.ratings.length : 0
-        const newBarber = {...barber,ratings:{
-            people:barber?.ratings.length,
+        const shuffledComments = barber.comments.sort(() => 0.5 - Math.random());
+        const selectedComments = {...barber,comments:shuffledComments.slice(0, 5)};
+
+        const barberCommentsChange = selectedComments.comments.map(comment => ({...comment,stars:comment.stars?.star}))
+        const barberComments = {...barber,comments:barberCommentsChange}
+        const barberRa = barber.ratings.length > 0  ? barberComments.ratings.reduce((sum,rate)=> sum + rate.star,0)/barberComments.ratings.length : 0
+        const newBarber = {...barberComments,ratings:{
+            people:barberComments?.ratings.length,
             rating: barberRa
 
         }}
@@ -309,5 +333,48 @@ export const getBarberInfo = async(userId:string) => {
         return barberData
     } catch (error) {
         throw new Error(`Failed to get salon info`)
+    }
+}
+
+export const getBarberComments = async(paramId:string) => {
+    try {
+        const barber = await prisma.barber.findUnique(
+            {
+                where:{
+                    id:paramId
+                },
+                select:{
+                    salonName:true,
+                    id:true,
+                    images:true,
+                    comments:{
+                        select:{
+                            comment:true,
+                            id:true,
+                            stars:{
+                                select:{
+                                    star:true
+                                }
+                            },
+                            user:{
+                                select:{
+                                    id:true,
+                                    name:true,
+                                    image:true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        )
+        if(!barber) throw new Error(`Failed to get barber`)
+        const newData = barber.comments.map((comment) => {
+            return {...comment,stars:comment.stars?.star}
+        })
+        const newBarber = {...barber,comments:newData}
+        return newBarber
+    } catch (error) {
+        throw new Error(`Internal server error`)
     }
 }

@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { useRouter,usePathname } from "next/navigation"
 import { getContacts } from "@/lib/actions/messages.action"
 import Pusher from "pusher-js";
-
+import { toast } from "@/components/ui/use-toast"
 export default function SideBar() {
     const {data:session,status} = useSession()
     const [tab,setTab] = useState<string>("user")
@@ -24,7 +24,14 @@ export default function SideBar() {
                     return setConvos(res)
                 }
             } catch (error:any) {
-                console.log(error.message)
+                toast(
+                    {
+                        variant:"destructive",
+                        title:"Error",
+                        description:error.message
+                    }
+                )
+        
             }
         }
         fetchCons()

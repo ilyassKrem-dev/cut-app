@@ -1,53 +1,33 @@
 
-
 import Image from "next/image";
 import { FaCalendar, FaCheck, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
-
 import dynamic from "next/dynamic";
 import LoadingAnimation from "@/assets/other/spinner";
 import BarberImages from "./assets/barberImages";
-
 import SalonButtons from "./assets/buttons";
 import AboveView from "./assets/aboveImages/aboveView";
 import { Button } from "../ui/button";
 import RatingsACommentes from "./assets/ratingsComment/rAndC";
+import {SalonType,CommentsType} from "./salonType"
+import BarberComments from "./assets/barberComments";
+import Link from "next/link";
+
 const MapSalon = dynamic(() => import("./assets/mapSalon"), { ssr: false,loading:() => (
     <div className="h-[500px]">
         <LoadingAnimation/>
     </div>
 ) });
+
+
 interface Props {
-    barber:{
-        id:string;
-        userId:string;
-        address:string;
-        city:string;
-        latitude: number;
-        longitude: number;
-        time: string[];
-        openDays:string[];
-        holidays: boolean |null;
-        Prices: number[];
-        phoneNumber: string | null;
-        images: string[];
-        salonName: string;
-        ratings: { 
-            people: number, 
-            rating: number }
-        user:{
-            name:string;
-            image:string | null;
-            phoneNumber:string | null
-        },
-        comments:any
-    } | undefined;
+    barber:SalonType | undefined;
     userId:string |null |undefined;
     pathname?:string;
     barberUserId?:string
 }
 
+
 export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
-    
     const datesCheck = barber?.openDays.length === 7 ? "Entire week" : barber?.openDays.join("-")
     return (
         <div className="sm:px-4 pb-24">
@@ -64,14 +44,14 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                 </div>
                 
                 <div className="flex justify-between">
-                    <div className="px-4 flex-1 max-w-[650px]">
+                    <div className="px-4 flex-1 max-w-[1200px]">
                         <div>
                             <h1 className="font-bold text-2xl">{barber?.salonName}</h1>
                             <p className="max-w-[400px] text-gray-400 text-sm">{barber?.city}</p>
                         </div>
                         <RatingsACommentes 
                         rating={barber?.ratings.rating}
-                        nmbreComment={barber?.comments.length}
+                        nmbreComment={barber?.comments.length as number}
                         userId={userId}
                         barberId={barber?.id as string}
                         show={pathname}
@@ -135,6 +115,21 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                     </div>}
                 </div>
             </div>
+            {barber?.comments.length !== 0?
+            <div className="w-full flex flex-col border-y my-9 py-5 gap-10 items-center border-white/20">
+                <h1>Comments</h1>
+                <BarberComments comments={barber?.comments as CommentsType[]}/>
+                
+                {(barber?.comments.length as number) > 4 && 
+                <Link href={`/salons/${barber?.id}/comments`} className="underline text-sm">
+                    More comments..
+                </Link>}
+            </div>
+            :
+            <div className="w-full flex flex-col border-y my-9 py-5 gap-10 items-center border-white/20">
+                <h1>Comments</h1>
+                <p className="text-xl">No comments</p>
+            </div>}
             <div className="border-y my-9 py-5 flex gap-4 items-center border-white/20 mx-4 justify-center">
                 <MapSalon 
                     prices={barber?.Prices as number[]}

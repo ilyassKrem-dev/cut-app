@@ -120,6 +120,7 @@ model Comment {
   userId String @db.ObjectId
   barberId String @db.ObjectId
   barber Barber @relation(fields: [barberId],references: [id])
+  comment String
   stars Star?
   createdAt DateTime @default(now())
   updatedAt DateTime? 

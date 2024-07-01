@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
+import { SalonType } from "@/components/salonsById/salonType";
 export default async function Page({params}:{
     params:{id:string}
 }) {
@@ -19,16 +19,16 @@ export default async function Page({params}:{
         }
         
         return <SalonId 
-            barber={barber} 
+            barber={barber as SalonType} 
             userId={session?.user?.id}
             barberUserId={barber.userId}/>
     } catch (error) {
         return (
-            <div className="h-screen flex justify-center items-center">
+            <div className="h-screen flex justify-center items-center flex-col gap-1">
                 <h1 className="font-bold text-lg">Error loading page</h1>
                 <Link href={`/salons/${params.id}`} className="w-[150px]">
                     <Button className="w-full">Reload</Button>
-                
+                    
                 </Link>
             </div>
         )

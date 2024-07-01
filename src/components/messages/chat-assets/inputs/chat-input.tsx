@@ -2,7 +2,7 @@
 import { IoMdSend } from "react-icons/io";
 import { Textarea } from "@/components/ui/textarea";
 import { ChangeEvent, useState,useRef, useEffect } from "react";
-
+import { toast } from "@/components/ui/use-toast";
 import axios from "axios";
 import EmotesToogle from "./emotes";
 export default function ChatInput({userId,convoId,barberId,isBarber}:{
@@ -37,7 +37,14 @@ export default function ChatInput({userId,convoId,barberId,isBarber}:{
             )
             setUserInput("")
         } catch (error) {
-            console.log("Error sending message")
+            toast(
+                {
+                    variant:"destructive",
+                    title:"Error",
+                    description:"Error sending message"
+                }
+            )
+
         }
     }
     return (
