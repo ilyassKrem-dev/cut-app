@@ -6,6 +6,7 @@ import { useSearchParams,useRouter } from "next/navigation"
 import { RxCross2 } from "react-icons/rx";
 import { FaMapMarked } from "react-icons/fa";
 import ShowHomeMap from "@/components/home/misc/showHomeMap"
+import { Suspense } from "react"
 export default function SearchBar({scrolling}:{
     scrolling:boolean
 }) {
@@ -63,7 +64,11 @@ export default function SearchBar({scrolling}:{
                     <p>Map</p>
                 </div>
             </motion.div>
-            {showMap&&<ShowHomeMap setShowMap={setShowMap}/>}
+            {showMap&&
+            <Suspense>
+                <ShowHomeMap setShowMap={setShowMap}/>
+            </Suspense>
+            }
             <Location
             scrolling={scrolling}
             enter={enter} 

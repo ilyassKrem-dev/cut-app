@@ -3,6 +3,7 @@ import ImageButtons from "./misc/imageButtons";
 import { IoMdStar } from "react-icons/io";
 import ImageChange from "./misc/imageChange";
 import Link from "next/link";
+
 interface Props {
     userId:string | null
     barbers:{

@@ -5,21 +5,23 @@ import { SetStateAction, useEffect, useState } from "react"
 import { allBarbers } from "@/lib/actions/barber.action"
 import dynamic from "next/dynamic";
 import LoadingAnimation from "@/assets/other/spinner";
+import { useSearchParams } from "next/navigation";
 const Homemap = dynamic(() => import("./homeMap"), { ssr: false,loading:() =><div className="fixed top-0 left-0 right-0  flex justify-center items-center bottom-0"><LoadingAnimation /> </div>});
 export default function ShowHomeMap({setShowMap}:{
     setShowMap:React.Dispatch<SetStateAction<boolean>>
 }) {
     const [barbers,setBarbers] = useState<any[]|null>(null)
+    const searchParams = useSearchParams()
     useEffect(() => {
         const fetchBarbers =async ( ) => {
             try {
                 const res = await allBarbers({
                     filters:{
-                    city:undefined,
-                    rating:undefined,
-                    operat:undefined,
-                    min:undefined,
-                    max:undefined},
+                    city:searchParams.get("city") ||undefined,
+                    rating:searchParams.get("rating") ||undefined,
+                    operat:searchParams.get("equ") ||undefined,
+                    min:searchParams.get("min") ||undefined,
+                    max:searchParams.get("max") ||undefined},
                 })
                 if(!res) return setBarbers([])
                 setBarbers(res)
