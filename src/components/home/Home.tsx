@@ -1,8 +1,9 @@
 
 import ImageButtons from "./misc/imageButtons";
-import { IoMdStar } from "react-icons/io";
+import { IoMdStar,IoLogoGithub  } from "react-icons/io";
 import ImageChange from "./misc/imageChange";
 import Link from "next/link";
+
 
 interface Props {
     userId:string | null
@@ -23,7 +24,7 @@ interface Props {
 export default function Home({userId,barbers}:Props) {
     
     return (
-       <div className="">
+       <div className="pb-12">
         <div className="flex gap-6 flex-wrap md:px-3 sm:justify-center xl:justify-start">
             {barbers.map((barber,index) => {
                 return (
@@ -60,6 +61,12 @@ export default function Home({userId,barbers}:Props) {
                 )
             })}
             
+        </div>
+        <div className="fixed bottom-0 right-0 left-0 p-3  justify-center items-center border-t gap-20 border-white/10 hidden md:flex z-40 bg-black">
+            <Link href={"https://github.com/ilyassKrem-dev/cut-app"} target="_blank" className=" underline text-white/80 text-sm flex gap-2 items-center hover:opacity-70 transition-all duration-300 active:opacity-60">
+                Source code <IoLogoGithub />
+            </Link>
+            <p className="text-center">IlyassKrem-dev &copy; 2024</p>
         </div>
        </div> 
     )

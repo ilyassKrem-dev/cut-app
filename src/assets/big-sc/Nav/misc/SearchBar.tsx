@@ -33,12 +33,12 @@ export default function SearchBar({scrolling}:{
             current.delete("city")
             return router.push(`/?${current.toString()}`)
         }
-        if(searchParams.get("city") !== city) {
+        if(cityString) {
             current.set('city',city)
             const search = current.toString();
             return router.push(`/?${search}`)
         }
-        if(searchParams.get("min") !== price) {
+        if(priceString) {
             current.set('min',price)
             const search = current.toString();
             return router.push(`/?${search}`)
@@ -56,7 +56,7 @@ export default function SearchBar({scrolling}:{
         if(cityString && price)  {
             return  router.push(`/?${search}&min=${price}`)
         }
-        router.push(`/?${search}${city && city.length > 0? `city=${city}`: ""}${price && price.length > 0? `&min=${price}`: ""}`)
+        router.push(`/?${search}${city && city.length > 0? `city=${city}`: ""}${price && price.length > 0? `&min=${price}`: "&min=0"}`)
     }
     
     const handleRemove = () => {
@@ -111,7 +111,7 @@ export default function SearchBar({scrolling}:{
             
            
             <div className="text-xl pr-1 pl-2">
-                {city !== cityString ||  price !== priceString  ?
+                {!cityString &&  !priceString  ?
                 <div className={`rounded-full bg-green-1 text-black cursor-pointer hover:opacity-50 transition-all duration-300 ${scrolling?"p-3":"p-4"}`} onClick={handleClick}>
                     <IoSearchOutline />
                 </div>

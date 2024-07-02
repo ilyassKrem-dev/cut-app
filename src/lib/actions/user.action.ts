@@ -125,7 +125,22 @@ export const fetchUser = async(userId:string) => {
                 id:userId
             },
             select:{
-                comments:true,
+                comments:{
+                    select:{
+                        comment:true,
+                        stars:{
+                            select:{
+                                star:true
+                            }
+                        },
+                        barber:{
+                            select:{
+                                salonName:true,
+                                images:true,
+                            }
+                        }
+                    }
+                },
                 id:true,
                 isBarber:true,
                 name:true,
@@ -139,7 +154,13 @@ export const fetchUser = async(userId:string) => {
             }
         })
         if(!user) throw Error(`Error getting profile`)
-        return user
+        const shuffledComments = user.comments.sort(() => 0.5 - Math.random());
+        const selectedComments = {...user,comments:shuffledComments.slice(0, 3)};
+        const userChanged = selectedComments.comments.map((comment) => {
+            return {...comment,stars:comment?.stars?.star}
+        })
+        const newUser = {...user,comments:userChanged}
+        return newUser
     } catch (error:any) {
         throw Error(`Failed to get Profile ${error.message}`)
     }

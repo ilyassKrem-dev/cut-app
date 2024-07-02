@@ -1,5 +1,7 @@
 
 import { useState } from "react"
+import Image from "next/image";
+import StarIcon from '@mui/icons-material/Star';
 import ProfileTop from "./assets/profileTop"
 type Profile  = {
     id:string;
@@ -17,6 +19,7 @@ export default function Profile({profile}:{
     profile:Profile
 }) {
     const [tab,setTab] = useState<string>("about")
+
     return (
         <> 
             {profile&&
@@ -40,7 +43,34 @@ export default function Profile({profile}:{
                         <div>
                             {profile.comments.length > 0 
                             ?
-                            ""
+                            <div className="max-w-[500px] mx-auto">
+                                {profile.comments.map((comment,index) =>{
+                                const {barber} = comment
+                                return (
+                                    <div key={comment.id+index} className="border border-white/10 rounded-xl w-full">
+                                        <div className="flex items-start gap-1 border-b border-white/10 p-2">
+                                            <Image 
+                                            src={barber.images[0]} 
+                                            alt={`${barber.salonName} profile picture`}
+                                            width={50}
+                                            height={50}
+                                            className="rounded-full object-cover w-[50px] h-[50px]" />
+                                            <div className="flex flex-col">
+                                                <p className="text-sm text-white/80">{barber.salonName}</p>
+                                                <div className="flex gap-1 items-center">
+                                                    <StarIcon  className="text-sm text-white/50"/>
+                                                    <p className="text-sm">{comment.stars}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className=" break-words text-base p-4">
+                                            {comment.comment}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                            </div>
+                            
                             :
                             <div>
                                 <h2 className="text-sm text-center">You dont have any comments</h2>    

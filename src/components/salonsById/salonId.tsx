@@ -11,6 +11,7 @@ import RatingsACommentes from "./assets/ratingsComment/rAndC";
 import {SalonType,CommentsType} from "./salonType"
 import BarberComments from "./assets/barberComments";
 import Link from "next/link";
+import { IoLogoGithub } from "react-icons/io";
 
 const MapSalon = dynamic(() => import("./assets/mapSalon"), { ssr: false,loading:() => (
     <div className="h-[500px]">
@@ -115,7 +116,7 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                     </div>}
                 </div>
             </div>
-            {barber?.comments.length !== 0?
+            {!pathname&&barber?.comments.length !== 0?
             <div className="w-full flex flex-col border-y my-9 py-5 gap-10 items-center border-white/20">
                 <h1>Comments</h1>
                 <BarberComments comments={barber?.comments as CommentsType[]}/>
@@ -150,6 +151,12 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                     }}
                 />
             </div>
+            {!pathname&&<div className="fixed bottom-0 right-0 left-0 p-3  justify-center items-center border-t gap-20 border-white/10 hidden md:flex z-50 bg-black">
+                <Link href={"https://github.com/ilyassKrem-dev/cut-app"} target="_blank" className=" underline text-white/80 text-sm flex gap-2 items-center hover:opacity-70 transition-all duration-300 active:opacity-60">
+                    Source code <IoLogoGithub />
+                </Link> 
+                <p className="text-center">IlyassKrem-dev &copy; 2024</p>
+            </div>}
         </div>
     )
 }

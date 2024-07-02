@@ -28,7 +28,7 @@ export default function ProfileM({profile}:{profile:Profile}) {
     return (
         <>
             {!tab?
-            <div className="flex h-full  flex-col pt-12 sm:w-[60%] sm:mx-auto gap-14 mx-6 sm:ml-0">
+            <div className="flex h-full  flex-col pt-12 sm:w-[60%] sm:mx-auto gap-14 mx-6 sm:ml-6">
                 <div className="flex gap-2">
                     <Image 
                     src={profile.image || "/profile.jpg"} 
