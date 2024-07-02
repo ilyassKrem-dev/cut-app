@@ -117,7 +117,7 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                 </div>
             </div>
             {!pathname&&barber?.comments.length !== 0?
-            <div className="w-full flex flex-col border-y my-9 py-5 gap-10 items-center border-white/20">
+            <div className="w-full flex flex-col border-t my-9 py-5 gap-10 items-center border-white/20">
                 <h1>Comments</h1>
                 <BarberComments comments={barber?.comments as CommentsType[]}/>
                 
