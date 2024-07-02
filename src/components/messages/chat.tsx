@@ -10,6 +10,8 @@ import Pusher from "pusher-js";
 import Messages from "./chat-assets/messages";
 import LoadingAnimation from "@/assets/other/spinner";
 import axios from "axios";
+import { Button } from "../ui/button";
+
 interface Barber {
     salonName:string;
     images:string[];
@@ -183,8 +185,15 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
 
     if(convo == null) {
         return (
-            <div className=" justify-center items-center w-full flex-col h-screen" >
-                <LoadingAnimation />
+            <div className="py-36 flex justify-center items-center flex-col gap-2">
+                <LoadingAnimation containerClassName="!h-[300px]"/>
+                <div className="flex flex-col gap-1 flex-1 h-full">
+                    <p className="text-xs text-center">if loading take to mush reload</p>
+                    <Button   onClick={() => window.location.href = `/messages/${convoId}`}>
+                            reload
+                    </Button>
+
+                </div>
             </div>
         )
     }

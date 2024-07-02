@@ -6,6 +6,7 @@ import LoadingAnimation from "@/assets/other/spinner"
 import { useRouter } from "next/navigation"
 import { getAllFavorites } from "@/lib/actions/user.action"
 import { useToast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button"
 type favorites = {
     id:string;
     barber:{
@@ -43,8 +44,15 @@ export default function Page() {
     
     if(status === "loading" || !favorites) {
         return (
-            <div className="h-screen flex justify-center items-center">
-                <LoadingAnimation />
+            <div className="h-screen flex justify-center items-center flex-col gap-2">
+                <LoadingAnimation containerClassName="!h-[500px]"/>
+                <div className="flex flex-col gap-1 flex-1 h-full">
+                    <p className="text-xs text-center">if loading take to mush reload</p>
+                    <Button  onClick={() => window.location.href = `/favorites`}>
+                            reload
+                    </Button>
+
+                </div>
             </div>
         )
     }

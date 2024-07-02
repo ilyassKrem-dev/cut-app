@@ -10,6 +10,7 @@ import ProfileM from "@/components/profile/mobile/profileMo"
 import { fetchUser } from "@/lib/actions/user.action"
 import { ToastAction } from "@/components/ui/toast"
 import { toast } from "@/components/ui/use-toast"
+import { Button } from "@/components/ui/button"
 type Profile  = {
     id:string;
     image:string;
@@ -52,10 +53,18 @@ export default function Page() {
         getuser()
     },[session,status])
 
-    if(status == "loading") {
-        return (<div className=" justify-center items-center w-full flex-col h-screen" >
-            <LoadingAnimation />
-        </div>)
+    if(status == "loading" || !profile) {
+        return (
+            <div className="h-screen flex justify-center items-center flex-col gap-2">
+                <LoadingAnimation containerClassName="!h-[300px]"/>
+                <div className="flex flex-col gap-1 flex-1 h-full">
+                    <p className="text-xs text-center">if loading take to mush reload</p>
+                    <Button  onClick={() => window.location.href = `/favorites`}>
+                            reload
+                    </Button>
+
+                </div>
+            </div>)
     }
 
     return (

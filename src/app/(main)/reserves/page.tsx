@@ -7,6 +7,7 @@ import { toast } from "@/components/ui/use-toast"
 import { getReservations } from "@/lib/actions/misc.action"
 import Reserves from "@/components/reserves/reserves"
 import {ReservesType} from "@/components/reserves/reservesType"
+import { Button } from "@/components/ui/button"
 
 
 export default function Page() {
@@ -33,10 +34,17 @@ export default function Page() {
         }
         fetchReserves()
      },[session,status])
-    if(status == "loading") {
+    if(status == "loading" || !reserves) {
         return (
-            <div className="h-screen justify-center flex items-center">
-                <LoadingAnimation />
+            <div className="py-36 flex justify-center items-center flex-col gap-2">
+                <LoadingAnimation containerClassName="!h-[500px]"/>
+                <div className="flex flex-col gap-1 flex-1 h-full">
+                    <p className="text-xs text-center">if loading take to mush reload</p>
+                    <Button  onClick={() => window.location.href = `/reserves`}>
+                            reload
+                    </Button>
+
+                </div>
             </div>
         )
     }

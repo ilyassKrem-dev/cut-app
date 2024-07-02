@@ -6,6 +6,7 @@ import LoadingAnimation from "@/assets/other/spinner"
 import { useEffect, useState } from "react"
 import { useSearchParams,useRouter } from "next/navigation"
 import { fetchbarberExistence } from "@/lib/actions/barber.action"
+import { Button } from "@/components/ui/button"
 export default  function Page() {
     const {data:session,status} = useSession() as any
     const router = useRouter()
@@ -32,11 +33,18 @@ export default  function Page() {
         getBabrer()
     },[session])
 
-    if(status === "loading") {
+    if(status === "loading" || userBar) {
         return (
-        <div className="pt-36 md:pt-0 h-screen">
-            <LoadingAnimation/>
-        </div>
+            <div className="py-36 flex justify-center items-center flex-col gap-2">
+                <LoadingAnimation containerClassName="!h-[500px]"/>
+                <div className="flex flex-col gap-1 flex-1 h-full">
+                    <p className="text-xs text-center">if loading take to mush reload</p>
+                    <Button  onClick={() => window.location.href = `/salon/setup`}>
+                            reload
+                    </Button>
+
+                </div>
+            </div>
         )
     }
     
