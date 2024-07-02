@@ -87,7 +87,7 @@ interface FiltersProps {
     }
 }
 export const allBarbers = async({filters}:FiltersProps) => {
-    const { city, rating, operat, min, max } = filters;
+    const { city, rating, operat, min, max } = filters as any;
     const normalizedCity = city ? city : undefined;
 
     
@@ -121,18 +121,20 @@ export const allBarbers = async({filters}:FiltersProps) => {
         return {...barber,ratings:barberRa}
     })
     
-    if(min && max) {
+    if(min || max) {
         barbersR = barbersR.filter(barber => {
-            if(min !== "0" && max !== "0") {
-                return barber.Prices[0] >= parseFloat(min) && barber.Prices[1] <= parseFloat(max)
+            const minPrice = parseFloat(min);
+            const maxPrice = parseFloat(max);
+            if (min && max) {
+                return barber.Prices[0] >= minPrice && barber.Prices[1] <= maxPrice;
             }
-            if(min == "0" && max !== "0") {
-                return  barber.Prices[1] <= parseFloat(max)
+            if (!min && max) {
+                return barber.Prices[1] <= maxPrice;
             }
-            if(min != "0" && max == "0") {
-                return  barber.Prices[0] >= parseFloat(max)
+            if (min && !max) {
+                return barber.Prices[0] >= minPrice || barber.Prices[1] >= minPrice;
             }
-            return barber
+            return true;
         })
     }
     if(rating && operat) {

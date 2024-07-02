@@ -5,10 +5,8 @@ export default async function Page({searchParams}:{
   searchParams:{[key:string]:string | undefined}
 }) {
   const session = await auth() as any
-  let user:any;
-  if(session) {
-    
-  }
+
+
   const barbers = await allBarbers(
     {
       filters:{

@@ -36,7 +36,7 @@ export default function Homemap({ barbers }: LeafletMapProps) {
     return (
         <MapContainer
             center={[33.5333, -7.5833]}
-            zoom={12}
+            zoom={8}
             style={{ height: "500px", width: "100%" }}
             scrollWheelZoom={true}
             doubleClickZoom={false}

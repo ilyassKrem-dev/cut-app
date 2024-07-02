@@ -7,45 +7,66 @@ import { RxCross2 } from "react-icons/rx";
 import { FaMapMarked } from "react-icons/fa";
 import ShowHomeMap from "@/components/home/misc/showHomeMap"
 import { Suspense } from "react"
+import Price from "./search/price"
 export default function SearchBar({scrolling}:{
     scrolling:boolean
 }) {
     const searchParams = useSearchParams()
     
     const [enter,setEnter] = useState(false)
+    const [price,setPrice] = useState<string>(searchParams ?searchParams.get("min") as string :"0")
     const [city,setCity] = useState<string>(searchParams ?searchParams.get("city") as string :"")
     const [showLocation,setShowLocation] = useState<boolean>(false)
+    const [showPrice,setShowPrice] = useState<boolean>(false)
     const cityString = searchParams.get("city")
+    const priceString = searchParams.get("min")
     const router = useRouter()
     const [showMap,setShowMap] = useState<boolean>(false)
     const handleClick = () => {
         
         const current = new URLSearchParams(Array.from(searchParams.entries()))
-        if(city.length == 0) {
-            
+        if(priceString && !price) {
+            current.delete("min")
+            return router.push(`/?${current.toString()}`)
+        }
+        if(cityString &&!city) {
             current.delete("city")
             return router.push(`/?${current.toString()}`)
         }
-        if(searchParams.get("city")) {
+        if(searchParams.get("city") !== city) {
             current.set('city',city)
             const search = current.toString();
             return router.push(`/?${search}`)
         }
-        
+        if(searchParams.get("min") !== price) {
+            current.set('min',price)
+            const search = current.toString();
+            return router.push(`/?${search}`)
+        }
         const search = current.toString();
-        if(Array.from(current).length === 0) {
-            
+        if(Array.from(current).length === 0 && city && !price) {
             return router.push(`/?city=${city}`)
         }
-        router.push(`/?${search}&city=${city}`) 
+        if(Array.from(current).length === 0 && !city && price) {
+            return router.push(`/?min=${price}`)
+        }
+        if(priceString && city)  {
+            return  router.push(`/?${search}&city=${city}`)
+        }
+        if(cityString && price)  {
+            return  router.push(`/?${search}&min=${price}`)
+        }
+        router.push(`/?${search}${city && city.length > 0? `city=${city}`: ""}${price && price.length > 0? `&min=${price}`: ""}`)
     }
+    
     const handleRemove = () => {
         const current = new URLSearchParams(Array.from(searchParams.entries()))
         current.delete('city')
+        current.delete('min')
         router.push(`/?${current.toString()}`)
     }
 
-
+   
     return (
         <motion.div
         initial={{position:"relative",bottom:"-4rem",width:'70%'}} 
@@ -78,14 +99,19 @@ export default function SearchBar({scrolling}:{
             cityString={cityString}
             showLocation={showLocation}
             setShowLocation={setShowLocation}/>
-            <div className="flex flex-col gap-1 pl-6  py-3 cursor-pointer hover:opacity-60 transition-all duration-300 hover:bg-gray-400/50 rounded-full flex-1 h-full justify-center" 
-            onMouseEnter={() => setEnter(true)}
-            onMouseLeave={() => setEnter(false)}>
-                <h4 className=" text-sm cursor-pointer">Price</h4>
-                {!scrolling&&<p className="text-gray-400 text-xs cursor-pointer">Min price</p>}
-            </div>
+            <Price 
+             scrolling={scrolling}
+             enter={enter} 
+             setEnter={setEnter}
+             setPrice={setPrice}
+             price={price}
+             priceString={priceString}
+             showPrice={showPrice}
+             setShowPrice={setShowPrice}/>
+            
+           
             <div className="text-xl pr-1 pl-2">
-                {city !== searchParams.get("city") || !city?
+                {city !== cityString ||  price !== priceString  ?
                 <div className={`rounded-full bg-green-1 text-black cursor-pointer hover:opacity-50 transition-all duration-300 ${scrolling?"p-3":"p-4"}`} onClick={handleClick}>
                     <IoSearchOutline />
                 </div>
