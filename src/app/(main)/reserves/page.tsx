@@ -42,7 +42,7 @@ export default function Page() {
                     <p className="text-xs text-center">if loading take to mush reload</p>
                     <Button  onClick={() => window.location.href = `/reserves`}>
                             reload
-                    </Button>
+                    </Button>   
 
                 </div>
             </div>

@@ -9,8 +9,9 @@ export default async function Page({searchParams}:{
   try {
       const session = await auth() as any
     
-    
-      const barbers = await allBarbers(
+      const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+      const timeoutPromise = timeout(5000).then(() => { throw new Error("Request timed out"); });
+      const barbersPromise  = allBarbers(
         {
           filters:{
             city:searchParams?.city,
@@ -21,7 +22,7 @@ export default async function Page({searchParams}:{
           }
         }
       )
-      
+      const barbers = await Promise.race([barbersPromise, timeoutPromise]);
       return (
         <div className="md:py-48 p-4 py-32">
           <Home

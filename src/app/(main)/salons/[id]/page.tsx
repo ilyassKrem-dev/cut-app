@@ -13,7 +13,10 @@ export default async function Page({params}:{
         let barber;
         const session = await auth()
         try {
-            barber = await getBaberById(params.id)
+            const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+            const timeoutPromise = timeout(5000).then(() => { throw new Error("Request timed out"); });
+            const barberPromise = await getBaberById(params.id)
+            barber = await Promise.race([barberPromise, timeoutPromise]);
         } catch (error) {
             redirect("/")
         }

@@ -22,9 +22,16 @@ export default  function Page() {
         }, [status, router,session])
         if(status === "loading") {
             return (
-            <div className="pt-36 md:pt-0 h-screen">
-                <LoadingAnimation/>
-            </div>
+                <div className="py-36 flex justify-center items-center flex-col gap-2">
+                    <LoadingAnimation containerClassName="!h-[500px]"/>
+                    <div className="flex flex-col gap-1 flex-1 h-full">
+                        <p className="text-xs text-center">if loading take to mush reload</p>
+                        <Button  onClick={() => window.location.href = `/salon`}>
+                                reload
+                        </Button>
+
+                    </div>z
+                </div>
             )
         }
         
