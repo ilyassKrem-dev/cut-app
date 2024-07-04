@@ -90,7 +90,7 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                         </div>
                         
                     </div>
-                    {!pathname?<SalonButtons 
+                    {!pathname&&barber?.id !== barberUserId?<SalonButtons 
                     barberPrices={barber?.Prices as number[]}
                     userId={userId}
                     barberId={barber?.id as string}
