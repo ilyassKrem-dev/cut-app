@@ -30,6 +30,7 @@ interface Props {
 
 export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
     const datesCheck = barber?.openDays.length === 7 ? "Entire week" : barber?.openDays.join("-")
+    console.log(barber?.id,barberUserId,barber?.userId)
     return (
         <div className="sm:px-4 pb-24">
             {!pathname&&<div className="md:pt-28">
@@ -90,7 +91,9 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                         </div>
                         
                     </div>
-                    {!pathname&&barber?.id !== barberUserId?<SalonButtons 
+                    {!pathname?
+                    <>
+                    {barber?.userId !==userId&&<SalonButtons 
                     barberPrices={barber?.Prices as number[]}
                     userId={userId}
                     barberId={barber?.id as string}
@@ -99,8 +102,9 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                         times:barber?.time as string[],
                         days:barber?.openDays as string[],
                         prices:barber?.Prices as number[]
-                    }}
-                    />
+                    }}/>}
+                    </>
+                    
                     :
                     <div className="hidden md:flex flex-1 max-w-[400px] h-fit mt-10">
                             <div className="bg-black border border-white/20 rounded-lg flex justify-center p-3 py-6 flex-col gap-8  items-center w-full shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
@@ -111,7 +115,7 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                                         
                                     </p>
                                 </div>
-                                <Button className="bg-green-1  hover:opacity-100 hover:bg-green-1 w-full">Talk</Button>
+                                <Button className="bg-green-1  hover:opacity-100 hover:bg-green-1 w-full">Reserve</Button>
                             </div>
                     </div>}
                 </div>

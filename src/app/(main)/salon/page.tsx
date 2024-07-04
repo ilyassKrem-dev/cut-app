@@ -30,7 +30,7 @@ export default  function Page() {
                                 reload
                         </Button>
 
-                    </div>z
+                    </div>
                 </div>
             )
         }
