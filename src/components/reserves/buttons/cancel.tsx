@@ -11,7 +11,7 @@ export default function CancelReserv({resId,userId,setReserves}:{
     const [confirm,setConfirm] = useState<boolean>(false)
     const handleCancel = async() => {
         try {
-            setReserves((prev:any) => (prev?.filter((reserv:ReservesType) => reserv.id !== resId)))
+            
             const res = await cancelReservation(userId,resId)
             if(res.success) {
                 toast({
@@ -19,6 +19,7 @@ export default function CancelReserv({resId,userId,setReserves}:{
                     title:"Canceled",
                     description:"Reservation Canceled"
                 })
+                setReserves((prev:any) => (prev?.filter((reserv:ReservesType) => reserv.id !== resId)))
             }
         } catch (error:any) {
             toast({

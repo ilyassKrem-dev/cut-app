@@ -16,11 +16,12 @@ export default function RemoveFav({
     const {toast} = useToast()
     const handleUnFavorite = async() => {
         try {
+            
+            await addFavorite(userId,favId)
             setFavorites((prev:any) => {
                 const data = prev.filter((fav:any) => fav.barber.id !== favId)
                 return data
             })
-            await addFavorite(userId,favId)
         } catch (error) {
             toast({
                 variant:"destructive",

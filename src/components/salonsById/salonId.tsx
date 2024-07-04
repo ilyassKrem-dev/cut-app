@@ -30,7 +30,7 @@ interface Props {
 
 export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
     const datesCheck = barber?.openDays.length === 7 ? "Entire week" : barber?.openDays.join("-")
-    console.log(barber?.id,barberUserId,barber?.userId)
+    
     return (
         <div className="sm:px-4 pb-24">
             {!pathname&&<div className="md:pt-28">
