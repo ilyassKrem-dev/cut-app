@@ -29,7 +29,7 @@ export default function Reserves({reserves,setReserves}:Props) {
                 </div>
             </div>
             }
-            {tab === "booking"&&<div className="flex flex-col gap-6 flex-1 md:mx-auto  md:rounded-lg  md:max-w-[1200px]  md:py-10 overflow-auto h-full custom-scrollbar  max-w-[500px]">
+            {tab === "booking"&&<div className="flex flex-col gap-6 flex-1 md:mx-auto  md:rounded-lg  md:max-w-[1200px]  md:py-10 overflow-auto h-full custom-scrollbar  max-w-[500px] mx-auto">
                 <h1 className="text-center text-lg">Reservations</h1>
                 {reserves.length > 0 ?
                 <div className="flex flex-col gap-4">

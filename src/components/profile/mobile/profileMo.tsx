@@ -54,7 +54,7 @@ export default function ProfileM({profile}:{profile:Profile}) {
                         Favorites
                     </Link>
                     <Link 
-                    href={"/profile/reserves"}
+                    href={"/reserves"}
                     className="flex gap-4 text-base w-full items-center p-2 rounded-lg active:bg-white/30 hover:bg-white/20 transition-all duration-300 cursor-pointer">
                         <FiPaperclip className="text-xl text-white/60 cursor-pointer"/>
                         Reservations
