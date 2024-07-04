@@ -7,14 +7,14 @@ export default function  NotFound({err}:{
 }) {
 
     return (
-        <div className="flex items-center justify-center flex-col gap-5 py-36">
+        <div className="flex items-center justify-center flex-col gap-5 py-52">
             <h1 className="font-bold text-3xl">
                 404
             </h1>
             <p className="text-center  text-xl">{err||"We couldn't find the page"}</p>
 
             <Link href={"/"}>
-                <Button className="bg-white !text-blue-400 hover:bg-blue-300 transition-all duration-300">
+                <Button className="hover:bg-white/60 transition-all duration-300 active:opacity-60">
                     Back to Home
                 </Button>
             </Link>
