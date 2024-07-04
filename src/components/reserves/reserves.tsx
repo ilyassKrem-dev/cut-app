@@ -32,7 +32,7 @@ export default function Reserves({reserves,setReserves}:Props) {
             {tab === "booking"&&<div className="flex flex-col gap-6 flex-1 md:mx-auto  md:rounded-lg  md:max-w-[1200px]  md:py-10 overflow-auto h-full custom-scrollbar  max-w-[500px]">
                 <h1 className="text-center text-lg">Reservations</h1>
                 {reserves.length > 0 ?
-                <div>
+                <div className="flex flex-col gap-4">
                     {reserves.map((reservation,index) => {
                         const {barber} = reservation
                         return (
