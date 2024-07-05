@@ -87,7 +87,8 @@ interface FiltersProps {
     }
 }
 export const allBarbers = async({filters}:FiltersProps) => {
-    const { city, rating, operat, min, max } = filters as any;
+    const { city, rating , operat, min, max } = filters as any;
+    const newRating = rating == "null" ? 0 : Number(rating)
     const normalizedCity = city ? city : undefined;
 
     
@@ -120,12 +121,12 @@ export const allBarbers = async({filters}:FiltersProps) => {
         const barberRa = barber.ratings.length > 0  ? barber.ratings.reduce((sum,rate)=> sum + rate.star,0)/barber.ratings.length : 0
         return {...barber,ratings:barberRa}
     })
-    
-    if(min || max) {
+   
+    if(min!=="0" || max!=="0") {
         barbersR = barbersR.filter(barber => {
             const minPrice = parseFloat(min);
             const maxPrice = parseFloat(max);
-            if (min && max) {
+            if (min && max ) {
                 return barber.Prices[0] >= minPrice && barber.Prices[1] <= maxPrice;
             }
             if (!min && max) {
@@ -137,32 +138,29 @@ export const allBarbers = async({filters}:FiltersProps) => {
             return true;
         })
     }
-    if(rating && operat) {
-        if(rating !== "null") {
+    if(newRating || operat) {    
+        const filtersD = barbersR.filter(barber => {
             
-            const filtersD = barbersR.filter(barber => {
-                
-                
-                
-                switch (operat) {
-                    case "same":
-                        
-                        return barber.ratings == Number(rating)
-                        
-                    case "null":
-                        return barber.ratings >= Number(rating)
-                        
-                    case "below":
-                        return barber.ratings < Number(rating)
-                        
-                    case "above":
-                        return barber.ratings > Number(rating)
-                    default:
-                        return false;
-                }
-            })
-            barbersR = filtersD
-        }
+            
+            
+            switch (operat) {
+                case "same":
+                    
+                    return barber.ratings == newRating
+                    
+                case "null":
+                    return barber.ratings >= newRating
+                    
+                case "below":
+                    return barber.ratings < newRating
+                    
+                case "above":
+                    return barber.ratings > newRating
+                default:
+                    return true;
+            }
+        })
+        barbersR = filtersD
     }
     return barbersR
 }
