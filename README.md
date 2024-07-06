@@ -2,6 +2,9 @@
 ### About
 
 BarberCut is a barber reservation website built using Next.js.
+## Live demo
+[Demo](https://cut-app.vercel.app/)
+
 
 ![Barber][Barber] ![Barber1][Barber1]  
 
