@@ -77,6 +77,7 @@ export default function Completion({prefernces,info,locationInfo,images,userInfo
                     
                 })
                 if(res.succuss) {
+                    setLoading(false)
                     router.push("/salon")
                 }
                 
@@ -108,7 +109,7 @@ export default function Completion({prefernces,info,locationInfo,images,userInfo
                 onClick={handleComplete} disabled={loading}
                 className="w-full md:max-w-[500px] bg-green-1/80 hover:bg-green-1/20 transition-all duration-300" 
                 >
-                    {loading ? <LoadingAnimation /> : "Complete"}</Button>
+                    {loading ? "Uploading" + <LoadingAnimation /> : "Complete"}</Button>
             </div>
         </div>
     )
