@@ -12,7 +12,6 @@ export default  function Page() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [userBar , setUserBar] = useState<boolean|null>(null)
-    console.log(userBar)
     useEffect(() => {
         if(session === null) {
             router.push('/')

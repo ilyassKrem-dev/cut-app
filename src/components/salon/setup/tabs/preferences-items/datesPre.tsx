@@ -37,7 +37,7 @@ export  default function DatesPre({dates,setPrefences}:Props) {
             return {...prev,dates:{...prev.dates,week:updateWeek}}
         })
         setPrefences((prev:any) => {
-            return {...prev,dates:{...prev.date,week:[...prev.date.week.sort((a:string,b:string) => weekDays.indexOf(a) - weekDays.indexOf(b))]}}
+            return {...prev,dates:{...prev.dates,week:[...prev.dates.week].sort((a:string,b:string) => weekDays.indexOf(a) - weekDays.indexOf(b))}}
         })
     }
     const handleToogle = (value:boolean) => {
