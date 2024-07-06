@@ -148,7 +148,7 @@ export default function Preview({prefernces,info,locationInfo,images,userInfo,us
                                         
                                     </p>
                                 </div>
-                                <Button className="bg-green-1  hover:opacity-100 hover:bg-green-1 w-full">Talk</Button>
+                                <Button className="bg-green-1  hover:opacity-100 hover:bg-green-1 w-full">Reserve</Button>
                             </div>
                     </div>
                 </div>

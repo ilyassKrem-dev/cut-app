@@ -12,11 +12,12 @@ export default  function Page() {
     const router = useRouter()
     const searchParams = useSearchParams()
     const [userBar , setUserBar] = useState<boolean|null>(null)
+    console.log(userBar)
     useEffect(() => {
         if(session === null) {
             router.push('/')
         }
-        if (status === "unauthenticated") {
+        if (session && status === "unauthenticated") {
             router.push("/")
         }
         if(!searchParams.get('fiId') || session&& searchParams.get('fiId') !==session.user.id) {
@@ -28,12 +29,12 @@ export default  function Page() {
         const getBabrer = async() => {
             const res =await fetchbarberExistence(session.user.id)
             if(res.success) return router.push('/')
-            setUserBar(false)
+            setUserBar(true)
         }
         getBabrer()
     },[session])
 
-    if(status === "loading" || userBar) {
+    if(status === "loading" || !userBar) {
         return (
             <div className="py-36 flex justify-center items-center flex-col gap-2">
                 <LoadingAnimation containerClassName="!h-[500px]"/>

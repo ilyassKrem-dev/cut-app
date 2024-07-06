@@ -320,6 +320,7 @@ export const getBarberInfo = async(userId:string) => {
                 },
             }
         })
+        if(!barber) return null
         const barberData = {
             ...barber,
             ratings:{
@@ -328,8 +329,6 @@ export const getBarberInfo = async(userId:string) => {
             },
             comments:barber?.comments.length
         }
-    
-        if(!barber) new Error(`No barber found`)
         return barberData
     } catch (error) {
         throw new Error(`Failed to get salon info`)

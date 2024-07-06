@@ -120,20 +120,23 @@ export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
                     </div>}
                 </div>
             </div>
-            {!pathname&&barber?.comments.length !== 0?
-            <div className="w-full flex flex-col border-t my-9 py-5 gap-10 items-center border-white/20">
-                <h1>Comments</h1>
-                <BarberComments comments={barber?.comments as CommentsType[]}/>
-                
-                {(barber?.comments.length as number) > 4 && 
-                <Link href={`/salons/${barber?.id}/comments`} className="underline text-sm">
-                    More comments..
-                </Link>}
-            </div>
-            :
-            <div className="w-full flex flex-col border-y my-9 py-5 gap-10 items-center border-white/20">
-                <h1>Comments</h1>
-                <p className="text-xl">No comments</p>
+            {!pathname&&<div>
+                {barber?.comments.length !== 0?
+                <div className="w-full flex flex-col border-t my-9 py-5 gap-10 items-center border-white/20">
+                    <h1>Comments</h1>
+                    <BarberComments comments={barber?.comments as CommentsType[]}/>
+                    
+                    {(barber?.comments.length as number) > 4 && 
+                    <Link href={`/salons/${barber?.id}/comments`} className="underline text-sm">
+                        More comments..
+                    </Link>}
+                </div>
+                :
+                <div className="w-full flex flex-col border-y my-9 py-5 gap-10 items-center border-white/20">
+                    <h1>Comments</h1>
+                    <p className="text-xl">No comments</p>
+                </div>}
+
             </div>}
             <div className="border-y my-9 py-5 flex gap-4 items-center border-white/20 mx-4 justify-center">
                 <MapSalon 

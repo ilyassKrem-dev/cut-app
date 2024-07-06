@@ -45,6 +45,7 @@ export default  function Salon({userId}:Props) {
                 const res = await getBarberInfo(userId as string)
                 
                 if(res) setSalon(res as any)
+                if(!res) setSalon(false)
             } catch (error) {
                 setSalon(false)
             }
