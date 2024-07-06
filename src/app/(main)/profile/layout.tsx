@@ -7,7 +7,7 @@ import AuthProvider from "@/assets/wrappers/AuthWrapper";
 import { Suspense } from "react";
 import LoadingAnimation from "@/assets/other/spinner";
 import { Toaster } from "@/components/ui/toaster";
-import SideBar from "@/components/messages/assets/sideBar";
+
 import { LoginProvider } from "@/assets/wrappers/loginWrapper";
 const sora = Sora({ subsets: ["latin"] });
 

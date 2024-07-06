@@ -59,7 +59,7 @@ export default function Page() {
                 <LoadingAnimation containerClassName="!h-[300px]"/>
                 <div className="flex flex-col gap-1 flex-1 h-full">
                     <p className="text-xs text-center">if loading take to mush reload</p>
-                    <Button  onClick={() => window.location.href = `/favorites`}>
+                    <Button  onClick={() => window.location.href = `/profile`}>
                             reload
                     </Button>
 

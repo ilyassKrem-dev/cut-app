@@ -24,10 +24,10 @@ export default async function Page({params}:{
         return (
             <div className="py-36 flex justify-center items-center flex-col gap-1">
                 <h1 className="font-bold text-lg">Error loading page</h1>
-                <Link href={`/messages/${params?.id}`} className="w-[150px]">
+                <a href={`/messages/${params?.id}`} className="w-[150px]">
                     <Button className="w-full">Reload</Button>
                     
-                </Link>
+                </a>
             </div>
         );
       }

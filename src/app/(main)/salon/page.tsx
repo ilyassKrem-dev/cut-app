@@ -48,10 +48,9 @@ export default  function Page() {
         return (
             <div className="py-36 flex justify-center items-center flex-col gap-1">
                 <h1 className="font-bold text-lg">Error loading page</h1>
-                <Link href={`/salon`} className="w-[150px]">
-                    <Button className="w-full">Reload</Button>
-                    
-                </Link>
+                <Button  onClick={() => window.location.href = `/salon`}>
+                        reload
+                </Button>
             </div>
         )
     }
