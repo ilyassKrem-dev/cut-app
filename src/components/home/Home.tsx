@@ -53,7 +53,7 @@ export default function Home({userId,barbers}:Props) {
                             </div>
                             <div className="flex gap-1 items-center cursor-pointer">
                                 <IoMdStar className="text-lg"/>
-                                <p className="text-sm cursor-pointer">{barbers[0].ratings}</p>
+                                <p className="text-sm cursor-pointer">{barber.ratings}</p>
                             </div>
                         </Link>
         
