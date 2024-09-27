@@ -33,7 +33,7 @@ export default function Page() {
             }
         }
         fetchReserves()
-     },[session,status])
+     },[session,status,router])
     if(status == "loading" || !reserves) {
         return (
             <div className="py-36 flex justify-center items-center flex-col gap-2">

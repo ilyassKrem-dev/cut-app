@@ -80,7 +80,7 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
             }
         }
         fetchConvo()
-    },[])
+    },[convoId,userId])
     const handleSeenMessages = useCallback( (data: any) => {
     
         if (data.length > 0) {
@@ -101,7 +101,7 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
         }
     
         
-    }, [convo]);
+    }, []);
     useEffect(() => {
         if(!convo) return
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {
@@ -116,7 +116,7 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
             pusher.unsubscribe(`chat-${convoId}`);
         };
         
-    },[convoId,handleSeenMessages])
+    },[convoId,handleSeenMessages,convo])
     const handleNewMessage = useCallback( (data: any) => {
         setScrolledToBottom(false)
         setConvo((prevConvo) => {
@@ -151,10 +151,14 @@ export default function Chat({convoId,userId,isBarber,barberId}:{
 
     useEffect(() => {
         if(scrolledToBottom) return
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-        setScrolledToBottom(true)
+        const id = setTimeout(() => {
+            messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+            const visibile = messagesEndRef.current?.checkVisibility()
+            setScrolledToBottom(visibile?true:false)
+        },200)
         
-    }, [convo?.messages]);
+        return () => clearTimeout(id)
+    }, [convo,convo?.messages,scrolledToBottom]);
     const loadMoreMessages = async () => {
         if (loadingMore || !convo) return;
         setLoadingMore(true);

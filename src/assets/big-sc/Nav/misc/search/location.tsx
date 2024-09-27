@@ -32,7 +32,7 @@ export default function Location(
     useEffect(() => {
         if(city) return
         setCity(cityString as string)
-    },[])
+    },[city,cityString,setCity])
     useEffect(() => {
         function handleOutsideClick(event: any) {
           const overlay = document.querySelector(".locationBg");
@@ -47,7 +47,7 @@ export default function Location(
         return () => {
           document.body.removeEventListener("click", handleOutsideClick);
         };
-    }, []);
+    }, [setShowLocation]);
 
     
     let textP = city ? city : "Search location"

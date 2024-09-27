@@ -8,6 +8,7 @@ import SmMainNav from "@/assets/small-sc/Nav/sm-nav";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { LoginProvider } from "@/assets/wrappers/loginWrapper";
+import { SessionProvider } from "next-auth/react";
 const sora = Sora({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,22 +24,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={sora.className}>
-        <LoginProvider>
-          <BiMainNav />
-          <Suspense>
-            <SmMainHeader />
-          </Suspense>
-         
-            <main>
-              <Suspense fallback={<Loading/>}>
-                {children}
-              </Suspense>
-            </main>
+        <SessionProvider>
+          <LoginProvider>
+            <BiMainNav />
+            <Suspense>
+              <SmMainHeader />
+            </Suspense>
           
-          <Suspense>
-            <SmMainNav />
-          </Suspense>
-        </LoginProvider>
+              <main>
+                <Suspense fallback={<Loading/>}>
+                  {children}
+                </Suspense>
+              </main>
+            
+            <Suspense>
+              <SmMainNav />
+            </Suspense>
+          </LoginProvider>
+        </SessionProvider>
       </body>
     </html>
   );

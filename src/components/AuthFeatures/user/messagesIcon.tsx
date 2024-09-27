@@ -26,7 +26,7 @@ export default function MessagesIcon({userId}:{
             }
         }
         getNumberUnseen()
-    },[userId,pathname]) 
+    },[userId,pathname,toast]) 
     useEffect(() => {
         if(!pathname.startsWith("/messages/")) return
         const splited = pathname.split("/")[2];
@@ -43,7 +43,7 @@ export default function MessagesIcon({userId}:{
         })
     
         
-    }, [pathname, userId]);
+    }, [pathname]);
    
     useEffect(() => {
         const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY!, {

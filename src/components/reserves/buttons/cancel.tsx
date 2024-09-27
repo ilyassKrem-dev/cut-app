@@ -14,12 +14,13 @@ export default function CancelReserv({resId,userId,setReserves}:{
             
             const res = await cancelReservation(userId,resId)
             if(res.success) {
+                setReserves((prev:any) => (prev?.filter((reserv:ReservesType) => reserv.id !== resId)))
                 toast({
                     variant:"success",
                     title:"Canceled",
                     description:"Reservation Canceled"
                 })
-                setReserves((prev:any) => (prev?.filter((reserv:ReservesType) => reserv.id !== resId)))
+                
             }
         } catch (error:any) {
             toast({

@@ -51,7 +51,7 @@ export default function Page() {
             
         }
         getuser()
-    },[session,status])
+    },[session,status,router])
 
     if(status == "loading" || !profile) {
         return (

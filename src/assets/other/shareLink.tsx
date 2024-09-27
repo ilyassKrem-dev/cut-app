@@ -37,7 +37,7 @@ export default function ShareLink({barberImage,barberName,setShowShare,barberId}
         return () => {
           document.body.removeEventListener("click", handleOutsideClick);
         };
-    }, []);
+    }, [setShowShare]);
   
     return (
         <div className="fixed top-0 right-0 bottom-0 left-0 bg-black/10  z-[9999] md:justify-center md:items-center flex justify-end items-end">

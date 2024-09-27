@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { SetStateAction, useEffect, useState } from "react"
+import { SetStateAction, useCallback, useEffect, useState } from "react"
 import { FaArrowLeft } from "react-icons/fa";
 import { MdArrowForwardIos } from "react-icons/md"
 import TimePicker from "./assets/timePicker";
@@ -10,6 +10,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+import { getAvailableHours } from "./assets/shared/reserveUtil";
 
 
 export default function TimeSelect({reserved,selectedDay,selectedTime,setSelectedTime,barberTime}:{
@@ -24,7 +25,7 @@ export default function TimeSelect({reserved,selectedDay,selectedTime,setSelecte
     const [showTime,setShowTime] = useState<boolean>(false)
     const [continueToMinute,setContinueToMinute] = useState<boolean>(false)
     const [fullTime,setFullTime] = useState<string>(selectedTime)
-    const handleBack = () => {
+    const handleBack = useCallback(() => {
         if(continueToMinute) {
             return setContinueToMinute(false)
         }
@@ -34,7 +35,7 @@ export default function TimeSelect({reserved,selectedDay,selectedTime,setSelecte
         setSelectedTime("")
         setContinueToMinute(false)
 
-    }
+    },[continueToMinute,selectedTime,setSelectedTime])
     useEffect(() => {
         const changedWidth = () => {
             setWindowSize(window.innerWidth)
@@ -55,27 +56,9 @@ export default function TimeSelect({reserved,selectedDay,selectedTime,setSelecte
 
         return () => document.body.removeEventListener("click",handleOutsideClick)
     },[])
+    
     const findDates = reserved.filter(dates => dates.date == selectedDay)
-    
-    const times:string[] = [];
-
-    for(let i = Number(barberTime[0].split(":")[0]);i <= Number(barberTime[1].split(":")[0]);i++) {
-        if(Number(barberTime[0].split(":")[0])!==i && Number(barberTime[0].split(":")[1]) >= 30 ){
-            if(Number(barberTime[1].split(":")[0]) != i ) {
-                if(!findDates.find(dates => dates.time == i.toString()+":00")) {
-                    times.push(i.toString()+":00")
-
-                }
-
-            }
-        }
-    }
-
-    const minuteAdded = times.map(time => {
-        if(Number(barberTime[1].split(":")[0]) == Number(time.split(":")[0]) || findDates && findDates.find(dates => dates.time == time.split(":")[0]+":30")) return
-        return time.split(":")[0]+":30"})
-    const combinedTimes = [...times,...minuteAdded].sort().filter(times => times !==undefined)
-    
+    const combinedTimes = getAvailableHours(barberTime,findDates)
     const handleChangeTime = (value:string) => {
         setSelectedTime(value)
     }

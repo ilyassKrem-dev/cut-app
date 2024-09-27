@@ -51,6 +51,16 @@ export default function EmailVerification(
         const [loading,setLoading] = useState<boolean>(false)
         const {startUpload} =  useUploadThing("media")
         useEffect(() => {
+            const sendCode = async () => {
+                try {
+                    await axios.post("/api/send", {
+                        email: email,
+                        code: code
+                    });
+                } catch (error) {
+                    setVerifyError("Error, try again later");
+                }
+            };
             const id = setInterval(() => {
                 setCode((Math.random()*(995489-100000)+100000).toFixed().toString())
             },300000)
@@ -59,17 +69,8 @@ export default function EmailVerification(
             setSent(true)
             return () => clearInterval(id)
 
-        },[code,sent])
-        const sendCode = async () => {
-            try {
-                await axios.post("/api/send", {
-                    email: email,
-                    code: code
-                });
-            } catch (error) {
-                setVerifyError("Error, try again later");
-            }
-        };
+        },[code,sent,email])
+        
         
         const handeResend = async() => {
             if(resent) return

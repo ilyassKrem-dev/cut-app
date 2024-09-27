@@ -17,11 +17,11 @@ export default function ShowHomeMap({setShowMap}:{
             try {
                 const res = await allBarbers({
                     filters:{
-                    city:searchParams.get("city") ||undefined,
-                    rating:searchParams.get("rating") ||undefined,
-                    operat:searchParams.get("equ") ||undefined,
-                    min:searchParams.get("min") ||undefined,
-                    max:searchParams.get("max") ||undefined},
+                    city:searchParams.get("city") ||null,
+                    rating:searchParams.get("rating") ||null,
+                    operat:searchParams.get("equ") ||null,
+                    min:searchParams.get("min") ||null,
+                    max:searchParams.get("max") ||null},
                 })
                 if(!res) return setBarbers([])
                 setBarbers(res)
@@ -30,7 +30,7 @@ export default function ShowHomeMap({setShowMap}:{
             }
         }
         fetchBarbers()
-    },[])
+    },[searchParams])
     useEffect(() => {
         function handleOutsideClick(event: any) {
           const overlay = document.querySelector(".map-home-over");
@@ -45,7 +45,7 @@ export default function ShowHomeMap({setShowMap}:{
         return () => {
           document.body.removeEventListener("click", handleOutsideClick);
         };
-    }, []);
+    }, [setShowMap]);
     return (
         <div className="fixed top-0 right-0 left-0 bottom-0 z-[9999] flex justify-center items-center bg-black/80 ">
             <div className="w-full map-home-over">

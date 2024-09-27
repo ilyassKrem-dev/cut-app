@@ -53,7 +53,7 @@ export default function Preview({prefernces,info,locationInfo,images,userInfo,us
             }
         }
         numberPhone()
-    },[])
+    },[userId])
     const datesCheck = prefernces.dates.week.length === 7?"Entire week" :`${prefernces.dates.week.map((day) => day+"").join("-")}`
     return (
         <>

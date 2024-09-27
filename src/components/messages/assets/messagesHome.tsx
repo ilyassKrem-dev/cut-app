@@ -3,16 +3,16 @@
 import { AiOutlineMessage } from "react-icons/ai";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import SideBar from "./sideBar";
 export default function MessagesHome() {
-    const [windowSize,setWindowSize] = useState<number>(window.innerWidth)
+    const [windowSize,setWindowSize] = useState<number>(0)
 
     useEffect(() => {
+        if(windowSize == 0) return setWindowSize(window.innerWidth)
         const changeWidth = () => {
             setWindowSize(window.innerWidth)
         }
         window.addEventListener("resize",changeWidth)
-
+        
         return () => window.removeEventListener("resize",changeWidth)
     },[windowSize])
     return (

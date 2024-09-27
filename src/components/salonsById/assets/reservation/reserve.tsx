@@ -1,20 +1,12 @@
+"use client"
 import { SetStateAction, useEffect,useRef, useState } from "react";
 
-import dynamic from "next/dynamic";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import HandleReserve from "./handleReserver";
 import Link from "next/link";
-const DaySelect = dynamic(() => import("./daySelect"),{
-    ssr:false,
-    loading:() => <Skeleton className="h-[58px] w-full bg-white/10 bg-opacity-65"/>})
-
-const TimeSelect = dynamic(() => import("./timeSelect"),{
-    ssr:false,
-    loading:() => <Skeleton className="h-[58px] w-full bg-white/10 bg-opacity-65"/>})
-const PriceSelect = dynamic(() => import("./priceSelect"),{
-    ssr:false,
-    loading:() => <Skeleton className="h-[58px] w-full bg-white/10 bg-opacity-65"/>})
+import DaySelect from "./daySelect";
+import TimeSelect from "./timeSelect";
+import PriceSelect from "./priceSelect";
 
 export default function Reserve({barberReserves,barberId,userId,setShow,barberTimeAprice}:{
     barberReserves:any[];
@@ -43,7 +35,7 @@ export default function Reserve({barberReserves,barberId,userId,setShow,barberTi
         document.body.addEventListener('click',handleOutsideClick)
 
         return () => document.body.removeEventListener("click",handleOutsideClick)
-    },[])
+    },[setShow])
 
     
     return(

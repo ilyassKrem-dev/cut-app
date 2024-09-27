@@ -28,7 +28,7 @@ export default function ImageButtons({userId,barberId,barberImage,barberName}:{
                 }
         }
         fetchingUser()
-    },[userId])
+    },[userId,barberId])
     return (
         <>
             {userFav!==null?<div>

@@ -93,46 +93,47 @@ export default function SideBar() {
         if(!convos || convos==undefined || tabC===tab || !session ) return
         setTab(tabC)
     } 
-    const changeSeen= (splited:string) => {
-        const findIdBarbers = convos.barbers.find((convo:any) => convo.id ==splited)
-        const findIdClients = convos.clients.find((convo:any) => convo.id ==splited)
-        if(findIdBarbers || findIdClients) {
-          
-            setConvos((prev:any) => {
-                const newData = prev.barbers.map((convo:any) => {
-                    const isReceiver = (session?.user as any).isBarber ? (session?.user as any).barberId : session?.user?.id
-                    if(convo.id === splited && convo.messages.receiverId == isReceiver) {
-                        return {...convo,unseen:[]}
-                    } else {
-                        return convo
-                    }
-                })
-                const newData2 = prev.clients.map((convo:any) => {
-                    const isReceiver = (session?.user as any).isBarber ? (session?.user as any).barberId : session?.user?.id
-                    if(convo.id === splited && convo.messages.receiverId == isReceiver) {
-                        return {...convo,unseen:[]}
-                    } else {
-                        return convo
-                    }
-                })
-                if(newData === prev.barber && newData2 === prev.clients) return prev
-                return {
-                    barbers:newData,
-                    clients:newData2
-                }
-            })
-        }
-    }
+    
     useEffect(() => {
-        if(!pathname.startsWith("/messages/") || !session || !convos) return
+        if(!pathname.startsWith("/messages/")) return
         const splited = pathname.split("/")[2]
         if(!splited) return
+        const changeSeen= (splited:string) => {
+            const findIdBarbers = convos.barbers.find((convo:any) => convo.id ==splited)
+            const findIdClients = convos.clients.find((convo:any) => convo.id ==splited)
+            if(findIdBarbers || findIdClients) {
+              
+                setConvos((prev:any) => {
+                    const newData = prev.barbers.map((convo:any) => {
+                        const isReceiver = (session?.user as any).isBarber ? (session?.user as any).barberId : session?.user?.id
+                        if(convo.id === splited && convo.messages.receiverId == isReceiver) {
+                            return {...convo,unseen:[]}
+                        } else {
+                            return convo
+                        }
+                    })
+                    const newData2 = prev.clients.map((convo:any) => {
+                        const isReceiver = (session?.user as any).isBarber ? (session?.user as any).barberId : session?.user?.id
+                        if(convo.id === splited && convo.messages.receiverId == isReceiver) {
+                            return {...convo,unseen:[]}
+                        } else {
+                            return convo
+                        }
+                    })
+                    if(newData === prev.barber && newData2 === prev.clients) return prev
+                    return {
+                        barbers:newData,
+                        clients:newData2
+                    }
+                })
+            }
+        }
         changeSeen(splited)
     },[pathname])
     useEffect(() => {
         if(session || status=="loading") return
         router.push("/")
-    },[session,status])
+    },[session,status,router])
 
     const unseenClients = useMemo(() => {
         if(!session || !convos || convos.clients.length == 0) return

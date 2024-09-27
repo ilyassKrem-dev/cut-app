@@ -1,48 +1,63 @@
+"use client"
 import Home from "@/components/home/Home";
-import { auth } from "@/auth";
 import { allBarbers } from "@/lib/actions/barber.action";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-export default async function Page({searchParams}:{
-  searchParams:{[key:string]:string | undefined}
-}) {
-  try {
-      const session = await auth() as any
-    
-      const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-      const timeoutPromise = timeout(5000).then(() => { throw new Error("Request timed out"); });
-      const barbersPromise  = allBarbers(
+import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import LoadingAnimation from "@/assets/other/spinner";
+type barberType = {
+  id: string; 
+  address: string; 
+  city: string;
+  images:string[];
+  latitude: number; 
+  longitude: number; 
+  time: string[]; 
+  Prices: number[]; 
+  salonName: string; 
+  ratings: number
+}
+export default function Page() {
+  const searchParams = useSearchParams()
+  const {data:session} = useSession()
+  const [barbers,setBarbers] = useState<barberType[] | null>(null)
+  useEffect(() => {
+    const getBarbers = async() => {
+      const res = await allBarbers(
         {
           filters:{
-            city:searchParams?.city,
-            rating:searchParams?.rating,
-            min:searchParams?.min,
-            max:searchParams?.max,
-            operat:searchParams?.equ
+            city:searchParams?.get("city"),
+            rating:searchParams?.get("rating"),
+            min:searchParams?.get("min"),
+            max:searchParams?.get("max"),
+            operat:searchParams?.get("equ")
           }
         }
       )
-      const barbers = await Promise.race([barbersPromise, timeoutPromise]);
-      return (
-        <div className="md:py-48 p-4 py-32">
-          <Home
-          userId={session?.user?.id as string || null}
-          barbers={barbers}
-          />
-        </div>
-      );
-    
-  } catch (error) {
-    return (
-      <div className="h-screen flex justify-center items-center flex-col gap-1">
-          <h1 className="font-bold text-lg">Error loading page</h1>
-          <Link href={`/`} className="w-[150px]">
+      setBarbers(res)
+    }
+    getBarbers()
+  },[searchParams])
+  return (
+    <>
+      {barbers&&<div className="md:py-48 p-4 py-32">
+       <Home
+        userId={session?.user?.id as string || null}
+        barbers={barbers}
+        />
+      </div>}
+      {!barbers&&<div className="h-screen flex justify-center items-center flex-col gap-1">
+          <h1 className="font-bold text-lg"><LoadingAnimation /></h1>
+          <p className="text-sm text-white/80">If i takes to long reload</p>
+          <a href={`/`} className="w-[150px]">
               <Button className="w-full">Reload</Button>
-              
-          </Link>
-      </div>
-  )
-  }
+          </a>
+      </div>}
+    </>
+    
+  );
+
 }
 
 

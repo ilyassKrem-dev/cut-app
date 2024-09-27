@@ -39,7 +39,7 @@ export default function DeleteImages(
         return () => {
           document.body.removeEventListener("click", handleOutsideClick);
         };
-    }, []);
+    }, [setShowDelete]);
     const handleSelectImage = (img:string) => {
         
         

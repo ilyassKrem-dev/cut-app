@@ -27,7 +27,7 @@ export default function AboveView({userId,barberId,barberImage,barberName}:{
                 }
         }
         fetchingUser()
-    },[userId])
+    },[userId,barberId])
     
     return (
         <div className="my-4 flex  justify-between  mx-2 items-center px-4  md:justify-end">

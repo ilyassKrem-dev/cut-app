@@ -40,7 +40,7 @@ export default function Page() {
             }
         }
         getFavorites()
-    },[session,status])
+    },[session,status,router,toast])
     
     if(status === "loading" || !favorites) {
         return (

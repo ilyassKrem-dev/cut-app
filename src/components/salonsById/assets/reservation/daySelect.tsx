@@ -1,5 +1,5 @@
 
-import { SetStateAction, useEffect, useState } from "react";
+import { SetStateAction, useCallback, useEffect, useState } from "react";
 import { MdArrowForwardIos } from "react-icons/md";
 import { FaArrowLeft } from "react-icons/fa";
 import { format, addDays } from 'date-fns';
@@ -12,9 +12,8 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-
-
-const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+import { getDaysOfWork } from "./assets/shared/reserveUtil";
+import { daysOfWeek } from "./assets/shared/reserveUtil";
 
 export default function DaySelect({setSelectedDay,selectedDay,barberDays}:{
     setSelectedDay:React.Dispatch<SetStateAction<string>>;
@@ -24,12 +23,12 @@ export default function DaySelect({setSelectedDay,selectedDay,barberDays}:{
     const [windowSize,setWindowSize] = useState<number>(window.innerWidth)
     const [showDate,setShowDate] = useState<boolean>(false)
     const [dateSe,setDateSe] = useState<string|null>(null)
-    const handleBack = () => {
+    const handleBack = useCallback(() => {
         setShowDate(false)
         if(selectedDay) return
         setSelectedDay("")
         setDateSe(null)
-    }
+    },[selectedDay,setSelectedDay])
     useEffect(() => {
         const changedWidth = () => {
             setWindowSize(window.innerWidth)
@@ -61,19 +60,7 @@ export default function DaySelect({setSelectedDay,selectedDay,barberDays}:{
         }
         setDateSe(day)
     }
-    
-
-    const today = new Date();
-    const startDayIndex = today.getDay(); 
-    const daysNew:string[] = [];
-    for (let i = 0; i < 7; i++) {
-        const currentDay = addDays(today, i);
-        const dayName = daysOfWeek[(startDayIndex + i) % 7];
-        const date = format(currentDay, 'MMMM d');
-        const fullDate = `${dayName} / ${date}`;
-        daysNew.push(fullDate);
-    }
-    const daysOfbarber = daysNew.filter((day) => barberDays.includes(day.substring(0,2)))
+    const daysOfbarber = getDaysOfWork(barberDays)
     const handleChangeDay = (value:string) => {
         setSelectedDay(value)
     }

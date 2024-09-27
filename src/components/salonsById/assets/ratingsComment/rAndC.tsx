@@ -43,40 +43,41 @@ export default function RatingsACommentes(
             }
         }
         getCanRate()
-    },[userId,barberId])
+    },[userId,barberId,barberUserId,show])
 
-    const handleRate = async() => {
-        if(loading || !userId) return
-        try {
-            setLoading(true)
-            const res = await changeRating({
-                userId,
-                barberId,
-                rating:userRating as number
-            })
-            if(res.message) {
-                toast({
-                    variant:"success",
-                    title:"Rating",
-                    description:res.message
-                })
-            }
-        } catch (error:any) {
-            toast({
-                variant:"destructive",
-                title:"Error",
-                description:error.message
-            })
-        }
-    }
+    
     useEffect(() => {
         if(!canRate || !userRating || !changed) return
+        const handleRate = async() => {
+            if(loading || !userId) return
+            try {
+                setLoading(true)
+                const res = await changeRating({
+                    userId,
+                    barberId,
+                    rating:userRating as number
+                })
+                if(res.message) {
+                    toast({
+                        variant:"success",
+                        title:"Rating",
+                        description:res.message
+                    })
+                }
+            } catch (error:any) {
+                toast({
+                    variant:"destructive",
+                    title:"Error",
+                    description:error.message
+                })
+            }
+        }
         const id = setTimeout(() => {
                 handleRate()
         }, 300);
 
         return () => clearTimeout(id)
-    },[userRating,canRate,changed])
+    },[userRating,canRate,changed,barberId,loading,userId])
     return (
         <>
             <div className="border-white/20 border rounded-lg  mt-4 justify-center flex items-center">

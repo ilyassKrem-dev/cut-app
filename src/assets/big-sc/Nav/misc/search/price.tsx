@@ -61,7 +61,7 @@ export default function Price(
         return () => {
           document.body.removeEventListener("click", handleOutsideClick);
         };
-    }, []);
+    }, [setShowPrice]);
 
     let textP = price ? price : "Min Price"
     return (

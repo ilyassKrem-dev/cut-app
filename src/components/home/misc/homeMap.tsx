@@ -20,8 +20,10 @@ interface LeafletMapProps {
 }
 
 export default function Homemap({ barbers }: LeafletMapProps) {
+    const [index, setIndex] = useState<{barber:string,index:number}>({
+        barber:"",index:0
+    });
     
-
     const customIcon = (nameS:string) =>L.divIcon({
         className: "custom-marker",
         html: `<div class="bg-white border-2 border-blue-400 rounded-lg p-1 w-[100px] text-black font-semibold text-xs absolute bottom-2 -right-[3.05rem] text-center">
@@ -31,7 +33,25 @@ export default function Homemap({ barbers }: LeafletMapProps) {
         </div>`,
     });
 
-    
+    const changeImage = (type: string,id:string) => {
+        if(index.barber !== id) {
+            setIndex(prev => ({...prev,barber:id,index:0}));
+        }
+        const findBarber = barbers.find(barber => barber.id === id) as any
+        if (type === "add") {
+            if (index.index == findBarber.images.length - 1) {
+                return;
+            }
+            setIndex(prev => ({...prev,barber:id,index:prev.index+1}));
+            
+            
+        } else {
+            if (index.index > 0) {
+                return setIndex(prev => ({...prev,barber:id,index:prev.index-1}));
+            }
+            
+        }
+    }
 
     return (
         <MapContainer
@@ -46,20 +66,8 @@ export default function Homemap({ barbers }: LeafletMapProps) {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             {barbers.length >0 &&barbers.map((barber,key) => {
-                const [index, setIndex] = useState<number>(0);
-                const changeImage = (type: string) => {
-                    if (type === "add") {
-                        if (index == barber.images.length - 1) {
-                            return;
-                        }
-                        setIndex(prev => prev + 1);
-                    } else {
-                        if (index == 0) {
-                            return;
-                        }
-                        setIndex(prev => prev - 1);
-                    }
-                }
+                const checkId = barber.id === index.barber
+               
                 return (
                     <Marker
                         key={barber.id+barber.salonName+key}
@@ -70,22 +78,22 @@ export default function Homemap({ barbers }: LeafletMapProps) {
                         <Popup closeButton={false}>
                             <div className="w-[200px] h-fit flex flex-col bg-light rounded-lg">
                                 <div className="w-full relative flex items-center justify-center">
-                                    <div className={`absolute left-1 ${index === 0 ? "hidden" : ""}`} onClick={() => changeImage("reduce")}>
+                                    <div className={`absolute left-1 ${checkId&&(index.index === 0) ? "hidden" : ""}`} onClick={() => changeImage("reduce",barber.id)}>
                                         <FaArrowLeft className="text-black bg-white/80 rounded-full text-xl p-1 cursor-pointer hover:opacity-60 transition-all duration-300 hover:scale-110 " />
                                     </div>
                                     <Image
-                                        src={barber.images[index]}
+                                        src={checkId?barber.images[index.index]:barber.images[0]}
                                         alt="salon piv"
                                         width={1000}
                                         height={1000}
                                         className="w-[200px] rounded-t-lg h-[133px]"
                                     />
-                                    <div className={`absolute right-1 ${index === barber.images.length - 1 ? "hidden" : ""}`} onClick={() => changeImage("add")}>
+                                    <div className={`absolute right-1 ${checkId&&(index.index === barber.images.length - 1) ? "hidden" : ""}`} onClick={() => changeImage("add",barber.id)}>
                                         <FaArrowLeft className="text-black bg-white/80 rounded-full text-xl p-1 cursor-pointer hover:opacity-60 transition-all duration-300 hover:scale-110 rotate-180" />
                                     </div>
                                     <div className="absolute bottom-2 flex items-center justify-center gap-1">
                                         {[...Array(3)].map((_, indexD) => (
-                                            <div key={indexD} className={`rounded-full p-[0.2rem] ${indexD === index ? "bg-white" : "bg-white/50"}`}>
+                                            <div key={indexD} className={`rounded-full p-[0.2rem] ${indexD === index.index ? "bg-white" : "bg-white/50"}`}>
                                             </div>
                                         ))}
                                     </div>

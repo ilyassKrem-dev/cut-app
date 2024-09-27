@@ -51,7 +51,7 @@ export default  function Salon({userId}:Props) {
             }
         }
         getSalon()
-    },[])
+    },[userId])
 
     if(salon == null) {
         return (

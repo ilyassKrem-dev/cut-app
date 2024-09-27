@@ -31,7 +31,7 @@ export default  function Page() {
             setUserBar(true)
         }
         getBabrer()
-    },[session])
+    },[session,router])
 
     if(status === "loading" || !userBar) {
         return (
