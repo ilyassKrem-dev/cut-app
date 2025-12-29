@@ -315,6 +315,7 @@ export const addUserComment = async(
 }
 
 export const getUserComment = async(userId:string,barberId:string) => {
+    if(!userId || !barberId) return null
     try {
         const user = await prisma.user.findUnique(
             {
