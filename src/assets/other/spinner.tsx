@@ -9,4 +9,4 @@ const LoadingAnimation = ({className,containerClassName}:{
       );
     };
     
-    export default LoadingAnimation;
+export default LoadingAnimation;

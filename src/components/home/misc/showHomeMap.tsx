@@ -6,6 +6,7 @@ import { allBarbers } from "@/lib/actions/barber.action"
 import dynamic from "next/dynamic";
 import LoadingAnimation from "@/assets/other/spinner";
 import { useSearchParams } from "next/navigation";
+import { createPortal } from "react-dom";
 const Homemap = dynamic(() => import("./homeMap"), { ssr: false,loading:() =><div className="fixed top-0 left-0 right-0  flex justify-center items-center bottom-0"><LoadingAnimation /> </div>});
 export default function ShowHomeMap({setShowMap}:{
     setShowMap:React.Dispatch<SetStateAction<boolean>>
@@ -47,13 +48,16 @@ export default function ShowHomeMap({setShowMap}:{
         };
     }, [setShowMap]);
     return (
-        <div className="fixed top-0 right-0 left-0 bottom-0 z-[9999] flex justify-center items-center bg-black/80 ">
-            <div className="w-full map-home-over">
-                {
-                        barbers!==null&&<Homemap barbers={barbers}/>
-                }
+        <>
+            {createPortal(<div className="fixed top-0 right-0 left-0 bottom-0 z-[9999] flex justify-center items-center bg-black/80 ">
+                <div className="w-full map-home-over">
+                    {
+                            barbers!==null&&<Homemap barbers={barbers}/>
+                    }
 
-            </div>
-        </div>
+                </div>
+            </div>,document.body)}
+        
+        </>
     )
 }

@@ -9,18 +9,12 @@ import LoadingAnimation from "@/assets/other/spinner";
 import { Button } from "@mui/material";
 
 
-export default function SalonLayout({id}:{
-    id:string
+export default function SalonLayout({id,session,barber}:{
+    id:string;
+    session:any;
+    barber:SalonType|null
 }) {
-    const {data:session} = useSession()
-    const [barber,setBarber] = useState<SalonType|null>(null)
-    useEffect(() => {
-        const getSalon = async() => {
-            const res = await getBaberById(id)
-            setBarber(res as any)
-        }
-        getSalon()
-    },[id])
+   
 
     return (
         <>

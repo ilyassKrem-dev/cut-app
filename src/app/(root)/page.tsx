@@ -1,44 +1,32 @@
-"use client"
 import Home from "@/components/home/Home";
 import { allBarbers } from "@/lib/actions/barber.action";
 import { Button } from "@/components/ui/button";
-import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import LoadingAnimation from "@/assets/other/spinner";
-type barberType = {
-  id: string; 
-  address: string; 
-  city: string;
-  images:string[];
-  latitude: number; 
-  longitude: number; 
-  time: string[]; 
-  Prices: number[]; 
-  salonName: string; 
-  ratings: number
+import { auth } from "@/auth";
+import { Metadata } from "next";
+
+export const metadata:Metadata = {
+    title:"BarberCut | Home"
 }
-export default function Page() {
-  const searchParams = useSearchParams()
-  const {data:session} = useSession()
-  const [barbers,setBarbers] = useState<barberType[] | null>(null)
-  useEffect(() => {
-    const getBarbers = async() => {
-      const res = await allBarbers(
+
+
+
+export default async function Page({searchParams}:{
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
+  const session = await auth()
+  const {city,rating,min,max,equ} = searchParams
+  const barbers = await allBarbers(
         {
           filters:{
-            city:searchParams?.get("city"),
-            rating:searchParams?.get("rating"),
-            min:searchParams?.get("min"),
-            max:searchParams?.get("max"),
-            operat:searchParams?.get("equ")
+            city,
+            rating,
+            min,
+            max,
+            operat:equ
           }
         }
-      )
-      setBarbers(res)
-    }
-    getBarbers()
-  },[searchParams])
+    )
   return (
     <>
       {barbers&&<div className="md:py-48 p-4 py-32">

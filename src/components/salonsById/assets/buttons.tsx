@@ -45,16 +45,7 @@ export default function SalonButtons({barberPrices,userId,barberId,barberUserId,
     return (
         <>
             <div className="hidden sm:flex flex-1 max-w-[400px] h-fit">
-                <div className="bg-black border border-white/20 rounded-lg flex justify-center p-3 py-6 flex-col gap-8  items-center w-full shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
-                    <div className="text-center">
-                        <p className="font-bold text-xl">{barberPrices[0]}DH - {barberPrices[1]}DH</p>
-                        <p className="text-sm mt-1 text-gray-400">
-                            {barberTimeAprices.times[0]}-{barberTimeAprices.times[1]}
-                            
-                        </p>
-                    </div>
-                    <Button onClick={handleClick} className="bg-green-1  hover:opacity-80 hover:bg-green-1 w-full">Reserve</Button>
-                </div>
+                <Button onClick={handleClick} className="bg-green-1  hover:opacity-80 hover:bg-green-1 w-full">Reserve</Button>
             </div>
             <div className="sm:hidden fixed z-50 bottom-0 right-0 left-0 bg-black">
                 <div className="flex justify-between items-center px-4 py-3 ">

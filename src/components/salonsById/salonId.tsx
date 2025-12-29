@@ -1,6 +1,11 @@
-
+"use client"
 import Image from "next/image";
-import { FaCalendar, FaCheck, FaMapMarkerAlt, FaPhoneAlt } from "react-icons/fa";
+import {
+  FaCalendar,
+  FaCheck,
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+} from "react-icons/fa";
 import dynamic from "next/dynamic";
 import LoadingAnimation from "@/assets/other/spinner";
 import BarberImages from "./assets/barberImages";
@@ -8,162 +13,170 @@ import SalonButtons from "./assets/buttons";
 import AboveView from "./assets/aboveImages/aboveView";
 import { Button } from "../ui/button";
 import RatingsACommentes from "./assets/ratingsComment/rAndC";
-import {SalonType,CommentsType} from "./salonType"
+import { SalonType, CommentsType } from "./salonType";
 import BarberComments from "./assets/barberComments";
 import Link from "next/link";
 import { IoLogoGithub } from "react-icons/io";
+import MapSalon from "./assets/mapSalon";
 
-const MapSalon = dynamic(() => import("./assets/mapSalon"), { ssr: false,loading:() => (
-    <div className="h-[500px]">
-        <LoadingAnimation/>
-    </div>
-) });
 
 
 interface Props {
-    barber:SalonType | undefined;
-    userId:string |null |undefined;
-    pathname?:string;
-    barberUserId?:string
+  barber: SalonType | undefined;
+  userId: string | null | undefined;
+  pathname?: string;
+  barberUserId?: string;
 }
 
+export default function SalonId({
+  barber,
+  userId,
+  pathname,
+  barberUserId,
+}: Props) {
+  const datesCheck =
+    barber?.openDays.length === 7 ? "Entire week" : barber?.openDays.join("-");
 
-export default function SalonId({barber,userId,pathname,barberUserId}:Props) {
-    const datesCheck = barber?.openDays.length === 7 ? "Entire week" : barber?.openDays.join("-")
-    
-    return (
-        <div className="sm:px-4 pb-24">
-            {!pathname&&<div className="md:pt-28">
-                <AboveView 
-                userId={userId} 
-                barberId={barber?.id}
-                barberImage={barber?.images[0] as string}
-                barberName={barber?.salonName as string}/>
-            </div>}
-            <div className="flex flex-col gap-10">
-                <div className="">
-                    <BarberImages barberImages={barber?.images}/>
+  return (
+    <div className="sm:px-4 pb-24">
+      
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 pt-24">
+        <main className="lg:col-span-8 space-y-8">
+          <BarberImages barberImages={barber?.images} />
+
+          <section className="bg-black/40 border border-white/6 rounded-2xl p-6">
+            <div className="flex items-start gap-4">
+              <Image
+                src={barber?.user.image || "/profile.jpg"}
+                alt={`barber ${barber?.user.name} pic`}
+                width={80}
+                height={80}
+                className="w-[64px] h-[64px] rounded-full object-cover"
+              />
+              <div>
+                <p className="font-semibold">Barber: {barber?.user.name}</p>
+                <p className="text-sm text-white/60">
+                  {barber?.user.phoneNumber || ""}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="flex items-center gap-3">
+                <FaMapMarkerAlt className="text-xl text-white/60" />
+                <div>
+                  <p className="text-sm">{barber?.address}</p>
                 </div>
-                
-                <div className="flex justify-between">
-                    <div className="px-4 flex-1 max-w-[1200px]">
-                        <div>
-                            <h1 className="font-bold text-2xl">{barber?.salonName}</h1>
-                            <p className="max-w-[400px] text-gray-400 text-sm">{barber?.city}</p>
-                        </div>
-                        <RatingsACommentes 
-                        rating={barber?.ratings.rating}
-                        nmbreComment={barber?.comments.length as number}
-                        userId={userId}
-                        barberId={barber?.id as string}
-                        show={pathname}
-                        barberUserId={barber?.userId as string}/>
-                        <div className="border-y my-9 py-5 flex gap-4 items-center border-white/20">
-                            <Image 
-                            src={barber?.user.image || "/profile.jpg"}
-                            alt={`barber ${barber?.user.name} pic`}
-                            width={100}
-                            height={100}
-                            className="w-[40px] h-[40px] rounded-full"
-                            />
-                            <div className="flex flex-col">
-                                <p className="font-semibold capitalize">Barber : {barber?.user.name}</p>
-                                <p className="text-sm text-gray-400">{barber?.user.phoneNumber || ""}</p>
-                            </div>
-                        </div>
-                        
-                        <div className="flex flex-col gap-8 justify-center">
-                            <div className="flex gap-2 items-center">
-                                <FaMapMarkerAlt  className="text-2xl text-white/50"/>
-                                <p>{barber?.address}</p>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                <FaPhoneAlt  className="text-2xl text-white/50"/>
-                                <p>{barber?.phoneNumber}</p>
-                            </div>
-                            <div className="flex gap-2 items-center">
-                                <FaCalendar  className="text-2xl text-white/50"/>
-                                <div className="flex gap-1 flex-col">
-                                    <p>{datesCheck}</p>
-                                    <div className="flex gap-2 items-center">Holidays:{barber?.holidays?<FaCheck />:<span className="text-xl font-bold text-gray-400">x</span>}</div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    {!pathname?
-                    <>
-                    {barber?.userId !==userId&&<SalonButtons 
+              </div>
+              <div className="flex items-center gap-3">
+                <FaPhoneAlt className="text-xl text-white/60" />
+                <div>
+                  <p className="text-sm">{barber?.phoneNumber}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3">
+                <FaCalendar className="text-xl text-white/60" />
+                <div>
+                  <p className="text-sm">{datesCheck}</p>
+                  <p className="text-xs text-white/60">
+                    Holidays: {barber?.holidays ? "Yes" : "No"}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2 className="text-lg font-semibold mb-4">Comments</h2>
+            {(barber?.comments && barber.comments.length > 0) ? (
+              <BarberComments comments={barber?.comments as CommentsType[]} />
+            ) : (
+              <div className="py-8 text-center text-white/60 rounded-2xl bg-black/30">
+                No comments yet
+              </div>
+            )}
+          </section>
+
+          <div className="rounded-2xl overflow-hidden">
+            <MapSalon
+              prices={barber?.Prices as number[]}
+              locationLat={{
+                longitude: barber?.longitude as number,
+                latitude: barber?.latitude as number,
+              }}
+              info={{ name: barber?.salonName as string }}
+              images={barber?.images as string[]}
+              time={{
+                open: barber?.time[0] as string,
+                close: barber?.time[1] as string,
+              }}
+            />
+          </div>
+        </main>
+
+        <aside className="lg:col-span-4">
+          <div className="sticky top-28 space-y-4">
+            <div className="bg-gradient-to-br from-white/6 to-white/4 border border-white/6 p-5 rounded-2xl shadow-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-white/70">Price range</p>
+                  <p className="text-2xl font-bold">
+                    {barber?.Prices[0]} DH - {barber?.Prices[1]} DH
+                  </p>
+                </div>
+                <div className="text-right text-sm text-white/60">
+                  <p>
+                    {barber?.time[0]} - {barber?.time[1]}
+                  </p>
+                  <p className="mt-1">{datesCheck}</p>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                {barber?.userId !== userId && (
+                  <SalonButtons
                     barberPrices={barber?.Prices as number[]}
                     userId={userId}
                     barberId={barber?.id as string}
                     barberUserId={barberUserId}
                     barberTimeAprices={{
-                        times:barber?.time as string[],
-                        days:barber?.openDays as string[],
-                        prices:barber?.Prices as number[]
-                    }}/>}
-                    </>
-                    
-                    :
-                    <div className="hidden md:flex flex-1 max-w-[400px] h-fit mt-10">
-                            <div className="bg-black border border-white/20 rounded-lg flex justify-center p-3 py-6 flex-col gap-8  items-center w-full shadow-[0px_0px_4px_1px_rgba(255,255,255,0.2)]">
-                                <div className="text-center">
-                                    <p className="font-bold text-xl">{barber?.Prices[0]}DH - {barber?.Prices[1]}DH</p>
-                                    <p className="text-sm mt-1 text-gray-400">
-                                        {barber?.time[0]}-{barber?.time[1]}
-                                        
-                                    </p>
-                                </div>
-                                <Button className="bg-green-1  hover:opacity-100 hover:bg-green-1 w-full">Reserve</Button>
-                            </div>
-                    </div>}
-                </div>
-            </div>
-            {!pathname&&<div>
-                {barber?.comments.length !== 0?
-                <div className="w-full flex flex-col border-t my-9 py-5 gap-10 items-center border-white/20">
-                    <h1>Comments</h1>
-                    <BarberComments comments={barber?.comments as CommentsType[]}/>
-                    
-                    {(barber?.comments.length as number) > 4 && 
-                    <Link href={`/salons/${barber?.id}/comments`} className="underline text-sm">
-                        More comments..
-                    </Link>}
-                </div>
-                :
-                <div className="w-full flex flex-col border-y my-9 py-5 gap-10 items-center border-white/20">
-                    <h1>Comments</h1>
-                    <p className="text-xl">No comments</p>
-                </div>}
-
-            </div>}
-            <div className="border-y my-9 py-5 flex gap-4 items-center border-white/20 mx-4 justify-center">
-                <MapSalon 
-                    prices={barber?.Prices as number[]}
-                    locationLat={
-                        {longitude: barber?.longitude as number,
-                        latitude: barber?.latitude as number}
-                    }   
-                    info={
-                        {
-                            name:barber?.salonName as string,
-                
-                        }
-                    }
-                    images={barber?.images as string[]}
-                    time={{
-                        open:barber?.time[0] as string,
-                        close:barber?.time[1] as string
+                      times: barber?.time as string[],
+                      days: barber?.openDays as string[],
+                      prices: barber?.Prices as number[],
                     }}
-                />
+                  />
+                )}
+              </div>
             </div>
-            {!pathname&&<div className="fixed bottom-0 right-0 left-0 p-3  justify-center items-center border-t gap-20 border-white/10 hidden md:flex z-50 bg-black">
-                <Link href={"https://github.com/ilyassKrem-dev/cut-app"} target="_blank" className=" underline text-white/80 text-sm flex gap-2 items-center hover:opacity-70 transition-all duration-300 active:opacity-60">
-                    Source code <IoLogoGithub />
-                </Link> 
-                <p className="text-center">IlyassKrem-dev &copy; 2024</p>
-            </div>}
+
+            <div className="bg-black/40 border border-white/6 rounded-2xl p-4 text-center">
+              <p className="text-sm text-white/60">Share & Save</p>
+              <div className="mt-3">
+                <AboveView
+                  userId={userId}
+                  barberId={barber?.id}
+                  barberImage={barber?.images[0] as string}
+                  barberName={barber?.salonName as string}
+                />
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      {!pathname && (
+        <div className="fixed bottom-0 right-0 left-0 p-3 justify-center items-center border-t gap-20 border-white/10 hidden md:flex z-50 bg-black">
+          <Link
+            href={"https://github.com/ilyassKrem-dev/cut-app"}
+            target="_blank"
+            className=" underline text-white/80 text-sm flex gap-2 items-center hover:opacity-70 transition-all duration-300 active:opacity-60"
+          >
+            Source code <IoLogoGithub />
+          </Link>
+          <p className="text-center">IlyassKrem-dev &copy; 2024</p>
         </div>
-    )
+      )}
+    </div>
+  );
 }

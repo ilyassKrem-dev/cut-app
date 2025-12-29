@@ -78,11 +78,11 @@ export const addBarber = async({userId,info,locationInfo,prefernces}:paramsB) =>
 
 interface FiltersProps {
     filters:{
-        city:string | null;
-        rating:string | null;
-        operat:string | null;
-        min:string|null;
-        max:string|null;
+        city?:string | null|string[];
+        rating?:string | null |string[];
+        operat?:string | null |string[];
+        min?:string|null |string[];
+        max?:string|null |string[];
 
     }
 }

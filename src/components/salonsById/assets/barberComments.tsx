@@ -15,7 +15,7 @@ export default function BarberComments({comments}:{
                     <div key={comment.id+index} className="border border-white/10 rounded-xl w-full">
                         <div className="flex items-start gap-1 border-b border-white/10 p-2">
                             <Image 
-                            src={user.image} 
+                            src={user.image ?? "/profile.jpg"} 
                             alt={`${user.name} profile picture`}
                             width={50}
                             height={50}

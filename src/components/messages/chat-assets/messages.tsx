@@ -29,7 +29,7 @@ export default function Messages({
                     return (
                         <div key={msg.id+index+"EC"} className={`flex items-center  ${userCheck  ? " justify-end":"justify-start"} gap-3`}>
                             <Image 
-                            src={userCheck  ? userImage:otherUserImage} 
+                            src={(userCheck  ? userImage:otherUserImage) ?? "/profile.jpg"} 
                             alt=""
                             width={40}
                             height={40}

@@ -37,3 +37,14 @@ export default async function Page() {
         )
     }
 }
+
+export async function generateMetadata() {
+    const session = await auth()
+    const user = await fetchUser(session?.user?.id as string)
+
+    return {
+        title:`BarberCut | ${user?.name || "Profile"}`,
+        description:`Welcome to ${user?.name || "your profile"} on BarberCut. Manage your personal information, view your appointments, and explore our grooming services. Keep your profile updated for the best experience!`
+
+    }
+}
